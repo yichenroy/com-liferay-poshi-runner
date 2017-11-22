@@ -220,7 +220,8 @@ public class PoshiRunnerValidation {
 		}
 
 		if (!PoshiRunnerContext.isRootElement(
-				classType, className, namespace)) {
+				classType, className, namespace) &&
+			!PoshiRunnerContext.isRootElement(classType, className)) {
 
 			_exceptions.add(
 				new Exception(
@@ -230,7 +231,9 @@ public class PoshiRunnerValidation {
 		}
 
 		if (!PoshiRunnerContext.isCommandElement(
-				classType, simpleClassCommandName, namespace)) {
+				classType, simpleClassCommandName, namespace) &&
+			!PoshiRunnerContext.isCommandElement(
+				classType, simpleClassCommandName)) {
 
 			_exceptions.add(
 				new Exception(
@@ -727,7 +730,8 @@ public class PoshiRunnerValidation {
 						locator);
 
 				if (!PoshiRunnerContext.isRootElement(
-						"path", pathName, namespace)) {
+						"path", pathName, namespace) &&
+					!PoshiRunnerContext.isRootElement("path", pathName)) {
 
 					_exceptions.add(
 						new Exception(
@@ -735,7 +739,8 @@ public class PoshiRunnerValidation {
 								":" + element.attributeValue("line-number")));
 				}
 				else if (!PoshiRunnerContext.isPathLocator(
-							locator, namespace)) {
+							locator, namespace) &&
+						 !PoshiRunnerContext.isPathLocator(locator)) {
 
 					_exceptions.add(
 						new Exception(
