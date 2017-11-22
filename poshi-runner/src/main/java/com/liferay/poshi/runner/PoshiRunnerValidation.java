@@ -1568,14 +1568,38 @@ public class PoshiRunnerValidation {
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(testName);
 
-		if (!PoshiRunnerContext.isRootElement("test-case", className)) {
+		String classCommandName =
+			PoshiRunnerGetterUtil.getSimpleClassCommandName(testName);
+
+		String namespace =
+			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(testName);
+
+		boolean noRootElement;
+		boolean noCommandElement;
+
+		if (Validator.isNotNull(namespace)) {
+			noRootElement = !PoshiRunnerContext.isRootElement(
+				"test-case", className, namespace);
+
+			noCommandElement = !PoshiRunnerContext.isCommandElement(
+				"test-case", classCommandName, namespace);
+		}
+		else {
+			noRootElement = !PoshiRunnerContext.isRootElement(
+				"test-case", className);
+
+			noCommandElement = !PoshiRunnerContext.isCommandElement(
+				"test-case", classCommandName);
+		}
+
+		if (noRootElement) {
 			_exceptions.add(
 				new Exception(
 					"Invalid test case class " + className + "\n" +
 						filePathLineNumber));
 		}
 		else if (testName.contains("#")) {
-			if (!PoshiRunnerContext.isCommandElement("test-case", testName)) {
+			if (noCommandElement) {
 				String commandName =
 					PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
 						testName);
