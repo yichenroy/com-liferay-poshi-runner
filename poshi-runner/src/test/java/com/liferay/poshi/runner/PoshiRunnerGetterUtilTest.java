@@ -62,14 +62,7 @@ public class PoshiRunnerGetterUtilTest extends TestCase {
 	public void testGetCommandNameFromClassCommandName() {
 		String commandName =
 			PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
-				"MathUtil#add(1,2)");
-
-		Assert.assertEquals(
-			"getCommandNameFromClassCommandName is failing", "add",
-			commandName);
-
-		commandName = PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
-			"Page#addPG");
+				"Page#addPG");
 
 		Assert.assertEquals(
 			"getCommandNameFromClassCommandName is failing", "addPG",
