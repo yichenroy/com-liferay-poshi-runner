@@ -167,7 +167,8 @@ public class PoshiRunnerGetterUtil {
 
 	public static String getExtendedTestCaseName() {
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
-			getClassNameFromClassCommandName(PropsValues.TEST_NAME));
+			getClassNameFromClassCommandName(PropsValues.TEST_NAME),
+			PoshiRunnerContext.getDefaultNamespace());
 
 		return getExtendedTestCaseName(rootElement);
 	}
@@ -178,7 +179,8 @@ public class PoshiRunnerGetterUtil {
 
 	public static String getExtendedTestCaseName(String filePath) {
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
-			getClassNameFromFilePath(filePath));
+			getClassNameFromFilePath(filePath),
+			PoshiRunnerContext.getDefaultNamespace());
 
 		return getExtendedTestCaseName(rootElement);
 	}

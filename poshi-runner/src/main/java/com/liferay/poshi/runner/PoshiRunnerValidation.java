@@ -221,7 +221,9 @@ public class PoshiRunnerValidation {
 
 		if (!PoshiRunnerContext.isRootElement(
 				classType, className, namespace) &&
-			!PoshiRunnerContext.isRootElement(classType, className)) {
+			!PoshiRunnerContext.isRootElement(
+				classType, className,
+				PoshiRunnerContext.getDefaultNamespace())) {
 
 			_exceptions.add(
 				new Exception(
@@ -233,7 +235,8 @@ public class PoshiRunnerValidation {
 		if (!PoshiRunnerContext.isCommandElement(
 				classType, simpleClassCommandName, namespace) &&
 			!PoshiRunnerContext.isCommandElement(
-				classType, simpleClassCommandName)) {
+				classType, simpleClassCommandName,
+				PoshiRunnerContext.getDefaultNamespace())) {
 
 			_exceptions.add(
 				new Exception(
@@ -731,7 +734,9 @@ public class PoshiRunnerValidation {
 
 				if (!PoshiRunnerContext.isRootElement(
 						"path", pathName, namespace) &&
-					!PoshiRunnerContext.isRootElement("path", pathName)) {
+					!PoshiRunnerContext.isRootElement(
+						"path", pathName,
+						PoshiRunnerContext.getDefaultNamespace())) {
 
 					_exceptions.add(
 						new Exception(
@@ -740,7 +745,9 @@ public class PoshiRunnerValidation {
 				}
 				else if (!PoshiRunnerContext.isPathLocator(
 							locator, namespace) &&
-						 !PoshiRunnerContext.isPathLocator(locator)) {
+						 !PoshiRunnerContext.isPathLocator(
+							locator,
+							PoshiRunnerContext.getDefaultNamespace())) {
 
 					_exceptions.add(
 						new Exception(
@@ -1591,10 +1598,12 @@ public class PoshiRunnerValidation {
 		}
 		else {
 			noRootElement = !PoshiRunnerContext.isRootElement(
-				"test-case", className);
+				"test-case", className,
+				PoshiRunnerContext.getDefaultNamespace());
 
 			noCommandElement = !PoshiRunnerContext.isCommandElement(
-				"test-case", classCommandName);
+				"test-case", classCommandName,
+				PoshiRunnerContext.getDefaultNamespace());
 		}
 
 		if (noRootElement) {
