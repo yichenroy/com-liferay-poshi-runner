@@ -19,7 +19,7 @@
 		<execute selenium="assertLiferayErrors" />
 	</command>
 
-	<command name="assertNotCheckedToggleSwitch">
+	<command name="assertNotCheckedNotVisible">
 		<execute function="WaitForSPARefresh" />
 
 		<execute function="Poshi.AssertNotChecked#assertNotCheckedToggleSwitch" />
