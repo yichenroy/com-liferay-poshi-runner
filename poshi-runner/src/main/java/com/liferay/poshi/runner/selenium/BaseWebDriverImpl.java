@@ -1000,7 +1000,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			return confirmation;
 		}
 		catch (Exception e) {
-			throw new WebDriverException();
+			throw new WebDriverException(e);
 		}
 	}
 
