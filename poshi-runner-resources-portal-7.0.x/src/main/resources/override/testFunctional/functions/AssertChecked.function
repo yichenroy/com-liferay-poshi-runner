@@ -2,9 +2,7 @@
 	<command name="assertChecked">
 		<execute function="WaitForSPARefresh" />
 
-		<execute selenium="waitForVisible" />
-
-		<execute selenium="assertChecked" />
+		<execute function="Poshi.AssertChecked#assertChecked" />
 
 		<execute selenium="assertJavaScriptErrors" />
 
