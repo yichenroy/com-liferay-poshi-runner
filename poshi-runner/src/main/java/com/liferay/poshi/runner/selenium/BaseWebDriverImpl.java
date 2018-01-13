@@ -2011,9 +2011,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void refresh() {
-		WebDriver.Navigation navigation = navigate();
+		String url = getCurrentUrl();
 
-		navigation.refresh();
+		open(url);
 
 		if (isAlertPresent()) {
 			getConfirmation();
