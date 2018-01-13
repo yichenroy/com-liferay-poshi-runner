@@ -855,39 +855,32 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	@Override
 	public void dragAndDrop(String locator, String coordString) {
 		try {
-			int x = getElementPositionCenterX(locator);
+			WebElement webElement = getWebElement(locator);
 
-			x += getFramePositionLeft();
-			x += getWindowPositionLeft();
-			x -= getScrollOffsetX();
+			WrapsDriver wrapsDriver = (WrapsDriver)webElement;
 
-			int y = getElementPositionCenterY(locator);
+			WebDriver webDriver = wrapsDriver.getWrappedDriver();
 
-			y += getFramePositionTop();
-			y += getNavigationBarHeight();
-			y += getWindowPositionTop();
-			y -= getScrollOffsetY();
-
-			Robot robot = new Robot();
-
-			robot.mouseMove(x, y);
-
-			robot.delay(1500);
-
-			robot.mousePress(InputEvent.BUTTON1_MASK);
-
-			robot.delay(1500);
+			Actions actions = new Actions(webDriver);
 
 			String[] coords = coordString.split(",");
 
-			x += GetterUtil.getInteger(coords[0]);
-			y += GetterUtil.getInteger(coords[1]);
+			int x = GetterUtil.getInteger(coords[0]);
+			int y = GetterUtil.getInteger(coords[1]);
 
-			robot.mouseMove(x, y);
+			actions.clickAndHold(webElement);
 
-			robot.delay(1500);
+			actions.pause(1500);
 
-			robot.mouseRelease(InputEvent.BUTTON1_MASK);
+			actions.moveByOffset(x, y);
+
+			actions.pause(1500);
+
+			actions.release();
+
+			Action action = actions.build();
+
+			action.perform();
 		}
 		catch (Exception e) {
 		}
