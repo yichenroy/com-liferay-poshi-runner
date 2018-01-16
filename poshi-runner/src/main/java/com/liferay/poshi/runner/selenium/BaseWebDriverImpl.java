@@ -244,6 +244,21 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		}
 	}
 
+	public void assertAttributeValue(
+			String locator, String attribute, String attributeValue)
+		throws Exception {
+
+		WebElement webElement = getWebElement(locator);
+
+		String value = webElement.getAttribute(attribute);
+
+		if (!attributeValue.equals(value)) {
+			throw new Exception(
+				"Actual attribute value \"" + value + "\" does not match " +
+					"expected attribute value \"" + attributeValue + "\"");
+		}
+	}
+
 	@Override
 	public void assertChecked(String locator) throws Exception {
 		assertElementPresent(locator);
@@ -455,6 +470,22 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	@Override
 	public void assertNotAlert(String pattern) {
 		TestCase.assertTrue(Objects.equals(pattern, getAlert()));
+	}
+
+	@Override
+	public void assertNotAttributeValue(
+			String locator, String attribute, String attributeValue)
+		throws Exception {
+
+		WebElement webElement = getWebElement(locator);
+
+		String value = webElement.getAttribute(attribute);
+
+		if (attributeValue.equals(value)) {
+			throw new Exception(
+				"Actual attribute value \"" + value + "\" should not match " +
+					"attribute value \"" + attributeValue + "\"");
+		}
 	}
 
 	@Override
