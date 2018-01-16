@@ -876,6 +876,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			actions.pause(1500);
 
+			actions.moveByOffset(10, 0);
+
+			actions.moveByOffset(-10,0);
+
 			actions.release();
 
 			Action action = actions.build();
