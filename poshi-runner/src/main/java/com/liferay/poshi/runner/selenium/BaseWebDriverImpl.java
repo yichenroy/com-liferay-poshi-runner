@@ -245,17 +245,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	public void assertAttributeValue(
-			String locator, String attribute, String attributeValue)
+			String locator, String attribute, String expectedValue)
 		throws Exception {
 
 		WebElement webElement = getWebElement(locator);
 
-		String value = webElement.getAttribute(attribute);
+		String actualValue = webElement.getAttribute(attribute);
 
-		if (!attributeValue.equals(value)) {
+		if (!expectedValue.equals(actualValue)) {
 			throw new Exception(
-				"Actual attribute value \"" + value + "\" does not match " +
-					"expected attribute value \"" + attributeValue + "\"");
+				"Actual value of attribute \"" + attribute + "\", \"" +
+					actualValue + "\" does not match expected value \"" +
+						expectedValue + "\"");
 		}
 	}
 
@@ -474,17 +475,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertNotAttributeValue(
-			String locator, String attribute, String attributeValue)
+			String locator, String attribute, String forbiddenValue)
 		throws Exception {
 
 		WebElement webElement = getWebElement(locator);
 
-		String value = webElement.getAttribute(attribute);
+		String actualValue = webElement.getAttribute(attribute);
 
-		if (attributeValue.equals(value)) {
+		if (forbiddenValue.equals(actualValue)) {
 			throw new Exception(
-				"Actual attribute value \"" + value + "\" should not match " +
-					"attribute value \"" + attributeValue + "\"");
+				"Actual value of attribute \"" + attribute +
+					"\" matches forbidden value \"" + forbiddenValue + "\"");
 		}
 	}
 
