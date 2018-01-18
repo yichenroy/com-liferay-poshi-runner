@@ -944,7 +944,7 @@ public class PoshiRunnerExecutor {
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
-			className);
+			className, PoshiRunnerContext.getDefaultNamespace());
 
 		List<Element> rootVarElements = rootElement.elements("var");
 
@@ -953,7 +953,7 @@ public class PoshiRunnerExecutor {
 		}
 
 		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
-			classCommandName);
+			classCommandName, PoshiRunnerContext.getDefaultNamespace());
 
 		runTestCaseCommandElement(commandElement);
 
@@ -1078,16 +1078,16 @@ public class PoshiRunnerExecutor {
 				}
 			}
 			else if (element.attributeValue("method") != null) {
-				String classCommandName = element.attributeValue("method");
+				String methodValue = element.attributeValue("method");
 
-				if (classCommandName.startsWith("TestPropsUtil")) {
-					classCommandName = classCommandName.replace(
+				if (methodValue.startsWith("TestPropsUtil")) {
+					methodValue = methodValue.replace(
 						"TestPropsUtil", "PropsUtil");
 				}
 
 				try {
 					varValue = PoshiRunnerGetterUtil.getVarMethodValue(
-						classCommandName,
+						methodValue,
 						PoshiRunnerStackTraceUtil.getCurrentNamespace());
 				}
 				catch (Exception e) {
