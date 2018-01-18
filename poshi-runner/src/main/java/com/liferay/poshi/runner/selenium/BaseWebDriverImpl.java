@@ -853,7 +853,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void dragAndDrop(String locator, String coordString) {
+	public void dragAndDrop(String locator, String... movementsStrings) {
 		try {
 			WebElement webElement = getWebElement(locator);
 
@@ -863,22 +863,22 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			Actions actions = new Actions(webDriver);
 
-			String[] coords = coordString.split(",");
-
-			int x = GetterUtil.getInteger(coords[0]);
-			int y = GetterUtil.getInteger(coords[1]);
-
 			actions.clickAndHold(webElement);
 
-			actions.pause(1500);
+			for (int i = 0; i < movementsStrings.length; i++) {
+				String movementsString = movementsStrings[i];
 
-			actions.moveByOffset(x, y);
+				String[] coords = movementsString.split(",");
 
-			actions.pause(1500);
+				int x = GetterUtil.getInteger(coords[0]);
+				int y = GetterUtil.getInteger(coords[1]);
 
-			actions.moveByOffset(10, 0);
+				if (i > 0) {
+					actions.pause(1500);
+				}
 
-			actions.moveByOffset(-10,0);
+				actions.moveByOffset(x, y);
+			}
 
 			actions.release();
 
