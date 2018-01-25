@@ -261,20 +261,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void assertCaseInsensitiveText(String locator, String pattern)
-		throws Exception {
-
-		if (!isCaseInsensitiveText(locator, pattern)) {
-			String text = getText(locator);
-
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text (case-insensitive) \"" +
-						text + "\" at \"" + locator + "\"");
-		}
-	}
-
-	@Override
 	public void assertChecked(String locator) throws Exception {
 		assertElementPresent(locator);
 
@@ -680,6 +666,20 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				"Expected text \"" + pattern +
 					"\" does not match actual text \"" + text + "\" at \"" +
 						locator + "\"");
+		}
+	}
+
+	@Override
+	public void assertTextCaseInsensitive(String locator, String pattern)
+		throws Exception {
+
+		if (!isTextCaseInsensitive(locator, pattern)) {
+			String text = getText(locator);
+
+			throw new Exception(
+				"Expected text \"" + pattern +
+					"\" does not match actual text (case-insensitive) \"" +
+						text + "\" at \"" + locator + "\"");
 		}
 	}
 
@@ -1469,17 +1469,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isCaseInsensitiveText(String locator, String value)
-		throws Exception {
-
-		String actual = StringUtil.toUpperCase(getText(locator, "1"));
-
-		value = StringUtil.toUpperCase(value);
-
-		return value.equals(actual);
-	}
-
-	@Override
 	public boolean isChecked(String locator) {
 		WebElement webElement = getWebElement(locator, "1");
 
@@ -1659,6 +1648,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	@Override
 	public boolean isText(String locator, String value) throws Exception {
 		return value.equals(getText(locator, "1"));
+	}
+
+	@Override
+	public boolean isTextCaseInsensitive(String locator, String value)
+		throws Exception {
+
+		String actual = StringUtil.toUpperCase(getText(locator, "1"));
+
+		value = StringUtil.toUpperCase(value);
+
+		return value.equals(actual);
 	}
 
 	@Override
@@ -2944,29 +2944,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void waitForCaseInsensitiveText(String locator, String pattern)
-		throws Exception {
-
-		pattern = RuntimeVariables.replace(pattern);
-
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertCaseInsensitiveText(locator, pattern);
-			}
-
-			try {
-				if (isCaseInsensitiveText(locator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
-	}
-
-	@Override
 	public void waitForConfirmation(String pattern) throws Exception {
 		int timeout =
 			PropsValues.TIMEOUT_EXPLICIT_WAIT /
@@ -3303,6 +3280,29 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			try {
 				if (isText(locator, value)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForTextCaseInsensitive(String locator, String pattern)
+		throws Exception {
+
+		pattern = RuntimeVariables.replace(pattern);
+
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertTextCaseInsensitive(locator, pattern);
+			}
+
+			try {
+				if (isTextCaseInsensitive(locator, pattern)) {
 					break;
 				}
 			}
