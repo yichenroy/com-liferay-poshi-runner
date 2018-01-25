@@ -31,7 +31,7 @@ public interface LiferaySelenium {
 	public void assertAlertNotPresent() throws Exception;
 
 	public void assertAttributeValue(
-			String locator, String attribute, String pattern)
+			String attribute, String locator, String pattern)
 		throws Exception;
 
 	public void assertCaseInsensitiveText(String locator, String pattern)

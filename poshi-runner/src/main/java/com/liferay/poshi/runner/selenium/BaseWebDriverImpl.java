@@ -245,7 +245,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	public void assertAttributeValue(
-			String locator, String attribute, String pattern)
+			String attribute, String locator, String pattern)
 		throws Exception {
 
 		WebElement webElement = getWebElement(locator);
