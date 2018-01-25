@@ -687,22 +687,19 @@ public final class XMLLoggerHandler {
 			String classCommandName)
 		throws Exception {
 
+		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
+			classCommandName,
+			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+				classCommandName));
+
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 				classCommandName);
 
-		if (className.equals("super")) {
-			className = PoshiRunnerGetterUtil.getExtendedTestCaseName();
-
-			classCommandName = classCommandName.replaceFirst(
-				"super", className);
-		}
-
-		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
-			classCommandName);
-
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
-			className);
+			className,
+			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+				classCommandName));
 
 		return _getChildContainerLoggerElement(commandElement, rootElement);
 	}
