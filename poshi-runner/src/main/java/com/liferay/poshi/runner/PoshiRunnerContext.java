@@ -710,8 +710,16 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _initComponentCommandNamesMap() {
-		for (String testCaseClassName : _testCaseClassNames) {
-			Element rootElement = getTestCaseRootElement(testCaseClassName);
+		for (String testCaseNamespaceClassName : _testCaseNamespaceClassNames) {
+			String className =
+				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassName(
+					testCaseNamespaceClassName);
+
+			String namespace =
+				PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassName(
+					testCaseNamespaceClassName);
+
+			Element rootElement = getTestCaseRootElement(className, namespace);
 
 			if (Objects.equals(rootElement.attributeValue("ignore"), "true")) {
 				continue;
@@ -724,7 +732,7 @@ public class PoshiRunnerContext {
 					"extends");
 
 				Element extendsRootElement = getTestCaseRootElement(
-					extendsTestCaseClassName);
+					extendsTestCaseClassName, namespace);
 
 				List<Element> extendsCommandElements =
 					extendsRootElement.elements("command");
@@ -742,11 +750,11 @@ public class PoshiRunnerContext {
 
 					_addComponentClassCommandNames(
 						componentName,
-						testCaseClassName + "#" + extendsCommandName);
+						testCaseNamespaceClassName + "#" + extendsCommandName);
 
 					_commandElements.put(
-						"test-case#" + _DEFAULT_NAMESPACE + "." +
-							testCaseClassName + "#" + extendsCommandName,
+						"test-case#" + testCaseNamespaceClassName + "#" +
+							extendsCommandName,
 						extendsCommandElement);
 				}
 			}
@@ -762,7 +770,8 @@ public class PoshiRunnerContext {
 					continue;
 				}
 
-				String classCommandName = testCaseClassName + "#" + commandName;
+				String classCommandName =
+					testCaseNamespaceClassName + "#" + commandName;
 
 				_testCaseClassCommandNames.add(classCommandName);
 
@@ -1060,7 +1069,7 @@ public class PoshiRunnerContext {
 			filePath);
 
 		if (classType.equals("test-case")) {
-			_testCaseClassNames.add(namespace + "." + className);
+			_testCaseNamespaceClassNames.add(namespace + "." + className);
 
 			if (rootElement.element("set-up") != null) {
 				Element setUpElement = rootElement.element("set-up");
@@ -1282,9 +1291,10 @@ public class PoshiRunnerContext {
 		new ArrayList<>();
 	private static final List<String> _testCaseClassCommandNames =
 		new ArrayList<>();
-	private static final List<String> _testCaseClassNames = new ArrayList<>();
 	private static final Map<String, String> _testCaseDescriptions =
 		new HashMap<>();
+	private static final List<String> _testCaseNamespaceClassNames =
+		new ArrayList<>();
 	private static final List<String> _testCaseRequiredPropertyNames =
 		new ArrayList<>();
 	private static String _testClassCommandName;
