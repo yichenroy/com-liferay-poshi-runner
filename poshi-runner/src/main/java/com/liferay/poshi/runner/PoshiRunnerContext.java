@@ -91,10 +91,6 @@ public class PoshiRunnerContext {
 		return _filePaths.get(fileName);
 	}
 
-	public static String getFilePathFromFileName(String fileName) {
-		return getFilePathFromFileName(fileName, _DEFAULT_NAMESPACE);
-	}
-
 	public static String getFilePathFromFileName(
 		String fileName, String namespace) {
 
@@ -113,10 +109,6 @@ public class PoshiRunnerContext {
 
 		return _commandSummaries.get(
 			"function#" + namespace + "." + classCommandName);
-	}
-
-	public static int getFunctionLocatorCount(String className) {
-		return getFunctionLocatorCount(className, _DEFAULT_NAMESPACE);
 	}
 
 	public static int getFunctionLocatorCount(
@@ -144,19 +136,11 @@ public class PoshiRunnerContext {
 			"macro#" + namespace + "." + classCommandName);
 	}
 
-	public static List<String> getMacroCommandReturns(String classCommandName) {
-		return getMacroCommandReturns(classCommandName, _DEFAULT_NAMESPACE);
-	}
-
 	public static List<String> getMacroCommandReturns(
 		String classCommandName, String namespace) {
 
 		return _commandReturns.get(
 			"macro#" + namespace + "." + classCommandName);
-	}
-
-	public static String getMacroCommandSummary(String classCommandName) {
-		return getMacroCommandSummary(classCommandName, _DEFAULT_NAMESPACE);
 	}
 
 	public static String getMacroCommandSummary(
@@ -190,10 +174,6 @@ public class PoshiRunnerContext {
 		}
 
 		return _getDefaultNamespace();
-	}
-
-	public static String getPathLocator(String pathLocatorKey) {
-		return getPathLocator(pathLocatorKey, _DEFAULT_NAMESPACE);
 	}
 
 	public static String getPathLocator(
@@ -243,10 +223,6 @@ public class PoshiRunnerContext {
 		return _testCaseAvailablePropertyNames;
 	}
 
-	public static Element getTestCaseCommandElement(String classCommandName) {
-		return getTestCaseCommandElement(classCommandName, _DEFAULT_NAMESPACE);
-	}
-
 	public static Element getTestCaseCommandElement(
 		String classCommandName, String namespace) {
 
@@ -270,10 +246,6 @@ public class PoshiRunnerContext {
 		return _testCaseRequiredPropertyNames;
 	}
 
-	public static Element getTestCaseRootElement(String className) {
-		return getTestCaseRootElement(className, _DEFAULT_NAMESPACE);
-	}
-
 	public static Element getTestCaseRootElement(
 		String className, String namespace) {
 
@@ -281,21 +253,10 @@ public class PoshiRunnerContext {
 	}
 
 	public static boolean isCommandElement(
-		String classType, String commandElementKey) {
-
-		return isCommandElement(
-			classType, commandElementKey, _DEFAULT_NAMESPACE);
-	}
-
-	public static boolean isCommandElement(
 		String classType, String commandElementKey, String namespace) {
 
 		return _commandElements.containsKey(
 			classType + "#" + namespace + "." + commandElementKey);
-	}
-
-	public static boolean isPathLocator(String pathLocatorKey) {
-		return isPathLocator(pathLocatorKey, _DEFAULT_NAMESPACE);
 	}
 
 	public static boolean isPathLocator(
@@ -308,12 +269,6 @@ public class PoshiRunnerContext {
 		}
 
 		return false;
-	}
-
-	public static boolean isRootElement(
-		String classType, String rootElementKey) {
-
-		return isRootElement(classType, rootElementKey, _DEFAULT_NAMESPACE);
 	}
 
 	public static boolean isRootElement(
