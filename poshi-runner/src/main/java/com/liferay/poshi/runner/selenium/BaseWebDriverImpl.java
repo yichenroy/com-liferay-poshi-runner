@@ -245,30 +245,30 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	public void assertAttributeValue(
-			String locator, String attribute, String expectedValue)
+			String locator, String attribute, String pattern)
 		throws Exception {
 
 		WebElement webElement = getWebElement(locator);
 
 		String actualValue = webElement.getAttribute(attribute);
 
-		if (!expectedValue.equals(actualValue)) {
+		if (!pattern.equals(actualValue)) {
 			throw new Exception(
 				"Actual value of attribute \"" + attribute + "\", \"" +
 					actualValue + "\" does not match expected value \"" +
-						expectedValue + "\"");
+						pattern + "\"");
 		}
 	}
 
 	@Override
-	public void assertCaseInsensitiveText(String locator, String expected)
+	public void assertCaseInsensitiveText(String locator, String pattern)
 		throws Exception {
 
-		if (!isCaseInsensitiveText(locator, expected)) {
+		if (!isCaseInsensitiveText(locator, pattern)) {
 			String text = getText(locator);
 
 			throw new Exception(
-				"Expected text \"" + expected +
+				"Expected text \"" + pattern +
 					"\" does not match actual text (case-insensitive) \"" +
 						text + "\" at \"" + locator + "\"");
 		}
@@ -1469,14 +1469,14 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isCaseInsensitiveText(String locator, String expected)
+	public boolean isCaseInsensitiveText(String locator, String value)
 		throws Exception {
 
 		String actual = StringUtil.toUpperCase(getText(locator, "1"));
 
-		expected = StringUtil.toUpperCase(expected);
+		value = StringUtil.toUpperCase(value);
 
-		return expected.equals(actual);
+		return value.equals(actual);
 	}
 
 	@Override
@@ -2944,18 +2944,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void waitForCaseInsensitiveText(String locator, String expected)
+	public void waitForCaseInsensitiveText(String locator, String pattern)
 		throws Exception {
 
-		expected = RuntimeVariables.replace(expected);
+		pattern = RuntimeVariables.replace(pattern);
 
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertCaseInsensitiveText(locator, expected);
+				assertCaseInsensitiveText(locator, pattern);
 			}
 
 			try {
-				if (isCaseInsensitiveText(locator, expected)) {
+				if (isCaseInsensitiveText(locator, pattern)) {
 					break;
 				}
 			}

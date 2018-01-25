@@ -31,10 +31,10 @@ public interface LiferaySelenium {
 	public void assertAlertNotPresent() throws Exception;
 
 	public void assertAttributeValue(
-			String locator, String attribute, String expectedValue)
+			String locator, String attribute, String pattern)
 		throws Exception;
 
-	public void assertCaseInsensitiveText(String locator, String expected)
+	public void assertCaseInsensitiveText(String locator, String pattern)
 		throws Exception;
 
 	public void assertChecked(String pattern) throws Exception;
@@ -211,7 +211,7 @@ public interface LiferaySelenium {
 
 	public boolean isAlertPresent();
 
-	public boolean isCaseInsensitiveText(String locator, String expected)
+	public boolean isCaseInsensitiveText(String locator, String value)
 		throws Exception;
 
 	public boolean isChecked(String locator);
@@ -431,7 +431,7 @@ public interface LiferaySelenium {
 
 	public void uploadTempFile(String locator, String value);
 
-	public void waitForCaseInsensitiveText(String locator, String expected)
+	public void waitForCaseInsensitiveText(String locator, String pattern)
 		throws Exception;
 
 	public void waitForConfirmation(String pattern) throws Exception;
