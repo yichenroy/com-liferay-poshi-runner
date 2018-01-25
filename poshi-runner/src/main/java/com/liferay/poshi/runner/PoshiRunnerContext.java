@@ -84,10 +84,6 @@ public class PoshiRunnerContext {
 		_seleniumParameterCounts.clear();
 	}
 
-	public static String getDefaultNamespace() {
-		return _DEFAULT_NAMESPACE;
-	}
-
 	public static String getFilePathFromClassKey(String classKey) {
 		String fileName = PoshiRunnerGetterUtil.getFileNameFromClassKey(
 			classKey);
@@ -177,6 +173,10 @@ public class PoshiRunnerContext {
 	}
 
 	public static String getNamespace(String filePath) {
+		if (Validator.isNull(filePath)) {
+			return _getDefaultNamespace();
+		}
+
 		for (Map.Entry<String, String> entry : _filePaths.entrySet()) {
 			String value = entry.getValue();
 
@@ -189,7 +189,7 @@ public class PoshiRunnerContext {
 			}
 		}
 
-		return _DEFAULT_NAMESPACE;
+		return _getDefaultNamespace();
 	}
 
 	public static String getPathLocator(String pathLocatorKey) {
@@ -479,6 +479,10 @@ public class PoshiRunnerContext {
 		}
 
 		return classCommandName;
+	}
+
+	private static String _getDefaultNamespace() {
+		return _DEFAULT_NAMESPACE;
 	}
 
 	private static List<URL> _getPoshiURLs(
