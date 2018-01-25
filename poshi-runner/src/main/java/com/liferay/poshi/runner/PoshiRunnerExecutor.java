@@ -934,13 +934,6 @@ public class PoshiRunnerExecutor {
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 				classCommandName);
 
-		if (className.equals("super")) {
-			className = PoshiRunnerGetterUtil.getExtendedTestCaseName();
-
-			classCommandName = classCommandName.replaceFirst(
-				"super", className);
-		}
-
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
