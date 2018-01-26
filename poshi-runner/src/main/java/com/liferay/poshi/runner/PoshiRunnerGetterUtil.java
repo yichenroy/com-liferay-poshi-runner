@@ -110,7 +110,7 @@ public class PoshiRunnerGetterUtil {
 		}
 
 		throw new RuntimeException(
-			"className invalid for classCommandName: " + classCommandName);
+			"Unable to find className in " + classCommandName);
 	}
 
 	public static String getClassNameFromFilePath(String filePath) {
@@ -134,7 +134,7 @@ public class PoshiRunnerGetterUtil {
 		}
 
 		throw new RuntimeException(
-			"className invalid for namespaceClassName: " + namespaceClassName);
+			"Unable to find className in " + namespaceClassName);
 	}
 
 	public static String getClassTypeFromFileExtension(String fileExtension) {
@@ -290,7 +290,7 @@ public class PoshiRunnerGetterUtil {
 		}
 
 		throw new RuntimeException(
-			"namespaceClassName invalid for classCommandName: " +
+			"Unable to find namespace and className for classCommandName: " +
 				classCommandName);
 	}
 
@@ -461,7 +461,7 @@ public class PoshiRunnerGetterUtil {
 		}
 
 		throw new RuntimeException(
-			"simpleClassName invalid for classCommandName: " +
+			"Unable to find className and commandName in classCommandName: " +
 				classCommandName);
 	}
 
