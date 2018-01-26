@@ -465,21 +465,16 @@ public class PoshiRunnerGetterUtil {
 				classCommandName);
 	}
 
-	public static Object getVarMethodValue(
-			String classCommandName, String namespace)
+	public static Object getVarMethodValue(String expression, String namespace)
 		throws Exception {
-
-		int x = classCommandName.indexOf("(");
-		int y = classCommandName.lastIndexOf(")");
-
-		String className = getClassNameFromClassCommandName(classCommandName);
-		String commandName = getCommandNameFromClassCommandName(
-			classCommandName);
 
 		List<String> args = new ArrayList<>();
 
+		int x = expression.indexOf("(");
+		int y = expression.lastIndexOf(")");
+
 		if ((x + 1) < y) {
-			String parameterString = classCommandName.substring(x + 1, y);
+			String parameterString = expression.substring(x + 1, y);
 
 			Matcher parameterMatcher = _parameterPattern.matcher(
 				parameterString);
@@ -506,19 +501,24 @@ public class PoshiRunnerGetterUtil {
 			}
 		}
 
+		y = expression.indexOf("#");
+
+		String className = expression.substring(0, y);
+		String methodName = expression.substring(y + 1, x);
+
 		Object returnObject = null;
 
 		if (className.equals("selenium")) {
 			Object object = SeleniumUtil.getSelenium();
 
 			returnObject = getMethodReturnValue(
-				args, className, commandName, object);
+				args, className, methodName, object);
 		}
 		else {
 			className = "com.liferay.poshi.runner.util." + className;
 
 			returnObject = getMethodReturnValue(
-				args, className, commandName, null);
+				args, className, methodName, null);
 		}
 
 		return returnObject;
