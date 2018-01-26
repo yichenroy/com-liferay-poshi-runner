@@ -930,14 +930,18 @@ public class PoshiRunnerExecutor {
 
 		String classCommandName = executeElement.attributeValue("test-case");
 
+		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
+
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 				classCommandName);
 
-		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
+		String namespace =
+			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+				classCommandName);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
-			className);
+			className, namespace);
 
 		List<Element> rootVarElements = rootElement.elements("var");
 
@@ -946,7 +950,7 @@ public class PoshiRunnerExecutor {
 		}
 
 		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
-			classCommandName);
+			classCommandName, namespace);
 
 		runTestCaseCommandElement(commandElement);
 
