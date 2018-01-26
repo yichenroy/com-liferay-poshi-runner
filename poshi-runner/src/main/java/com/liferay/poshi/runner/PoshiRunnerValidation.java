@@ -211,16 +211,20 @@ public class PoshiRunnerValidation {
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 				simpleClassCommandName);
 
+		String defaultNamespace = PoshiRunnerContext.getNamespace(null);
+
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
 				classCommandName);
 
-		if (namespace == null) {
+		if (namespace.equals(defaultNamespace)) {
 			namespace = PoshiRunnerContext.getNamespace(filePath);
 		}
 
 		if (!PoshiRunnerContext.isRootElement(
-				classType, className, namespace)) {
+				classType, className, namespace) &&
+			!PoshiRunnerContext.isRootElement(
+				classType, className, defaultNamespace)) {
 
 			_exceptions.add(
 				new Exception(
@@ -230,7 +234,9 @@ public class PoshiRunnerValidation {
 		}
 
 		if (!PoshiRunnerContext.isCommandElement(
-				classType, simpleClassCommandName, namespace)) {
+				classType, simpleClassCommandName, namespace) &&
+			!PoshiRunnerContext.isCommandElement(
+				classType, simpleClassCommandName, defaultNamespace)) {
 
 			_exceptions.add(
 				new Exception(
@@ -727,8 +733,12 @@ public class PoshiRunnerValidation {
 					PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 						locator);
 
+				String defaultNamespace = PoshiRunnerContext.getNamespace(null);
+
 				if (!PoshiRunnerContext.isRootElement(
-						"path", pathName, namespace)) {
+						"path", pathName, namespace) &&
+					!PoshiRunnerContext.isRootElement(
+						"path", pathName, defaultNamespace)) {
 
 					_exceptions.add(
 						new Exception(
@@ -736,7 +746,9 @@ public class PoshiRunnerValidation {
 								":" + element.attributeValue("line-number")));
 				}
 				else if (!PoshiRunnerContext.isPathLocator(
-							locator, namespace)) {
+							locator, namespace) &&
+						 !PoshiRunnerContext.isPathLocator(
+							 locator, defaultNamespace)) {
 
 					_exceptions.add(
 						new Exception(
