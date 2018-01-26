@@ -60,7 +60,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.UUID;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -911,7 +910,12 @@ public class PoshiRunnerContext {
 					String namespace = StringUtil.trim(
 						FileUtil.read(namespaceURI.toURL()));
 
-					if (_namespaces.contains(namespace)) {
+					if (namespace.equals(_DEFAULT_NAMESPACE)) {
+						throw new RuntimeException(
+							"Namespace: '" + _DEFAULT_NAMESPACE +
+								"' is reserved\nat" + namespaceURI);
+					}
+					else if (_namespaces.contains(namespace)) {
 						throw new RuntimeException(
 							"Duplicate namespace " + namespace);
 					}
@@ -1272,7 +1276,7 @@ public class PoshiRunnerContext {
 		FileUtil.write("test.generated.properties", sb.toString());
 	}
 
-	private static final String _DEFAULT_NAMESPACE;
+	private static final String _DEFAULT_NAMESPACE = "LocalFile";
 
 	private static final String _TEST_BASE_DIR_NAME =
 		PoshiRunnerGetterUtil.getCanonicalPath(PropsValues.TEST_BASE_DIR_NAME);
@@ -1326,10 +1330,6 @@ public class PoshiRunnerContext {
 			_componentNames.add(productName);
 			_componentNames.add(productName + "-known-issues");
 		}
-
-		UUID randomUUID = UUID.randomUUID();
-
-		_DEFAULT_NAMESPACE = randomUUID.toString();
 
 		String testCaseAvailablePropertyNames =
 			PropsValues.TEST_CASE_AVAILABLE_PROPERTY_NAMES;
