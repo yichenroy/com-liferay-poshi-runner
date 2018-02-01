@@ -1074,15 +1074,15 @@ public class PoshiRunnerExecutor {
 				}
 			}
 			else if (element.attributeValue("method") != null) {
-				String method = element.attributeValue("method");
+				String methodName = element.attributeValue("method");
 
-				if (method.startsWith("TestPropsUtil")) {
-					method = method.replace("TestPropsUtil", "PropsUtil");
+				if (methodName.startsWith("TestPropsUtil")) {
+					methodName = methodName.replace("TestPropsUtil", "PropsUtil");
 				}
 
 				try {
 					varValue = PoshiRunnerGetterUtil.getVarMethodValue(
-						method,
+						methodName,
 						PoshiRunnerStackTraceUtil.getCurrentNamespace());
 				}
 				catch (Exception e) {
@@ -1110,10 +1110,10 @@ public class PoshiRunnerExecutor {
 				varValue.toString());
 
 			if (matcher.find()) {
-				String method = matcher.group(2);
+				String methodName = matcher.group(2);
 				String variable = matcher.group(1);
 
-				if (method.equals("length()")) {
+				if (methodName.equals("length()")) {
 					if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(
 							variable)) {
 
@@ -1128,7 +1128,7 @@ public class PoshiRunnerExecutor {
 					varValue = String.valueOf(variable.length());
 				}
 				else {
-					throw new Exception("No such method " + method);
+					throw new Exception("No such method " + methodName);
 				}
 			}
 		}
