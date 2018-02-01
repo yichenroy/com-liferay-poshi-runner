@@ -75,7 +75,6 @@ public final class XMLLoggerHandler {
 			String className =
 				PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 					classCommandName);
-
 			String namespace =
 				PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
 					classCommandName);
