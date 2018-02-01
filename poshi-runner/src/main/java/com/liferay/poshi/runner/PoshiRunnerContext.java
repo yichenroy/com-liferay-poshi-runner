@@ -219,11 +219,15 @@ public class PoshiRunnerContext {
 	}
 
 	public static String getTestCaseCommandName() {
-		return _testClassCommandName;
+		return _testCaseCommandName;
 	}
 
 	public static String getTestCaseDescription(String classCommandName) {
 		return _testCaseDescriptions.get(classCommandName);
+	}
+
+	public static String getTestCaseName() {
+		return _testCaseName;
 	}
 
 	public static List<String> getTestCaseRequiredPropertyNames() {
@@ -281,12 +285,12 @@ public class PoshiRunnerContext {
 		_readTestToggleFiles();
 	}
 
-	public static void setTestCaseCommandName(String testClassCommandName) {
-		_testClassCommandName = testClassCommandName;
+	public static void setTestCaseCommandName(String testCaseCommandName) {
+		_testCaseCommandName = testCaseCommandName;
 	}
 
-	public static void setTestCaseName(String testClassName) {
-		_testClassName = testClassName;
+	public static void setTestCaseName(String testCaseName) {
+		_testCaseName = testCaseName;
 	}
 
 	private static void _addComponentClassCommandNames(
@@ -1307,14 +1311,14 @@ public class PoshiRunnerContext {
 		new ArrayList<>();
 	private static final List<String> _testCaseClassCommandNames =
 		new ArrayList<>();
+	private static String _testCaseCommandName;
 	private static final Map<String, String> _testCaseDescriptions =
 		new HashMap<>();
+	private static String _testCaseName;
 	private static final List<String> _testCaseNamespaceClassNames =
 		new ArrayList<>();
 	private static final List<String> _testCaseRequiredPropertyNames =
 		new ArrayList<>();
-	private static String _testClassCommandName;
-	private static String _testClassName;
 	private static final Set<String> _testToggleNames = new HashSet<>();
 	private static final SimpleDateFormat _toggleDateFormat =
 		new SimpleDateFormat("YYYY-MM-dd");
