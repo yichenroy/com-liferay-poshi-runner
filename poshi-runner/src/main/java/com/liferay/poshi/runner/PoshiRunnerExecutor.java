@@ -935,7 +935,6 @@ public class PoshiRunnerExecutor {
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
 				classCommandName);
-
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
 				classCommandName);

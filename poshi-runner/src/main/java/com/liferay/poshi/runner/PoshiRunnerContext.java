@@ -697,7 +697,6 @@ public class PoshiRunnerContext {
 			String className =
 				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassName(
 					testCaseNamespaceClassName);
-
 			String namespace =
 				PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassName(
 					testCaseNamespaceClassName);
