@@ -109,8 +109,7 @@ public class PoshiRunnerGetterUtil {
 			return matcher.group("className");
 		}
 
-		throw new RuntimeException(
-			"Unable to find className in " + classCommandName);
+		throw new RuntimeException();
 	}
 
 	public static String getClassNameFromFilePath(String filePath) {
@@ -133,8 +132,7 @@ public class PoshiRunnerGetterUtil {
 			return matcher.group("className");
 		}
 
-		throw new RuntimeException(
-			"Unable to find className in " + namespaceClassName);
+		throw new RuntimeException();
 	}
 
 	public static String getClassTypeFromFileExtension(String fileExtension) {
@@ -168,8 +166,7 @@ public class PoshiRunnerGetterUtil {
 			return commandName;
 		}
 
-		throw new RuntimeException(
-			"commandName invalid for classCommandName: " + classCommandName);
+		throw new RuntimeException();
 	}
 
 	public static String getExtendedTestCaseName() {
@@ -289,9 +286,7 @@ public class PoshiRunnerGetterUtil {
 			return namespace + "." + className;
 		}
 
-		throw new RuntimeException(
-			"Unable to find namespace and className for classCommandName: " +
-				classCommandName);
+		throw new RuntimeException();
 	}
 
 	public static String getNamespaceFromClassCommandName(
@@ -309,8 +304,7 @@ public class PoshiRunnerGetterUtil {
 			return namespace;
 		}
 
-		throw new RuntimeException(
-			"namespace invalid for classCommandName: " + classCommandName);
+		throw new RuntimeException();
 	}
 
 	public static String getNamespaceFromNamespaceClassName(
@@ -328,8 +322,7 @@ public class PoshiRunnerGetterUtil {
 			return namespace;
 		}
 
-		throw new RuntimeException(
-			"namespace invalid for namespaceClassName: " + namespaceClassName);
+		throw new RuntimeException();
 	}
 
 	public static String getProjectDirName() {
@@ -460,9 +453,7 @@ public class PoshiRunnerGetterUtil {
 			return matcher.group("className");
 		}
 
-		throw new RuntimeException(
-			"Unable to find className and commandName in classCommandName: " +
-				classCommandName);
+		throw new RuntimeException();
 	}
 
 	public static Object getVarMethodValue(String expression, String namespace)
