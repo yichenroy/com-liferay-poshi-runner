@@ -1075,16 +1075,16 @@ public class PoshiRunnerExecutor {
 				}
 			}
 			else if (element.attributeValue("method") != null) {
-				String methodValue = element.attributeValue("method");
+				String method = element.attributeValue("method");
 
-				if (methodValue.startsWith("TestPropsUtil")) {
-					methodValue = methodValue.replace(
+				if (method.startsWith("TestPropsUtil")) {
+					method = method.replace(
 						"TestPropsUtil", "PropsUtil");
 				}
 
 				try {
 					varValue = PoshiRunnerGetterUtil.getVarMethodValue(
-						methodValue,
+						method,
 						PoshiRunnerStackTraceUtil.getCurrentNamespace());
 				}
 				catch (Exception e) {
