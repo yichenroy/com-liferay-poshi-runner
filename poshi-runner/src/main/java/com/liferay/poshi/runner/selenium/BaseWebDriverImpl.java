@@ -33,7 +33,6 @@ import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.awt.Robot;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import java.io.File;
@@ -909,22 +908,22 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			Actions actions = new Actions(webDriver);
 
-			String[] coords = coordString.split(",");
-
-			int x = GetterUtil.getInteger(coords[0]);
-			int y = GetterUtil.getInteger(coords[1]);
-
 			actions.clickAndHold(webElement);
 
 			actions.pause(1500);
 
-			actions.moveByOffset(x, y);
+			String[] coordPairs = coordString.split("\\|");
+
+			for (String coordPair : coordPairs) {
+				String[] coords = coordPair.split(",");
+
+				int x = GetterUtil.getInteger(coords[0]);
+				int y = GetterUtil.getInteger(coords[1]);
+
+				actions.moveByOffset(x, y);
+			}
 
 			actions.pause(1500);
-
-			actions.moveByOffset(10, 0);
-
-			actions.moveByOffset(-10,0);
 
 			actions.release();
 
