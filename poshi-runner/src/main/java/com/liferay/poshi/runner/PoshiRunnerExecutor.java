@@ -1078,8 +1078,7 @@ public class PoshiRunnerExecutor {
 				String method = element.attributeValue("method");
 
 				if (method.startsWith("TestPropsUtil")) {
-					method = method.replace(
-						"TestPropsUtil", "PropsUtil");
+					method = method.replace("TestPropsUtil", "PropsUtil");
 				}
 
 				try {
@@ -1141,9 +1140,7 @@ public class PoshiRunnerExecutor {
 
 			Matcher matcher = _variablePattern.matcher(replacedVarValue);
 
-			if (matcher.matches() &&
-				replacedVarValue.equals(varValue)) {
-
+			if (matcher.matches() && replacedVarValue.equals(varValue)) {
 				if (updateLoggerStatus) {
 					XMLLoggerHandler.updateStatus(element, "pass");
 				}

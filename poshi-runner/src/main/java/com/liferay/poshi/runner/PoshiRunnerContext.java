@@ -308,38 +308,6 @@ public class PoshiRunnerContext {
 		_componentClassCommandNames.put(componentName, classCommandNames);
 	}
 
-	private static String[] _combine(String[]... arrays) {
-		int size = 0;
-
-		for (String[] array : arrays) {
-			if (array == null) {
-				continue;
-			}
-
-			size += array.length;
-		}
-
-		if (size == 0) {
-			return new String[0];
-		}
-
-		String[] combinedArray = new String[size];
-
-		int i = 0;
-
-		for (String[] array : arrays) {
-			if (array == null) {
-				continue;
-			}
-
-			for (String string : array) {
-				combinedArray[i++] = string;
-			}
-		}
-
-		return combinedArray;
-	}
-
 	private static int _getAllocatedTestGroupSize(int testCount) {
 		int groupCount = MathUtil.quotient(
 			testCount, PropsValues.TEST_BATCH_MAX_GROUP_SIZE, true);
