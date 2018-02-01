@@ -1142,7 +1142,7 @@ public class PoshiRunnerExecutor {
 			Matcher matcher = _variablePattern.matcher(replacedVarValue);
 
 			if (matcher.matches() &&
-				replacedVarValue.equals((String)varValue)) {
+				replacedVarValue.equals(varValue)) {
 
 				if (updateLoggerStatus) {
 					XMLLoggerHandler.updateStatus(element, "pass");

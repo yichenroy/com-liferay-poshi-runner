@@ -417,7 +417,7 @@ public class StringUtil {
 			}
 
 			String substring = s.substring(
-				(int)delimiterIndexes.get(i), (int)delimiterIndexes.get(i + 1));
+				delimiterIndexes.get(i), delimiterIndexes.get(i + 1));
 
 			substrings.add(substring);
 		}
