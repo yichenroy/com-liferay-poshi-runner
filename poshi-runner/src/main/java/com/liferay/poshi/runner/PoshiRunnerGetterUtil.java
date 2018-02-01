@@ -278,13 +278,13 @@ public class PoshiRunnerGetterUtil {
 		Matcher matcher = _classCommandNamePattern.matcher(classCommandName);
 
 		if (matcher.find()) {
-			String className = matcher.group("className");
-
 			String namespace = matcher.group("namespace");
 
 			if (Validator.isNull(namespace)) {
 				namespace = PoshiRunnerContext.getNamespace(null);
 			}
+
+			String className = matcher.group("className");
 
 			return namespace + "." + className;
 		}
