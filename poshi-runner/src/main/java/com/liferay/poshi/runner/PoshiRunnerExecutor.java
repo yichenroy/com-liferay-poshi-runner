@@ -1077,7 +1077,8 @@ public class PoshiRunnerExecutor {
 				String methodName = element.attributeValue("method");
 
 				if (methodName.startsWith("TestPropsUtil")) {
-					methodName = methodName.replace("TestPropsUtil", "PropsUtil");
+					methodName = methodName.replace(
+						"TestPropsUtil", "PropsUtil");
 				}
 
 				try {
