@@ -900,6 +900,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	@Override
 	public void dragAndDrop(String locator, String coordString) {
 		try {
+			Matcher matcher = _coordPairsPattern.matcher(coordString);
+
+			if (!matcher.matches()) {
+				System.out.println("DOES NOT MATCH PATTERN!!");
+
+				throw new Exception(
+					"Coordinate \"" + coordString +
+						"\" does not match pattern \"" + _coordPairsPattern +
+							"\"");
+			}
+
 			WebElement webElement = getWebElement(locator);
 
 			WrapsDriver wrapsDriver = (WrapsDriver)webElement;
@@ -3899,6 +3910,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	private final Pattern _aceEditorPattern = Pattern.compile(
 		"\\(|\\$\\{line\\.separator\\}");
 	private String _clipBoard = "";
+	private final Pattern _coordPairsPattern = Pattern.compile(
+		"[+-]?\\d+\\,[+-]?\\d+(\\|[+-]?\\d+\\,[+-]?\\d+)*");
 	private String _defaultWindowHandle;
 	private Stack<WebElement> _frameWebElements = new Stack<>();
 	private final Map<String, String> _keysSpecialChars = new HashMap<>();
