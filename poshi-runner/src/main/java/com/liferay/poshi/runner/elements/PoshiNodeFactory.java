@@ -38,7 +38,7 @@ import org.dom4j.Node;
  */
 public abstract class PoshiNodeFactory {
 
-	public static PoshiComment newPoshiComment(Comment comment) {
+	private static PoshiComment _newPoshiComment(Comment comment) {
 		for (PoshiComment poshiComment : _poshiComments) {
 			PoshiComment newPoshiComment = poshiComment.clone(comment);
 
@@ -50,7 +50,7 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	public static PoshiComment newPoshiComment(String readableSyntax) {
+	private static PoshiComment _newPoshiComment(String readableSyntax) {
 		for (PoshiComment poshiComment : _poshiComments) {
 			PoshiComment newPoshiComment = poshiComment.clone(readableSyntax);
 
@@ -62,7 +62,7 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	public static PoshiElement newPoshiElement(Element element) {
+	private static PoshiElement _newPoshiElement(Element element) {
 		for (PoshiElement poshiElement : _poshiElements) {
 			PoshiElement newPoshiElement = poshiElement.clone(element);
 
@@ -74,7 +74,7 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	public static PoshiElement newPoshiElement(
+	private static PoshiElement _newPoshiElement(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		for (PoshiElement poshiElement : _poshiElements) {
@@ -89,7 +89,7 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	public static PoshiElement newPoshiElementFromFile(String filePath) {
+	public static PoshiNode<?,?> newPoshiNodeFromFile(String filePath) {
 		File file = new File(filePath);
 
 		try {
@@ -100,10 +100,10 @@ public abstract class PoshiNodeFactory {
 
 				Element rootElement = document.getRootElement();
 
-				return newPoshiElement(rootElement);
+				return newPoshiNode(rootElement);
 			}
 
-			return newPoshiElement(null, content);
+			return newPoshiNode(null, content);
 		}
 		catch (Exception e) {
 			System.out.println("Unable to generate the Poshi element");
@@ -118,11 +118,11 @@ public abstract class PoshiNodeFactory {
 		PoshiNode<?, ?> newPoshiNode = null;
 
 		if (node instanceof Comment) {
-			newPoshiNode = newPoshiComment((Comment)node);
+			newPoshiNode = _newPoshiComment((Comment)node);
 		}
 
 		if (node instanceof Element) {
-			newPoshiNode = newPoshiElement((Element)node);
+			newPoshiNode = _newPoshiElement((Element)node);
 		}
 
 		if (newPoshiNode != null) {
@@ -142,17 +142,17 @@ public abstract class PoshiNodeFactory {
 	}
 
 	public static PoshiNode<?, ?> newPoshiNode(
-		PoshiElement parentPoshiElement, String readableSyntax) {
+		PoshiNode<?, ?> parentPoshiNode, String readableSyntax) {
 
 		PoshiNode<?, ?> newPoshiNode = null;
 
-		newPoshiNode = newPoshiComment(readableSyntax);
+		newPoshiNode = _newPoshiComment(readableSyntax);
 
 		if (newPoshiNode != null) {
 			return newPoshiNode;
 		}
 
-		newPoshiNode = newPoshiElement(parentPoshiElement, readableSyntax);
+		newPoshiNode = _newPoshiElement((PoshiElement)parentPoshiNode, readableSyntax);
 
 		if (newPoshiNode != null) {
 			return newPoshiNode;
@@ -204,7 +204,7 @@ public abstract class PoshiNodeFactory {
 				}
 
 				if (poshiNode instanceof PoshiElement) {
-					_poshiElements.add((PoshiElement)poshiNode);
+					_poshiElements.add((PoshiElement) poshiNode);
 				}
 			}
 		}

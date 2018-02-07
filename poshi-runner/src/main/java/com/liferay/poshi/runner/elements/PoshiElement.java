@@ -325,11 +325,8 @@ public abstract class PoshiElement
 
 	private void _addNodes(Element element) {
 		for (Node node : Dom4JUtil.toNodeList(element.content())) {
-			if (node instanceof Comment) {
-				add(PoshiNodeFactory.newPoshiComment((Comment)node));
-			}
-			else if (node instanceof Element) {
-				add(PoshiNodeFactory.newPoshiElement((Element)node));
+			if (node instanceof Comment || node instanceof Element) {
+				add(PoshiNodeFactory.newPoshiNode(node));
 			}
 		}
 	}

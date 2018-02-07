@@ -53,7 +53,7 @@ public class CommandPoshiElement extends PoshiElement {
 	public void parseReadableSyntax(String readableSyntax) {
 		for (String readableBlock : getReadableBlocks(readableSyntax)) {
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiNodeFactory.newPoshiComment(readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(null, readableBlock));
 
 				continue;
 			}
@@ -61,7 +61,7 @@ public class CommandPoshiElement extends PoshiElement {
 			if (readableBlock.endsWith("}") || readableBlock.endsWith(";") ||
 				readableBlock.startsWith("@description")) {
 
-				add(PoshiNodeFactory.newPoshiElement(this, readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
 
 				continue;
 			}

@@ -14,25 +14,13 @@
 
 package com.liferay.poshi.runner;
 
-import com.liferay.poshi.runner.elements.PoshiNodeFactory;
-import com.liferay.poshi.runner.selenium.SeleniumUtil;
-import com.liferay.poshi.runner.util.Dom4JUtil;
-import com.liferay.poshi.runner.util.ExternalMethod;
-import com.liferay.poshi.runner.util.FileUtil;
-import com.liferay.poshi.runner.util.OSDetector;
-import com.liferay.poshi.runner.util.PropsValues;
-import com.liferay.poshi.runner.util.StringUtil;
-import com.liferay.poshi.runner.util.Validator;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +31,18 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+import com.liferay.poshi.runner.elements.PoshiElement;
+import com.liferay.poshi.runner.elements.PoshiNode;
+import com.liferay.poshi.runner.elements.PoshiNodeFactory;
+import com.liferay.poshi.runner.selenium.SeleniumUtil;
+import com.liferay.poshi.runner.util.Dom4JUtil;
+import com.liferay.poshi.runner.util.ExternalMethod;
+import com.liferay.poshi.runner.util.FileUtil;
+import com.liferay.poshi.runner.util.OSDetector;
+import com.liferay.poshi.runner.util.PropsValues;
+import com.liferay.poshi.runner.util.StringUtil;
+import com.liferay.poshi.runner.util.Validator;
 
 /**
  * @author Karen Dang
@@ -341,10 +341,12 @@ public class PoshiRunnerGetterUtil {
 		if (!fileContent.contains("<definition") &&
 			filePath.endsWith(".testcase")) {
 
-			Element element = PoshiNodeFactory.newPoshiElementFromFile(
+			PoshiNode<?, ?> poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
 				filePath);
-
-			fileContent = Dom4JUtil.format(element);
+			
+			if (poshiNode instanceof PoshiElement) {
+				fileContent = Dom4JUtil.format((PoshiElement)poshiNode);
+			}
 		}
 
 		BufferedReader bufferedReader = new BufferedReader(

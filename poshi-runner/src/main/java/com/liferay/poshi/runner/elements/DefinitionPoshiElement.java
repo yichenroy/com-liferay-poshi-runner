@@ -64,12 +64,12 @@ public class DefinitionPoshiElement extends PoshiElement {
 			}
 
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiNodeFactory.newPoshiComment(readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(null, readableBlock));
 
 				continue;
 			}
 
-			add(PoshiNodeFactory.newPoshiElement(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
 		}
 	}
 

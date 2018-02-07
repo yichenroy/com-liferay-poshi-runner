@@ -34,8 +34,9 @@ public class PoshiElementFactoryTest {
 	public void testPoshiToReadable() throws Exception {
 		String baselineReadableSyntax = FileUtil.read(_READABLE_TEST_FILE_PATH);
 
-		PoshiElement poshiElement = PoshiNodeFactory.newPoshiElementFromFile(
-			_POSHI_TEST_FILE_PATH);
+		PoshiElement poshiElement =
+			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
+				_POSHI_TEST_FILE_PATH);
 
 		String readableSyntax = poshiElement.toReadableSyntax();
 
@@ -55,8 +56,9 @@ public class PoshiElementFactoryTest {
 
 	@Test
 	public void testPoshiToReadableToXML() throws Exception {
-		PoshiElement poshiElement = PoshiNodeFactory.newPoshiElementFromFile(
-			_POSHI_TEST_FILE_PATH);
+		PoshiElement poshiElement =
+			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
+				_POSHI_TEST_FILE_PATH);
 
 		String readableSyntax = poshiElement.toReadableSyntax();
 
@@ -81,8 +83,9 @@ public class PoshiElementFactoryTest {
 	@Test
 	public void testPoshiToXML() throws Exception {
 		Element baselineElement = _getBaselineElement();
-		PoshiElement poshiElement = PoshiNodeFactory.newPoshiElementFromFile(
-			_POSHI_TEST_FILE_PATH);
+		PoshiElement poshiElement =
+			(PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
+				_POSHI_TEST_FILE_PATH);
 
 		if (!_areElementsEqual(baselineElement, poshiElement)) {
 			StringBuilder sb = new StringBuilder();

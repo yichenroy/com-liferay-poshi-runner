@@ -51,11 +51,11 @@ public class ExecutePoshiElement extends PoshiElement {
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
 		if (readableSyntax.contains("return(\n")) {
-			PoshiElement returnPoshiElement = PoshiNodeFactory.newPoshiElement(
+			PoshiNode returnPoshiNode = PoshiNodeFactory.newPoshiNode(
 				this, readableSyntax);
 
-			if (returnPoshiElement instanceof ReturnPoshiElement) {
-				add(returnPoshiElement);
+			if (returnPoshiNode instanceof ReturnPoshiElement) {
+				add(returnPoshiNode);
 
 				readableSyntax = RegexUtil.getGroup(
 					readableSyntax, "return\\((.*),", 1);
@@ -124,7 +124,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			assignment = "var " + assignment + ";";
 
-			add(PoshiNodeFactory.newPoshiElement(this, assignment));
+			add(PoshiNodeFactory.newPoshiNode(this, assignment));
 		}
 	}
 
