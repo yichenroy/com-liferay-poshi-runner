@@ -38,19 +38,20 @@ public final class PoshiRunnerStackTraceUtil {
 
 	public static String getCurrentNamespace() {
 		if (_filePaths.isEmpty()) {
-			return PoshiRunnerContext.getNamespace(null);
+			return PoshiRunnerContext.getNamespaceFromFilePath(null);
 		}
 
 		String filePath = getCurrentFilePath();
 
 		int x = filePath.indexOf("[");
 
-		return PoshiRunnerContext.getNamespace(filePath.substring(0, x));
+		return PoshiRunnerContext.getNamespaceFromFilePath(
+			filePath.substring(0, x));
 	}
 
 	public static String getCurrentNamespace(String classCommandName) {
 		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 				classCommandName);
 
 		if (namespace == null) {
@@ -155,7 +156,7 @@ public final class PoshiRunnerStackTraceUtil {
 			classCommandName = element.attributeValue("test-case");
 
 			String className =
-				PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 					classCommandName);
 
 			if (className.equals("super")) {
@@ -192,10 +193,12 @@ public final class PoshiRunnerStackTraceUtil {
 		String classCommandName, String classType) {
 
 		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					classCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				simpleClassCommandName);
 
 		String fileExtension =
@@ -206,7 +209,7 @@ public final class PoshiRunnerStackTraceUtil {
 			getCurrentNamespace(classCommandName));
 
 		String commandName =
-			PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getCommandNameFromNamespaceClassCommandName(
 				classCommandName);
 
 		_filePaths.push(filePath + "[" + commandName + "]");

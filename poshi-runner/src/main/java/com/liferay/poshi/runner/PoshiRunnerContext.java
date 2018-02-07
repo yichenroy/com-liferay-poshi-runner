@@ -148,7 +148,7 @@ public class PoshiRunnerContext {
 		return _rootElements.get("macro#" + namespace + "." + className);
 	}
 
-	public static String getNamespace(String filePath) {
+	public static String getNamespaceFromFilePath(String filePath) {
 		if (Validator.isNull(filePath)) {
 			return _getDefaultNamespace();
 		}
@@ -175,7 +175,7 @@ public class PoshiRunnerContext {
 			namespace + "." + pathLocatorKey);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				pathLocatorKey);
 
 		if ((pathLocator == null) &&
@@ -184,8 +184,8 @@ public class PoshiRunnerContext {
 			String pathExtension = _pathExtensions.get(
 				namespace + "." + className);
 			String commandName =
-				PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
-					pathLocatorKey);
+				PoshiRunnerGetterUtil.
+					getCommandNameFromNamespaceClassCommandName(pathLocatorKey);
 
 			return getPathLocator(pathExtension + "#" + commandName, namespace);
 		}
@@ -540,8 +540,9 @@ public class PoshiRunnerContext {
 			}
 
 			String simpleClassCommandName =
-				PoshiRunnerGetterUtil.getSimpleClassCommandName(
-					classCommandName);
+				PoshiRunnerGetterUtil.
+					getClassCommandNameFromNamespaceClassCommandName(
+						classCommandName);
 
 			multimap.put(properties, simpleClassCommandName);
 		}
@@ -641,8 +642,9 @@ public class PoshiRunnerContext {
 
 		for (String classCommandName : classCommandNames) {
 			simpleClassCommandNames.add(
-				PoshiRunnerGetterUtil.getSimpleClassCommandName(
-					classCommandName));
+				PoshiRunnerGetterUtil.
+					getClassCommandNameFromNamespaceClassCommandName(
+						classCommandName));
 		}
 
 		List<List<String>> partitions = Lists.partition(
@@ -1230,11 +1232,12 @@ public class PoshiRunnerContext {
 			Properties properties = _namespaceClassCommandNamePropertiesMap.get(
 				testCaseNamespaceClassCommandName);
 			String testClassName =
-				PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 					testCaseNamespaceClassCommandName);
 			String testCommandName =
-				PoshiRunnerGetterUtil.getCommandNameFromClassCommandName(
-					testCaseNamespaceClassCommandName);
+				PoshiRunnerGetterUtil.
+					getCommandNameFromNamespaceClassCommandName(
+						testCaseNamespaceClassCommandName);
 
 			for (String propertyName : properties.stringPropertyNames()) {
 				sb.append(testClassName);

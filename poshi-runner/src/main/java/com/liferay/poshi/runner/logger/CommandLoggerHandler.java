@@ -360,10 +360,12 @@ public final class CommandLoggerHandler {
 		sb.append(_getLineItemText("command-name", classCommandName));
 
 		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					classCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				simpleClassCommandName);
 
 		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(

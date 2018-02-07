@@ -315,13 +315,16 @@ public class PoshiRunnerExecutor {
 		String classCommandName = executeElement.attributeValue("function");
 
 		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					classCommandName);
 
 		String className = simpleClassCommandName;
 
 		if (classCommandName.contains("#")) {
-			className = PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
-				simpleClassCommandName);
+			className =
+				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+					simpleClassCommandName);
 		}
 
 		Exception exception = null;
@@ -345,12 +348,14 @@ public class PoshiRunnerExecutor {
 					String pathClassName =
 						PoshiRunnerVariablesUtil.replaceCommandVars(
 							PoshiRunnerGetterUtil.
-								getClassNameFromClassCommandName(locator));
+								getClassNameFromNamespaceClassCommandName(
+									locator));
 
 					String locatorKey =
 						PoshiRunnerVariablesUtil.replaceCommandVars(
 							PoshiRunnerGetterUtil.
-								getCommandNameFromClassCommandName(locator));
+								getCommandNameFromNamespaceClassCommandName(
+									locator));
 
 					PoshiRunnerVariablesUtil.putIntoExecuteMap(
 						"locator-key" + i, locatorKey);
@@ -637,10 +642,12 @@ public class PoshiRunnerExecutor {
 		String classCommandName = executeElement.attributeValue(macroType);
 
 		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					classCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				simpleClassCommandName);
 
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
@@ -934,10 +941,10 @@ public class PoshiRunnerExecutor {
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				classCommandName);
 		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 				classCommandName);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(

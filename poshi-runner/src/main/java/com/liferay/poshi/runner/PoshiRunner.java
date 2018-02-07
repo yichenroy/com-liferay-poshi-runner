@@ -66,19 +66,21 @@ public class PoshiRunner {
 			PoshiRunnerValidation.validate(testName);
 
 			String namespace =
-				PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+				PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 					testName);
 
 			if (testName.contains("#")) {
 				String simpleClassCommandName =
-					PoshiRunnerGetterUtil.getSimpleClassCommandName(testName);
+					PoshiRunnerGetterUtil.
+						getClassCommandNameFromNamespaceClassCommandName(
+							testName);
 
 				classCommandNames.add(namespace + "." + simpleClassCommandName);
 			}
 			else {
 				String className =
-					PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
-						testName);
+					PoshiRunnerGetterUtil.
+						getClassNameFromNamespaceClassCommandName(testName);
 
 				Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
 					className, namespace);
@@ -100,8 +102,9 @@ public class PoshiRunner {
 		_testClassCommandName = classCommandName;
 
 		_testClassName =
-			PoshiRunnerGetterUtil.getNamespaceClassNameFromClassCommandName(
-				_testClassCommandName);
+			PoshiRunnerGetterUtil.
+				getNamespaceClassNameFromNamespaceClassCommandName(
+					_testClassCommandName);
 	}
 
 	@Before
@@ -207,10 +210,10 @@ public class PoshiRunner {
 		throws Exception {
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
 				classCommandName);
 		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 				classCommandName);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
@@ -225,7 +228,9 @@ public class PoshiRunner {
 		PoshiRunnerVariablesUtil.pushCommandMap(true);
 
 		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.getSimpleClassCommandName(classCommandName);
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					classCommandName);
 
 		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
 			simpleClassCommandName, namespace);

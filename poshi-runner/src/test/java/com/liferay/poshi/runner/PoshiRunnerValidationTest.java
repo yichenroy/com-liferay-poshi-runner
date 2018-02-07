@@ -83,7 +83,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 
 		Element element = PoshiRunnerContext.getTestCaseCommandElement(
 			classCommandName,
-			PoshiRunnerGetterUtil.getNamespaceFromClassCommandName(
+			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 				classCommandName));
 
 		String filePath = getFilePath("ValidateClassCommandName.testcase");
@@ -421,7 +421,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 
 		Element element = PoshiRunnerContext.getMacroCommandElement(
 			"ValidateFunctionContext#validateFunctionContextPass",
-			PoshiRunnerContext.getNamespace(null));
+			PoshiRunnerContext.getNamespaceFromFilePath(null));
 
 		List<Element> functionElements = element.elements("execute");
 
@@ -435,7 +435,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 
 		element = PoshiRunnerContext.getMacroCommandElement(
 			"ValidateFunctionContext#validateFunctionContextFail1",
-			PoshiRunnerContext.getNamespace(null));
+			PoshiRunnerContext.getNamespaceFromFilePath(null));
 
 		functionElements = element.elements("execute");
 
@@ -450,7 +450,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 
 		element = PoshiRunnerContext.getMacroCommandElement(
 			"ValidateFunctionContext#validateFunctionContextFail2",
-			PoshiRunnerContext.getNamespace(null));
+			PoshiRunnerContext.getNamespaceFromFilePath(null));
 
 		functionElements = element.elements("execute");
 
