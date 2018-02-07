@@ -62,12 +62,14 @@ public class PoshiElementFactoryTest {
 
 		String readableSyntax = poshiElement.toReadableSyntax();
 
-		PoshiNode<?,?> elementFromReadableSyntax =
+		PoshiNode<?, ?> elementFromReadableSyntax =
 			PoshiNodeFactory.newPoshiNode(null, readableSyntax);
 
 		Element baselineElement = _getBaselineElement();
 
-		if (!_areElementsEqual(baselineElement, (PoshiElement)elementFromReadableSyntax)) {
+		if (!_areElementsEqual(
+				baselineElement, (PoshiElement)elementFromReadableSyntax)) {
+
 			StringBuilder sb = new StringBuilder();
 
 			sb.append("\n\nBaseline XML:");

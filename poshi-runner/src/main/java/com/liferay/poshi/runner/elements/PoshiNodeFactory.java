@@ -38,6 +38,79 @@ import org.dom4j.Node;
  */
 public abstract class PoshiNodeFactory {
 
+	public static PoshiNode<?, ?> newPoshiNode(Node node) {
+		PoshiNode<?, ?> newPoshiNode = null;
+
+		if (node instanceof Comment) {
+			newPoshiNode = _newPoshiComment((Comment)node);
+		}
+
+		if (node instanceof Element) {
+			newPoshiNode = _newPoshiElement((Element)node);
+		}
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
+		}
+
+		String nodeContent;
+
+		try {
+			nodeContent = Dom4JUtil.format(node);
+		}
+		catch (IOException ioe) {
+			nodeContent = node.toString();
+		}
+
+		throw new RuntimeException("Unknown node\n" + nodeContent);
+	}
+
+	public static PoshiNode<?, ?> newPoshiNode(
+		PoshiNode<?, ?> parentPoshiNode, String readableSyntax) {
+
+		PoshiNode<?, ?> newPoshiNode = null;
+
+		newPoshiNode = _newPoshiComment(readableSyntax);
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
+		}
+
+		newPoshiNode = _newPoshiElement(
+			(PoshiElement)parentPoshiNode, readableSyntax);
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
+		}
+
+		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
+	}
+
+	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
+		File file = new File(filePath);
+
+		try {
+			String content = FileUtil.read(file);
+
+			if (content.contains("<definition")) {
+				Document document = Dom4JUtil.parse(content);
+
+				Element rootElement = document.getRootElement();
+
+				return newPoshiNode(rootElement);
+			}
+
+			return newPoshiNode(null, content);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to generate the Poshi element");
+
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	private static PoshiComment _newPoshiComment(Comment comment) {
 		for (PoshiComment poshiComment : _poshiComments) {
 			PoshiComment newPoshiComment = poshiComment.clone(comment);
@@ -89,78 +162,6 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	public static PoshiNode<?,?> newPoshiNodeFromFile(String filePath) {
-		File file = new File(filePath);
-
-		try {
-			String content = FileUtil.read(file);
-
-			if (content.contains("<definition")) {
-				Document document = Dom4JUtil.parse(content);
-
-				Element rootElement = document.getRootElement();
-
-				return newPoshiNode(rootElement);
-			}
-
-			return newPoshiNode(null, content);
-		}
-		catch (Exception e) {
-			System.out.println("Unable to generate the Poshi element");
-
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public static PoshiNode<?, ?> newPoshiNode(Node node) {
-		PoshiNode<?, ?> newPoshiNode = null;
-
-		if (node instanceof Comment) {
-			newPoshiNode = _newPoshiComment((Comment)node);
-		}
-
-		if (node instanceof Element) {
-			newPoshiNode = _newPoshiElement((Element)node);
-		}
-
-		if (newPoshiNode != null) {
-			return newPoshiNode;
-		}
-
-		String nodeContent;
-
-		try {
-			nodeContent = Dom4JUtil.format(node);
-		}
-		catch (IOException ioe) {
-			nodeContent = node.toString();
-		}
-
-		throw new RuntimeException("Unknown node\n" + nodeContent);
-	}
-
-	public static PoshiNode<?, ?> newPoshiNode(
-		PoshiNode<?, ?> parentPoshiNode, String readableSyntax) {
-
-		PoshiNode<?, ?> newPoshiNode = null;
-
-		newPoshiNode = _newPoshiComment(readableSyntax);
-
-		if (newPoshiNode != null) {
-			return newPoshiNode;
-		}
-
-		newPoshiNode = _newPoshiElement((PoshiElement)parentPoshiNode, readableSyntax);
-
-		if (newPoshiNode != null) {
-			return newPoshiNode;
-		}
-
-		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
-	}
-
 	private static final List<PoshiComment> _poshiComments = new ArrayList<>();
 	private static final List<PoshiElement> _poshiElements = new ArrayList<>();
 
@@ -204,7 +205,7 @@ public abstract class PoshiNodeFactory {
 				}
 
 				if (poshiNode instanceof PoshiElement) {
-					_poshiElements.add((PoshiElement) poshiNode);
+					_poshiElements.add((PoshiElement)poshiNode);
 				}
 			}
 		}
