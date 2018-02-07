@@ -15,13 +15,28 @@
 package com.liferay.poshi.runner.elements;
 
 import org.dom4j.Comment;
+import org.dom4j.tree.DefaultComment;
 
 /**
  * @author Michael Hashimoto
  */
-public interface PoshiComment
-	extends Comment, PoshiNode<PoshiComment, Comment> {
+public abstract class PoshiComment
+	extends DefaultComment implements PoshiNode<Comment, PoshiComment> {
 
-	public boolean isReadableSyntaxComment(String readableSyntax);
+	public PoshiComment() {
+		super(null);
+	}
+
+	public abstract boolean isReadableSyntaxComment(String readableSyntax);
+
+	protected PoshiComment(Comment comment) {
+		super(comment.getText());
+	}
+
+	protected PoshiComment(String readableSyntax) {
+		this();
+
+		parseReadableSyntax(readableSyntax);
+	}
 
 }

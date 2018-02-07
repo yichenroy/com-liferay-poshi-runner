@@ -38,9 +38,20 @@ import org.dom4j.Node;
  */
 public abstract class PoshiNodeFactory {
 
-	public static PoshiNode newPoshiNode(Node node) {
-		for (PoshiNode poshiNode : getPoshiNodes(node)) {
-			PoshiNode newPoshiNode = (PoshiNode)poshiNode.clone(node);
+	public static PoshiNode<?, ?> newPoshiNode(Node node) {
+		for (PoshiNode<?, ?> poshiNode : getPoshiNodes(node)) {
+			PoshiNode<?, ?> newPoshiNode = null;
+
+			if (node instanceof Comment) {
+				PoshiComment poshiComment = (PoshiComment)poshiNode;
+
+				newPoshiNode = poshiComment.clone((Comment)node);
+			}
+			else {
+				PoshiElement poshiElement = (PoshiElement)poshiNode;
+
+				newPoshiNode = poshiElement.clone((Element)node);
+			}
 
 			if (newPoshiNode != null) {
 				return newPoshiNode;
@@ -59,7 +70,7 @@ public abstract class PoshiNodeFactory {
 		throw new RuntimeException("Unknown node\n" + nodeContent);
 	}
 
-	protected static List<PoshiNode> getPoshiNodes(Node node) {
+	protected static List<PoshiNode<?, ?>> getPoshiNodes(Node node) {
 		if (node instanceof Comment) {
 			return getPoshiNodes("PoshiComment");
 		}
@@ -71,11 +82,11 @@ public abstract class PoshiNodeFactory {
 		return null;
 	}
 
-	protected static List<PoshiNode> getPoshiNodes(String key) {
+	protected static List<PoshiNode<?, ?>> getPoshiNodes(String key) {
 		return _poshiNodes.get(key);
 	}
 
-	private static final Map<String, List<PoshiNode>> _poshiNodes =
+	private static final Map<String, List<PoshiNode<?, ?>>> _poshiNodes =
 		new HashMap<>();
 
 	static {
@@ -91,8 +102,8 @@ public abstract class PoshiNodeFactory {
 
 			Collections.sort(dirFiles);
 
-			List<PoshiNode> poshiComments = new ArrayList<>();
-			List<PoshiNode> poshiElements = new ArrayList<>();
+			List<PoshiNode<?, ?>> poshiComments = new ArrayList<>();
+			List<PoshiNode<?, ?>> poshiElements = new ArrayList<>();
 
 			for (File file : dirFiles) {
 				String fileName = file.getName();
@@ -111,7 +122,8 @@ public abstract class PoshiNodeFactory {
 
 				Class<?> clazz = Class.forName(pkg.getName() + "." + className);
 
-				PoshiNode poshiNode = (PoshiNode)clazz.newInstance();
+				PoshiNode<?, ?> poshiNode =
+					(PoshiNode<?, ?>)clazz.newInstance();
 
 				if (poshiNode instanceof PoshiComment) {
 					poshiComments.add(poshiNode);
