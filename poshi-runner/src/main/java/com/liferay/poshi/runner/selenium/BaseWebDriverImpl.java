@@ -898,17 +898,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void dragAndDrop(String locator, String coordPairsString) {
+	public void dragAndDrop(String locator, String coordinatePairs) {
 		try {
-			Matcher matcher = _coordPairsPattern.matcher(coordPairsString);
+			Matcher matcher = _coordinatePairsPattern.matcher(coordinatePairs);
 
 			if (!matcher.matches()) {
 				System.out.println("DOES NOT MATCH PATTERN!!");
 
 				throw new Exception(
-					"Coordinate \"" + coordPairsString +
-						"\" does not match pattern \"" + _coordPairsPattern +
-							"\"");
+					"Coordinate pairs \"" + coordinatePairs +
+						"\" does not match pattern \"" +
+							_coordinatePairsPattern.pattern() + "\"");
 			}
 
 			WebElement webElement = getWebElement(locator);
@@ -923,15 +923,12 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			actions.pause(1500);
 
-			String[] coordPairs = coordPairsString.split("\\|");
+			for (String coordinatePair : coordinatePairs.split("\\|")) {
+				String[] coordinates = coordinatePair.split(",");
 
-			for (String coordPair : coordPairs) {
-				String[] coords = coordPair.split(",");
-
-				int x = GetterUtil.getInteger(coords[0]);
-				int y = GetterUtil.getInteger(coords[1]);
-
-				actions.moveByOffset(x, y);
+				actions.moveByOffset(
+					GetterUtil.getInteger(coordinates[0]),
+					GetterUtil.getInteger(coordinates[1]));
 			}
 
 			actions.pause(1500);
@@ -3910,7 +3907,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	private final Pattern _aceEditorPattern = Pattern.compile(
 		"\\(|\\$\\{line\\.separator\\}");
 	private String _clipBoard = "";
-	private final Pattern _coordPairsPattern = Pattern.compile(
+	private final Pattern _coordinatePairsPattern = Pattern.compile(
 		"[+-]?\\d+\\,[+-]?\\d+(\\|[+-]?\\d+\\,[+-]?\\d+)*");
 	private String _defaultWindowHandle;
 	private Stack<WebElement> _frameWebElements = new Stack<>();
