@@ -545,8 +545,9 @@ public final class SummaryLoggerHandler {
 			}
 
 			String simpleClassCommandName =
-				PoshiRunnerGetterUtil.getSimpleClassCommandName(
-					classCommandName);
+				PoshiRunnerGetterUtil.
+					getClassCommandNameFromNamespaceClassCommandName(
+						classCommandName);
 
 			String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
 				classCommandName);
