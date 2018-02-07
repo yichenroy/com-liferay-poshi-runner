@@ -47,7 +47,7 @@ public class OrPoshiElement extends PoshiElement {
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
 		for (String readableBlock : getReadableBlocks(readableSyntax)) {
-			add(PoshiElementFactory.newPoshiElement(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiElement(this, readableBlock));
 		}
 	}
 

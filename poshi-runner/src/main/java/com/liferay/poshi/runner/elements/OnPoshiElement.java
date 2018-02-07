@@ -51,7 +51,7 @@ public class OnPoshiElement extends PoshiElement {
 				continue;
 			}
 
-			add(PoshiElementFactory.newPoshiElement(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiElement(this, readableBlock));
 		}
 	}
 

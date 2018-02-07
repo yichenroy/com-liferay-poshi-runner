@@ -48,12 +48,12 @@ public class ThenPoshiElement extends PoshiElement {
 	public void parseReadableSyntax(String readableSyntax) {
 		for (String readableBlock : getReadableBlocks(readableSyntax)) {
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiCommentFactory.newPoshiComment(readableBlock));
+				add(PoshiNodeFactory.newPoshiComment(readableBlock));
 
 				continue;
 			}
 
-			add(PoshiElementFactory.newPoshiElement(this, readableBlock));
+			add(PoshiNodeFactory.newPoshiElement(this, readableBlock));
 		}
 	}
 

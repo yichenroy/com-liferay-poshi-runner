@@ -44,7 +44,7 @@ public class NotPoshiElement extends PoshiElement {
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
 		add(
-			PoshiElementFactory.newPoshiElement(
+			PoshiNodeFactory.newPoshiElement(
 				this, getParentheticalContent(readableSyntax)));
 	}
 

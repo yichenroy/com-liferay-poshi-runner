@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.util.Dom4JUtil;
+import com.liferay.poshi.runner.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,11 +26,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Comment;
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
@@ -38,24 +38,95 @@ import org.dom4j.Node;
  */
 public abstract class PoshiNodeFactory {
 
+	public static PoshiComment newPoshiComment(Comment comment) {
+		for (PoshiComment poshiComment : _poshiComments) {
+			PoshiComment newPoshiComment = poshiComment.clone(comment);
+
+			if (newPoshiComment != null) {
+				return newPoshiComment;
+			}
+		}
+
+		return null;
+	}
+
+	public static PoshiComment newPoshiComment(String readableSyntax) {
+		for (PoshiComment poshiComment : _poshiComments) {
+			PoshiComment newPoshiComment = poshiComment.clone(readableSyntax);
+
+			if (newPoshiComment != null) {
+				return newPoshiComment;
+			}
+		}
+
+		return null;
+	}
+
+	public static PoshiElement newPoshiElement(Element element) {
+		for (PoshiElement poshiElement : _poshiElements) {
+			PoshiElement newPoshiElement = poshiElement.clone(element);
+
+			if (newPoshiElement != null) {
+				return newPoshiElement;
+			}
+		}
+
+		return null;
+	}
+
+	public static PoshiElement newPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		for (PoshiElement poshiElement : _poshiElements) {
+			PoshiElement newPoshiElement = poshiElement.clone(
+				parentPoshiElement, readableSyntax);
+
+			if (newPoshiElement != null) {
+				return newPoshiElement;
+			}
+		}
+
+		return null;
+	}
+
+	public static PoshiElement newPoshiElementFromFile(String filePath) {
+		File file = new File(filePath);
+
+		try {
+			String content = FileUtil.read(file);
+
+			if (content.contains("<definition")) {
+				Document document = Dom4JUtil.parse(content);
+
+				Element rootElement = document.getRootElement();
+
+				return newPoshiElement(rootElement);
+			}
+
+			return newPoshiElement(null, content);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to generate the Poshi element");
+
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	public static PoshiNode<?, ?> newPoshiNode(Node node) {
-		for (PoshiNode<?, ?> poshiNode : getPoshiNodes(node)) {
-			PoshiNode<?, ?> newPoshiNode = null;
+		PoshiNode<?, ?> newPoshiNode = null;
 
-			if (node instanceof Comment) {
-				PoshiComment poshiComment = (PoshiComment)poshiNode;
+		if (node instanceof Comment) {
+			newPoshiNode = newPoshiComment((Comment)node);
+		}
 
-				newPoshiNode = poshiComment.clone((Comment)node);
-			}
-			else {
-				PoshiElement poshiElement = (PoshiElement)poshiNode;
+		if (node instanceof Element) {
+			newPoshiNode = newPoshiElement((Element)node);
+		}
 
-				newPoshiNode = poshiElement.clone((Element)node);
-			}
-
-			if (newPoshiNode != null) {
-				return newPoshiNode;
-			}
+		if (newPoshiNode != null) {
+			return newPoshiNode;
 		}
 
 		String nodeContent;
@@ -70,24 +141,28 @@ public abstract class PoshiNodeFactory {
 		throw new RuntimeException("Unknown node\n" + nodeContent);
 	}
 
-	protected static List<PoshiNode<?, ?>> getPoshiNodes(Node node) {
-		if (node instanceof Comment) {
-			return getPoshiNodes("PoshiComment");
+	public static PoshiNode<?, ?> newPoshiNode(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		PoshiNode<?, ?> newPoshiNode = null;
+
+		newPoshiNode = newPoshiComment(readableSyntax);
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
 		}
 
-		if (node instanceof Element) {
-			return getPoshiNodes("PoshiElement");
+		newPoshiNode = newPoshiElement(parentPoshiElement, readableSyntax);
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
 		}
 
-		return null;
+		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
 	}
 
-	protected static List<PoshiNode<?, ?>> getPoshiNodes(String key) {
-		return _poshiNodes.get(key);
-	}
-
-	private static final Map<String, List<PoshiNode<?, ?>>> _poshiNodes =
-		new HashMap<>();
+	private static final List<PoshiComment> _poshiComments = new ArrayList<>();
+	private static final List<PoshiElement> _poshiElements = new ArrayList<>();
 
 	static {
 		try {
@@ -101,9 +176,6 @@ public abstract class PoshiNodeFactory {
 			List<File> dirFiles = Arrays.asList(dir.listFiles());
 
 			Collections.sort(dirFiles);
-
-			List<PoshiNode<?, ?>> poshiComments = new ArrayList<>();
-			List<PoshiNode<?, ?>> poshiElements = new ArrayList<>();
 
 			for (File file : dirFiles) {
 				String fileName = file.getName();
@@ -126,18 +198,15 @@ public abstract class PoshiNodeFactory {
 					(PoshiNode<?, ?>)clazz.newInstance();
 
 				if (poshiNode instanceof PoshiComment) {
-					poshiComments.add(poshiNode);
+					_poshiComments.add((PoshiComment)poshiNode);
 
 					continue;
 				}
 
 				if (poshiNode instanceof PoshiElement) {
-					poshiElements.add(poshiNode);
+					_poshiElements.add((PoshiElement)poshiNode);
 				}
 			}
-
-			_poshiNodes.put("PoshiComment", poshiComments);
-			_poshiNodes.put("PoshiElement", poshiElements);
 		}
 		catch (ClassNotFoundException | IllegalAccessException |
 			   InstantiationException | URISyntaxException e) {
