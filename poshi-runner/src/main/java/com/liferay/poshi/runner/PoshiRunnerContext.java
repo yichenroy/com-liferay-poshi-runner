@@ -226,10 +226,6 @@ public class PoshiRunnerContext {
 		return _testCaseDescriptions.get(classCommandName);
 	}
 
-	public static String getTestCaseName() {
-		return _testCaseName;
-	}
-
 	public static List<String> getTestCaseRequiredPropertyNames() {
 		return _testCaseRequiredPropertyNames;
 	}
