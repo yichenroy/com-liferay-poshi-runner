@@ -21,7 +21,7 @@ import org.dom4j.Comment;
 /**
  * @author Peter Yoo
  */
-public class InlinePoshiComment extends BasePoshiComment {
+public class InlinePoshiComment extends PoshiComment {
 
 	@Override
 	public PoshiComment clone(Comment comment) {

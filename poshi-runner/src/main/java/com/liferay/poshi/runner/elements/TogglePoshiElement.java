@@ -22,7 +22,7 @@ import org.dom4j.Element;
 /**
  * @author Kenji Heigel
  */
-public class TogglePoshiElement extends BasePoshiElement {
+public class TogglePoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(Element element) {

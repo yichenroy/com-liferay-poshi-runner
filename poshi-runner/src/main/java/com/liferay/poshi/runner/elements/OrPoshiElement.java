@@ -22,7 +22,7 @@ import org.dom4j.Element;
 /**
  * @author Kenji Heigel
  */
-public class OrPoshiElement extends BasePoshiElement {
+public class OrPoshiElement extends PoshiElement {
 
 	@Override
 	public PoshiElement clone(Element element) {
