@@ -118,7 +118,6 @@ public class PoshiRunner {
 
 		PoshiRunnerContext.setTestCaseCommandName(
 			_testNamespaceClassCommandName);
-		PoshiRunnerContext.setTestCaseName(_testNamespaceClassName);
 
 		PoshiRunnerVariablesUtil.clear();
 

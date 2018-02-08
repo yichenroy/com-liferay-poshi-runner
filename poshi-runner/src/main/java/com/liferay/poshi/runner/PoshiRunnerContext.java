@@ -285,10 +285,6 @@ public class PoshiRunnerContext {
 		_testCaseCommandName = testCaseCommandName;
 	}
 
-	public static void setTestCaseName(String testCaseName) {
-		_testCaseName = testCaseName;
-	}
-
 	private static void _addComponentNamespaceClassCommandNames(
 		String componentName, String namespaceClassCommandName) {
 
@@ -1286,7 +1282,6 @@ public class PoshiRunnerContext {
 	private static String _testCaseCommandName;
 	private static final Map<String, String> _testCaseDescriptions =
 		new HashMap<>();
-	private static String _testCaseName;
 	private static final List<String> _testCaseNamespaceClassCommandNames =
 		new ArrayList<>();
 	private static final List<String> _testCaseNamespaceClassNames =

@@ -276,8 +276,7 @@ public class PoshiRunnerExecutor {
 		XMLLoggerHandler.updateStatus(element, "pass");
 	}
 
-	public static void runFunctionCommandElement(
-			String classCommandName, Element commandElement)
+	public static void runFunctionCommandElement(Element commandElement)
 		throws Exception {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(commandElement);
@@ -407,7 +406,7 @@ public class PoshiRunnerExecutor {
 				throw exception;
 			}
 
-			runFunctionCommandElement(classCommandName, commandElement);
+			runFunctionCommandElement(commandElement);
 		}
 		catch (Throwable t) {
 			String warningMessage = _getWarningFromThrowable(t);
@@ -597,7 +596,7 @@ public class PoshiRunnerExecutor {
 	}
 
 	public static Map<String, String> runMacroCommandElement(
-			String classCommandName, Element commandElement)
+			Element commandElement)
 		throws Exception {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(commandElement);
@@ -681,7 +680,7 @@ public class PoshiRunnerExecutor {
 
 		try {
 			Map<String, String> macroReturns = runMacroCommandElement(
-				classCommandName, commandElement);
+				commandElement);
 
 			List<Element> returnElements = executeElement.elements("return");
 
