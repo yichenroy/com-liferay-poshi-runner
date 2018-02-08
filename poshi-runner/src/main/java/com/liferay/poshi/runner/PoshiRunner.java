@@ -208,7 +208,7 @@ public class PoshiRunner {
 		3, TimeoutException.class, UnreachableBrowserException.class);
 
 	private void _runCommand() throws Exception {
-		CommandLoggerHandler.logClassCommandName(
+		CommandLoggerHandler.logNamespaceClassCommandName(
 			_testNamespaceClassCommandName);
 
 		_runNamespaceClassCommandName(_testNamespaceClassCommandName);
@@ -258,7 +258,7 @@ public class PoshiRunner {
 	}
 
 	private void _runSetUp() throws Exception {
-		CommandLoggerHandler.logClassCommandName(
+		CommandLoggerHandler.logNamespaceClassCommandName(
 			_testNamespaceClassName + "#set-up");
 
 		SummaryLoggerHandler.startMajorSteps();
@@ -267,7 +267,7 @@ public class PoshiRunner {
 	}
 
 	private void _runTearDown() throws Exception {
-		CommandLoggerHandler.logClassCommandName(
+		CommandLoggerHandler.logNamespaceClassCommandName(
 			_testNamespaceClassName + "#tear-down");
 
 		SummaryLoggerHandler.startMajorSteps();
