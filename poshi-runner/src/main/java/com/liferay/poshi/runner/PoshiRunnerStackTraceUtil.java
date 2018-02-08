@@ -85,10 +85,6 @@ public final class PoshiRunnerStackTraceUtil {
 		return sb.toString();
 	}
 
-	public static String getStackTrace() {
-		return getStackTrace(null);
-	}
-
 	public static String getStackTrace(String msg) {
 		StringBuilder sb = new StringBuilder();
 

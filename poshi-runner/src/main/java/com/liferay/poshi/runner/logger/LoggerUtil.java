@@ -121,15 +121,6 @@ public final class LoggerUtil {
 		_javascriptExecutor.executeScript(script);
 	}
 
-	public static String getClassName(LoggerElement loggerElement) {
-		if (!isLoggerStarted()) {
-			return null;
-		}
-
-		return (String)_javascriptExecutor.executeScript(
-			"getClassName('" + loggerElement.getID() + "');");
-	}
-
 	public static String getName(LoggerElement loggerElement) {
 		if (!isLoggerStarted()) {
 			return null;
