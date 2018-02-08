@@ -907,7 +907,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 				throw new Exception(
 					"Coordinate pairs \"" + coordinatePairs +
-						"\" does not match pattern \"" +
+						"\" do not match pattern \"" +
 							_coordinatePairsPattern.pattern() + "\"");
 			}
 
