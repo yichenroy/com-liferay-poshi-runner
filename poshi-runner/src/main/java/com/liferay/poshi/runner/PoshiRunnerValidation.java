@@ -200,55 +200,6 @@ public class PoshiRunnerValidation {
 		validateRequiredAttributeNames(element, attributes, filePath);
 	}
 
-	protected static void validateClassCommandName(
-		Element element, String classCommandName, String classType,
-		String filePath) {
-
-		String simpleClassCommandName =
-			PoshiRunnerGetterUtil.
-				getClassCommandNameFromNamespaceClassCommandName(
-					classCommandName);
-
-		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-				simpleClassCommandName);
-
-		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
-			null);
-
-		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
-				classCommandName);
-
-		if (namespace.equals(defaultNamespace)) {
-			namespace = PoshiRunnerContext.getNamespaceFromFilePath(filePath);
-		}
-
-		if (!PoshiRunnerContext.isRootElement(
-				classType, className, namespace) &&
-			!PoshiRunnerContext.isRootElement(
-				classType, className, defaultNamespace)) {
-
-			_exceptions.add(
-				new Exception(
-					"Invalid " + classType + " class " + className + "\n" +
-						filePath + ":" +
-							element.attributeValue("line-number")));
-		}
-
-		if (!PoshiRunnerContext.isCommandElement(
-				classType, simpleClassCommandName, namespace) &&
-			!PoshiRunnerContext.isCommandElement(
-				classType, simpleClassCommandName, defaultNamespace)) {
-
-			_exceptions.add(
-				new Exception(
-					"Invalid " + classType + " command " + classCommandName +
-						"\n" + filePath + ":" +
-							element.attributeValue("line-number")));
-		}
-	}
-
 	protected static void validateCommandElement(
 		Element element, String filePath) {
 
@@ -712,7 +663,8 @@ public class PoshiRunnerValidation {
 
 		String function = element.attributeValue("function");
 
-		validateClassCommandName(element, function, "function", filePath);
+		validateNamespaceClassCommandName(
+			element, function, "function", filePath);
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
@@ -989,7 +941,7 @@ public class PoshiRunnerValidation {
 	protected static void validateMacroContext(
 		Element element, String macroType, String filePath) {
 
-		validateClassCommandName(
+		validateNamespaceClassCommandName(
 			element, element.attributeValue(macroType), "macro", filePath);
 	}
 
@@ -1029,23 +981,23 @@ public class PoshiRunnerValidation {
 		Element element, String macroType, Element returnElement,
 		String filePath) {
 
-		String classCommandName = element.attributeValue(macroType);
+		String namespaceClassCommandName = element.attributeValue(macroType);
 
-		String simpleClassCommandName =
+		String classCommandName =
 			PoshiRunnerGetterUtil.
 				getClassCommandNameFromNamespaceClassCommandName(
-					classCommandName);
+					namespaceClassCommandName);
 
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
-				classCommandName);
+				namespaceClassCommandName);
 
-		if (namespace == null) {
+		if (Validator.isNull(namespace)) {
 			namespace = PoshiRunnerContext.getNamespaceFromFilePath(filePath);
 		}
 
 		List<String> returns = PoshiRunnerContext.getMacroCommandReturns(
-			simpleClassCommandName, namespace);
+			classCommandName, namespace);
 
 		String returnVariable = returnElement.attributeValue("from");
 
@@ -1119,6 +1071,55 @@ public class PoshiRunnerValidation {
 							element.attributeValue("line-number")));
 
 			return;
+		}
+	}
+
+	protected static void validateNamespaceClassCommandName(
+		Element element, String namespaceClassCommandName, String classType,
+		String filePath) {
+
+		String classCommandName =
+			PoshiRunnerGetterUtil.
+				getClassCommandNameFromNamespaceClassCommandName(
+					namespaceClassCommandName);
+
+		String className =
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+				namespaceClassCommandName);
+
+		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
+			null);
+
+		String namespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
+				namespaceClassCommandName);
+
+		if (namespace.equals(defaultNamespace)) {
+			namespace = PoshiRunnerContext.getNamespaceFromFilePath(filePath);
+		}
+
+		if (!PoshiRunnerContext.isRootElement(
+				classType, className, namespace) &&
+			!PoshiRunnerContext.isRootElement(
+				classType, className, defaultNamespace)) {
+
+			_exceptions.add(
+				new Exception(
+					"Invalid " + classType + " class " + className + "\n" +
+						filePath + ":" +
+							element.attributeValue("line-number")));
+		}
+
+		if (!PoshiRunnerContext.isCommandElement(
+				classType, classCommandName, namespace) &&
+			!PoshiRunnerContext.isCommandElement(
+				classType, classCommandName, defaultNamespace)) {
+
+			_exceptions.add(
+				new Exception(
+					"Invalid " + classType + " command " +
+						namespaceClassCommandName + "\n" + filePath + ":" +
+							element.attributeValue("line-number")));
 		}
 	}
 
