@@ -311,26 +311,24 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(executeElement);
 
-		String classCommandName = executeElement.attributeValue("function");
+		String namespaceClassCommandName = executeElement.attributeValue(
+			"function");
 
-		String simpleClassCommandName =
+		String classCommandName =
 			PoshiRunnerGetterUtil.
 				getClassCommandNameFromNamespaceClassCommandName(
-					classCommandName);
+					namespaceClassCommandName);
 
-		String className = simpleClassCommandName;
-
-		if (classCommandName.contains("#")) {
-			className =
-				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-					simpleClassCommandName);
-		}
+		String className =
+			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+				classCommandName);
 
 		Exception exception = null;
 
 		int locatorCount = PoshiRunnerContext.getFunctionLocatorCount(
 			className,
-			PoshiRunnerStackTraceUtil.getCurrentNamespace(classCommandName));
+			PoshiRunnerStackTraceUtil.getCurrentNamespace(
+				namespaceClassCommandName));
 
 		for (int i = 1; i <= locatorCount; i++) {
 			String locator = executeElement.attributeValue("locator" + i);
@@ -398,8 +396,9 @@ public class PoshiRunnerExecutor {
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		Element commandElement = PoshiRunnerContext.getFunctionCommandElement(
-			simpleClassCommandName,
-			PoshiRunnerStackTraceUtil.getCurrentNamespace(classCommandName));
+			classCommandName,
+			PoshiRunnerStackTraceUtil.getCurrentNamespace(
+				namespaceClassCommandName));
 
 		try {
 			if (exception != null) {
@@ -638,21 +637,22 @@ public class PoshiRunnerExecutor {
 
 		XMLLoggerHandler.updateStatus(executeElement, "pending");
 
-		String classCommandName = executeElement.attributeValue(macroType);
+		String namespaceClassCommandName = executeElement.attributeValue(
+			macroType);
 
-		String simpleClassCommandName =
+		String classCommandName =
 			PoshiRunnerGetterUtil.
 				getClassCommandNameFromNamespaceClassCommandName(
-					classCommandName);
+					namespaceClassCommandName);
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-				simpleClassCommandName);
+				classCommandName);
 
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
-			classCommandName);
+			namespaceClassCommandName);
 
 		Element rootElement = PoshiRunnerContext.getMacroRootElement(
 			className, namespace);
@@ -676,7 +676,7 @@ public class PoshiRunnerExecutor {
 		SummaryLoggerHandler.startSummary(executeElement);
 
 		Element commandElement = PoshiRunnerContext.getMacroCommandElement(
-			simpleClassCommandName, namespace);
+			classCommandName, namespace);
 
 		try {
 			Map<String, String> macroReturns = runMacroCommandElement(
@@ -935,16 +935,17 @@ public class PoshiRunnerExecutor {
 
 		XMLLoggerHandler.updateStatus(executeElement, "pending");
 
-		String classCommandName = executeElement.attributeValue("test-case");
+		String namespaceClassCommandName = executeElement.attributeValue(
+			"test-case");
 
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-				classCommandName);
+				namespaceClassCommandName);
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
-				classCommandName);
+				namespaceClassCommandName);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
 			className, namespace);
@@ -956,7 +957,7 @@ public class PoshiRunnerExecutor {
 		}
 
 		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
-			classCommandName, namespace);
+			namespaceClassCommandName, namespace);
 
 		runTestCaseCommandElement(commandElement);
 
