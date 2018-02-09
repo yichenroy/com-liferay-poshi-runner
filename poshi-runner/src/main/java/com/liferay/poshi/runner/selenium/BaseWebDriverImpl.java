@@ -899,41 +899,38 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void dragAndDrop(String locator, String coordString) {
+	public void dragAndDrop(String locator, String... movementsStrings) {
 		try {
-			int x = getElementPositionCenterX(locator);
+			WebElement webElement = getWebElement(locator);
 
-			x += getFramePositionLeft();
-			x += getWindowPositionLeft();
-			x -= getScrollOffsetX();
+			WrapsDriver wrapsDriver = (WrapsDriver)webElement;
 
-			int y = getElementPositionCenterY(locator);
+			WebDriver webDriver = wrapsDriver.getWrappedDriver();
 
-			y += getFramePositionTop();
-			y += getNavigationBarHeight();
-			y += getWindowPositionTop();
-			y -= getScrollOffsetY();
+			Actions actions = new Actions(webDriver);
 
-			Robot robot = new Robot();
+			actions.clickAndHold(webElement);
 
-			robot.mouseMove(x, y);
+			for (int i = 0; i < movementsStrings.length; i++) {
+				String movementsString = movementsStrings[i];
 
-			robot.delay(1500);
+				String[] coords = movementsString.split(",");
 
-			robot.mousePress(InputEvent.BUTTON1_MASK);
+				int x = GetterUtil.getInteger(coords[0]);
+				int y = GetterUtil.getInteger(coords[1]);
 
-			robot.delay(1500);
+				if (i > 0) {
+					actions.pause(1500);
+				}
 
-			String[] coords = coordString.split(",");
+				actions.moveByOffset(x, y);
+			}
 
-			x += GetterUtil.getInteger(coords[0]);
-			y += GetterUtil.getInteger(coords[1]);
+			actions.release();
 
-			robot.mouseMove(x, y);
+			Action action = actions.build();
 
-			robot.delay(1500);
-
-			robot.mouseRelease(InputEvent.BUTTON1_MASK);
+			action.perform();
 		}
 		catch (Exception e) {
 		}

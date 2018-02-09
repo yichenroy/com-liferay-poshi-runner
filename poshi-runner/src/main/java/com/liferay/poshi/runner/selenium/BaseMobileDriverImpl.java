@@ -104,7 +104,7 @@ public abstract class BaseMobileDriverImpl
 	}
 
 	@Override
-	public void dragAndDrop(String locator, String coordString) {
+	public void dragAndDrop(String locator, String... movementsStrings) {
 		throw new UnsupportedOperationException();
 	}
 
