@@ -116,7 +116,7 @@ public class PoshiRunner {
 		System.out.println("###");
 		System.out.println();
 
-		PoshiRunnerContext.setTestCaseCommandName(
+		PoshiRunnerContext.setTestCaseNamespaceClassCommandName(
 			_testNamespaceClassCommandName);
 
 		PoshiRunnerVariablesUtil.clear();

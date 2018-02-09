@@ -218,12 +218,12 @@ public class PoshiRunnerContext {
 			"test-case#" + namespace + "." + classCommandName);
 	}
 
-	public static String getTestCaseCommandName() {
-		return _testCaseCommandName;
-	}
-
 	public static String getTestCaseDescription(String classCommandName) {
 		return _testCaseDescriptions.get(classCommandName);
+	}
+
+	public static String getTestCaseNamespaceClassCommandName() {
+		return _testCaseNamespaceClassCommandName;
 	}
 
 	public static List<String> getTestCaseRequiredPropertyNames() {
@@ -281,8 +281,10 @@ public class PoshiRunnerContext {
 		_readTestToggleFiles();
 	}
 
-	public static void setTestCaseCommandName(String testCaseCommandName) {
-		_testCaseCommandName = testCaseCommandName;
+	public static void setTestCaseNamespaceClassCommandName(
+		String testCaseNamespaceClassCommandName) {
+
+		_testCaseNamespaceClassCommandName = testCaseNamespaceClassCommandName;
 	}
 
 	private static void _addComponentNamespaceClassCommandNames(
@@ -1279,9 +1281,9 @@ public class PoshiRunnerContext {
 		new HashMap<>();
 	private static final List<String> _testCaseAvailablePropertyNames =
 		new ArrayList<>();
-	private static String _testCaseCommandName;
 	private static final Map<String, String> _testCaseDescriptions =
 		new HashMap<>();
+	private static String _testCaseNamespaceClassCommandName;
 	private static final List<String> _testCaseNamespaceClassCommandNames =
 		new ArrayList<>();
 	private static final List<String> _testCaseNamespaceClassNames =
