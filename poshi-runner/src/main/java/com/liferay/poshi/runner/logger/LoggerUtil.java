@@ -348,7 +348,8 @@ public final class LoggerUtil {
 		sb.append("/test-results/");
 		sb.append(
 			StringUtil.replace(
-				PoshiRunnerContext.getTestCaseCommandName(), "#", "_"));
+				PoshiRunnerContext.getTestCaseNamespaceClassCommandName(), "#",
+				"_"));
 		sb.append("/index.html");
 
 		return sb.toString();
@@ -361,7 +362,8 @@ public final class LoggerUtil {
 		sb.append("/test-results/");
 		sb.append(
 			StringUtil.replace(
-				PoshiRunnerContext.getTestCaseCommandName(), "#", "_"));
+				PoshiRunnerContext.getTestCaseNamespaceClassCommandName(), "#",
+				"_"));
 		sb.append("/summary.html");
 
 		return sb.toString();

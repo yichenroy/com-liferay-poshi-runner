@@ -642,7 +642,7 @@ public final class SummaryLoggerHandler {
 			"summaryTestDescription");
 
 		String testCaseDescription = PoshiRunnerContext.getTestCaseDescription(
-			PoshiRunnerContext.getTestCaseCommandName());
+			PoshiRunnerContext.getTestCaseNamespaceClassCommandName());
 
 		if (Validator.isNull(testCaseDescription)) {
 			testCaseDescription = "";
@@ -658,7 +658,8 @@ public final class SummaryLoggerHandler {
 		LoggerElement loggerElement = new LoggerElement("summaryTestName");
 
 		loggerElement.setName("h3");
-		loggerElement.setText(PoshiRunnerContext.getTestCaseCommandName());
+		loggerElement.setText(
+			PoshiRunnerContext.getTestCaseNamespaceClassCommandName());
 
 		return loggerElement;
 	}

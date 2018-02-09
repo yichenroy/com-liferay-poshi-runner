@@ -1640,7 +1640,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isTestName(String testName) {
-		if (testName.equals(PoshiRunnerContext.getTestCaseCommandName())) {
+		if (testName.equals(
+				PoshiRunnerContext.getTestCaseNamespaceClassCommandName())) {
+
 			return true;
 		}
 

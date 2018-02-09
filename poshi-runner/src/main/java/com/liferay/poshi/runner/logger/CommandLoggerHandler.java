@@ -631,7 +631,7 @@ public final class CommandLoggerHandler {
 		throws Exception {
 
 		String testClassCommandName =
-			PoshiRunnerContext.getTestCaseCommandName();
+			PoshiRunnerContext.getTestCaseNamespaceClassCommandName();
 
 		testClassCommandName = StringUtil.replace(
 			testClassCommandName, "#", "_");
