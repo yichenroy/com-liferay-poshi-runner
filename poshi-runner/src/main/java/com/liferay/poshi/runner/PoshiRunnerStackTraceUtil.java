@@ -50,11 +50,14 @@ public final class PoshiRunnerStackTraceUtil {
 	}
 
 	public static String getCurrentNamespace(String namespaceClassCommandName) {
+		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
+			null);
+
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
 				namespaceClassCommandName);
 
-		if (namespace == null) {
+		if (Validator.isNull(namespace) || namespace.equals(defaultNamespace)) {
 			namespace = getCurrentNamespace();
 		}
 
