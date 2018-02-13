@@ -521,24 +521,24 @@ public final class SummaryLoggerHandler {
 		}
 
 		if (summary == null) {
-			String namespaceClassCommandName = null;
+			String namespacedClassCommandName = null;
 			String classType = null;
 
 			if (element.attributeValue("function") != null) {
-				namespaceClassCommandName = element.attributeValue("function");
+				namespacedClassCommandName = element.attributeValue("function");
 				classType = "function";
 			}
 			else if (element.attributeValue("function-summary") != null) {
-				namespaceClassCommandName = element.attributeValue(
+				namespacedClassCommandName = element.attributeValue(
 					"function-summary");
 				classType = "function-summary";
 			}
 			else if (element.attributeValue("macro") != null) {
-				namespaceClassCommandName = element.attributeValue("macro");
+				namespacedClassCommandName = element.attributeValue("macro");
 				classType = "macro";
 			}
 			else if (element.attributeValue("macro-summary") != null) {
-				namespaceClassCommandName = element.attributeValue(
+				namespacedClassCommandName = element.attributeValue(
 					"macro-summary");
 				classType = "macro-summary";
 			}
@@ -548,11 +548,11 @@ public final class SummaryLoggerHandler {
 
 			String classCommandName =
 				PoshiRunnerGetterUtil.
-					getClassCommandNameFromNamespaceClassCommandName(
-						namespaceClassCommandName);
+					getClassCommandNameFromNamespacedClassCommandName(
+						namespacedClassCommandName);
 
 			String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
-				namespaceClassCommandName);
+				namespacedClassCommandName);
 
 			if (classType.startsWith("function")) {
 				summary = PoshiRunnerContext.getFunctionCommandSummary(
@@ -644,7 +644,7 @@ public final class SummaryLoggerHandler {
 			"summaryTestDescription");
 
 		String testCaseDescription = PoshiRunnerContext.getTestCaseDescription(
-			PoshiRunnerContext.getTestCaseNamespaceClassCommandName());
+			PoshiRunnerContext.getTestCaseNamespacedClassCommandName());
 
 		if (Validator.isNull(testCaseDescription)) {
 			testCaseDescription = "";
@@ -661,7 +661,7 @@ public final class SummaryLoggerHandler {
 
 		loggerElement.setName("h3");
 		loggerElement.setText(
-			PoshiRunnerContext.getTestCaseNamespaceClassCommandName());
+			PoshiRunnerContext.getTestCaseNamespacedClassCommandName());
 
 		return loggerElement;
 	}

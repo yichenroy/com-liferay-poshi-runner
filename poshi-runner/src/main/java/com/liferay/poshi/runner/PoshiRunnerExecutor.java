@@ -311,16 +311,16 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(executeElement);
 
-		String namespaceClassCommandName = executeElement.attributeValue(
+		String namespacedClassCommandName = executeElement.attributeValue(
 			"function");
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
-				getClassCommandNameFromNamespaceClassCommandName(
-					namespaceClassCommandName);
+				getClassCommandNameFromNamespacedClassCommandName(
+					namespacedClassCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				classCommandName);
 
 		Exception exception = null;
@@ -328,7 +328,7 @@ public class PoshiRunnerExecutor {
 		int locatorCount = PoshiRunnerContext.getFunctionLocatorCount(
 			className,
 			PoshiRunnerStackTraceUtil.getCurrentNamespace(
-				namespaceClassCommandName));
+				namespacedClassCommandName));
 
 		for (int i = 1; i <= locatorCount; i++) {
 			String locator = executeElement.attributeValue("locator" + i);
@@ -345,13 +345,13 @@ public class PoshiRunnerExecutor {
 					String pathClassName =
 						PoshiRunnerVariablesUtil.replaceCommandVars(
 							PoshiRunnerGetterUtil.
-								getClassNameFromNamespaceClassCommandName(
+								getClassNameFromNamespacedClassCommandName(
 									locator));
 
 					String locatorKey =
 						PoshiRunnerVariablesUtil.replaceCommandVars(
 							PoshiRunnerGetterUtil.
-								getCommandNameFromNamespaceClassCommandName(
+								getCommandNameFromNamespacedClassCommandName(
 									locator));
 
 					PoshiRunnerVariablesUtil.putIntoExecuteMap(
@@ -398,7 +398,7 @@ public class PoshiRunnerExecutor {
 		Element commandElement = PoshiRunnerContext.getFunctionCommandElement(
 			classCommandName,
 			PoshiRunnerStackTraceUtil.getCurrentNamespace(
-				namespaceClassCommandName));
+				namespacedClassCommandName));
 
 		try {
 			if (exception != null) {
@@ -637,22 +637,22 @@ public class PoshiRunnerExecutor {
 
 		XMLLoggerHandler.updateStatus(executeElement, "pending");
 
-		String namespaceClassCommandName = executeElement.attributeValue(
+		String namespacedClassCommandName = executeElement.attributeValue(
 			macroType);
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
-				getClassCommandNameFromNamespaceClassCommandName(
-					namespaceClassCommandName);
+				getClassCommandNameFromNamespacedClassCommandName(
+					namespacedClassCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				classCommandName);
 
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
-			namespaceClassCommandName);
+			namespacedClassCommandName);
 
 		Element rootElement = PoshiRunnerContext.getMacroRootElement(
 			className, namespace);
@@ -935,17 +935,17 @@ public class PoshiRunnerExecutor {
 
 		XMLLoggerHandler.updateStatus(executeElement, "pending");
 
-		String namespaceClassCommandName = executeElement.attributeValue(
+		String namespacedClassCommandName = executeElement.attributeValue(
 			"test-case");
 
 		PoshiRunnerStackTraceUtil.pushStackTrace(executeElement);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-				namespaceClassCommandName);
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
+				namespacedClassCommandName);
 		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
-				namespaceClassCommandName);
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
+				namespacedClassCommandName);
 
 		Element rootElement = PoshiRunnerContext.getTestCaseRootElement(
 			className, namespace);
@@ -957,7 +957,7 @@ public class PoshiRunnerExecutor {
 		}
 
 		Element commandElement = PoshiRunnerContext.getTestCaseCommandElement(
-			namespaceClassCommandName, namespace);
+			namespacedClassCommandName, namespace);
 
 		runTestCaseCommandElement(commandElement);
 

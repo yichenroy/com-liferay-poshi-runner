@@ -110,11 +110,11 @@ public final class CommandLoggerHandler {
 		}
 	}
 
-	public static void logNamespaceClassCommandName(
-		String namespaceClassCommandName) {
+	public static void logNamespacedClassCommandName(
+		String namespacedClassCommandName) {
 
 		LoggerElement dividerLineLoggerElement = _getDividerLineLoggerElement(
-			namespaceClassCommandName);
+			namespacedClassCommandName);
 
 		_commandLogLoggerElement.addChildLoggerElement(
 			dividerLineLoggerElement);
@@ -357,21 +357,21 @@ public final class CommandLoggerHandler {
 
 		sb.append(_getLineItemText("misc", "Running "));
 
-		String namespaceClassCommandName = element.attributeValue("function");
+		String namespacedClassCommandName = element.attributeValue("function");
 
-		sb.append(_getLineItemText("command-name", namespaceClassCommandName));
+		sb.append(_getLineItemText("command-name", namespacedClassCommandName));
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
-				getClassCommandNameFromNamespaceClassCommandName(
-					namespaceClassCommandName);
+				getClassCommandNameFromNamespacedClassCommandName(
+					namespacedClassCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				classCommandName);
 
 		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
-			namespaceClassCommandName);
+			namespacedClassCommandName);
 
 		int functionLocatorCount = PoshiRunnerContext.getFunctionLocatorCount(
 			className, namespace);
@@ -631,7 +631,7 @@ public final class CommandLoggerHandler {
 		throws Exception {
 
 		String testClassCommandName =
-			PoshiRunnerContext.getTestCaseNamespaceClassCommandName();
+			PoshiRunnerContext.getTestCaseNamespacedClassCommandName();
 
 		testClassCommandName = StringUtil.replace(
 			testClassCommandName, "#", "_");

@@ -49,13 +49,15 @@ public final class PoshiRunnerStackTraceUtil {
 			filePath.substring(0, x));
 	}
 
-	public static String getCurrentNamespace(String namespaceClassCommandName) {
+	public static String getCurrentNamespace(
+		String namespacedClassCommandName) {
+
 		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
 			null);
 
 		String namespace =
-			PoshiRunnerGetterUtil.getNamespaceFromNamespaceClassCommandName(
-				namespaceClassCommandName);
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
+				namespacedClassCommandName);
 
 		if (Validator.isNull(namespace) || namespace.equals(defaultNamespace)) {
 			namespace = getCurrentNamespace();
@@ -132,37 +134,39 @@ public final class PoshiRunnerStackTraceUtil {
 		_stackTrace.push(
 			_filePaths.peek() + ":" + element.attributeValue("line-number"));
 
-		String namespaceClassCommandName = null;
+		String namespacedClassCommandName = null;
 		String classType = null;
 
 		if (element.attributeValue("function") != null) {
-			namespaceClassCommandName = element.attributeValue("function");
+			namespacedClassCommandName = element.attributeValue("function");
 			classType = "function";
 		}
 		else if (element.attributeValue("macro") != null) {
-			namespaceClassCommandName = element.attributeValue("macro");
+			namespacedClassCommandName = element.attributeValue("macro");
 			classType = "macro";
 		}
 		else if (element.attributeValue("macro-desktop") != null) {
-			namespaceClassCommandName = element.attributeValue("macro-desktop");
+			namespacedClassCommandName = element.attributeValue(
+				"macro-desktop");
 			classType = "macro";
 		}
 		else if (element.attributeValue("macro-mobile") != null) {
-			namespaceClassCommandName = element.attributeValue("macro-mobile");
+			namespacedClassCommandName = element.attributeValue("macro-mobile");
 			classType = "macro";
 		}
 		else if (element.attributeValue("test-case") != null) {
-			namespaceClassCommandName = element.attributeValue("test-case");
+			namespacedClassCommandName = element.attributeValue("test-case");
 
 			String className =
-				PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
-					namespaceClassCommandName);
+				PoshiRunnerGetterUtil.
+					getClassNameFromNamespacedClassCommandName(
+						namespacedClassCommandName);
 
 			if (className.equals("super")) {
 				className = PoshiRunnerGetterUtil.getExtendedTestCaseName();
 
-				namespaceClassCommandName =
-					namespaceClassCommandName.replaceFirst("super", className);
+				namespacedClassCommandName =
+					namespacedClassCommandName.replaceFirst("super", className);
 			}
 
 			classType = "test-case";
@@ -175,7 +179,7 @@ public final class PoshiRunnerStackTraceUtil {
 					"|test-case) attribute");
 		}
 
-		_pushFilePath(namespaceClassCommandName, classType);
+		_pushFilePath(namespacedClassCommandName, classType);
 	}
 
 	public static void setCurrentElement(Element currentElement) {
@@ -189,15 +193,15 @@ public final class PoshiRunnerStackTraceUtil {
 	}
 
 	private static void _pushFilePath(
-		String namespaceClassCommandName, String classType) {
+		String namespacedClassCommandName, String classType) {
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
-				getClassCommandNameFromNamespaceClassCommandName(
-					namespaceClassCommandName);
+				getClassCommandNameFromNamespacedClassCommandName(
+					namespacedClassCommandName);
 
 		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespaceClassCommandName(
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				classCommandName);
 
 		String fileExtension =
@@ -205,11 +209,11 @@ public final class PoshiRunnerStackTraceUtil {
 
 		String filePath = PoshiRunnerContext.getFilePathFromFileName(
 			className + "." + fileExtension,
-			getCurrentNamespace(namespaceClassCommandName));
+			getCurrentNamespace(namespacedClassCommandName));
 
 		String commandName =
-			PoshiRunnerGetterUtil.getCommandNameFromNamespaceClassCommandName(
-				namespaceClassCommandName);
+			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
+				namespacedClassCommandName);
 
 		_filePaths.push(filePath + "[" + commandName + "]");
 	}
