@@ -52,13 +52,11 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.dom4j.Document;
@@ -81,6 +79,10 @@ public class PoshiRunnerContext {
 		_resourceURLs.clear();
 		_rootElements.clear();
 		_seleniumParameterCounts.clear();
+	}
+
+	public static String getDefaultNamespace() {
+		return _DEFAULT_NAMESPACE;
 	}
 
 	public static String getFilePathFromFileName(
@@ -150,7 +152,7 @@ public class PoshiRunnerContext {
 
 	public static String getNamespaceFromFilePath(String filePath) {
 		if (Validator.isNull(filePath)) {
-			return _getDefaultNamespace();
+			return getDefaultNamespace();
 		}
 
 		for (Map.Entry<String, String> entry : _filePaths.entrySet()) {
@@ -165,7 +167,7 @@ public class PoshiRunnerContext {
 			}
 		}
 
-		return _getDefaultNamespace();
+		return getDefaultNamespace();
 	}
 
 	public static String getPathLocator(
@@ -289,22 +291,6 @@ public class PoshiRunnerContext {
 			testCaseNamespacedClassCommandName;
 	}
 
-	private static void _addComponentNamespacedClassCommandNames(
-		String componentName, String namespacedClassCommandName) {
-
-		Set<String> namespacedClassCommandNames = new TreeSet<>();
-
-		namespacedClassCommandNames.add(namespacedClassCommandName);
-
-		if (_componentNamespacedClassCommandNames.containsKey(componentName)) {
-			namespacedClassCommandNames.addAll(
-				_componentNamespacedClassCommandNames.get(componentName));
-		}
-
-		_componentNamespacedClassCommandNames.put(
-			componentName, namespacedClassCommandNames);
-	}
-
 	private static int _getAllocatedTestGroupSize(int testCount) {
 		int groupCount = MathUtil.quotient(
 			testCount, PropsValues.TEST_BATCH_MAX_GROUP_SIZE, true);
@@ -387,10 +373,6 @@ public class PoshiRunnerContext {
 		}
 
 		return classCommandName;
-	}
-
-	private static String _getDefaultNamespace() {
-		return _DEFAULT_NAMESPACE;
 	}
 
 	private static List<URL> _getPoshiURLs(
@@ -734,10 +716,6 @@ public class PoshiRunnerContext {
 						continue;
 					}
 
-					_addComponentNamespacedClassCommandNames(
-						componentName,
-						testCaseNamespacedClassName + "#" + extendsCommandName);
-
 					_commandElements.put(
 						"test-case#" + testCaseNamespacedClassName + "#" +
 							extendsCommandName,
@@ -761,22 +739,6 @@ public class PoshiRunnerContext {
 
 				_testCaseNamespacedClassCommandNames.add(
 					namespacedClassCommandName);
-
-				if (commandElement.attributeValue("known-issues") != null) {
-					for (String productName : _productNames) {
-						if (componentName.startsWith(productName)) {
-							_addComponentNamespacedClassCommandNames(
-								productName + "-known-issues",
-								namespacedClassCommandName);
-
-							break;
-						}
-					}
-				}
-				else {
-					_addComponentNamespacedClassCommandNames(
-						componentName, namespacedClassCommandName);
-				}
 			}
 		}
 	}
@@ -1198,26 +1160,7 @@ public class PoshiRunnerContext {
 
 				sb.append("=");
 
-				Set<String> namespacedClassCommandNames =
-					_componentNamespacedClassCommandNames.get(componentName);
-
-				if (Validator.isNotNull(namespacedClassCommandNames) &&
-					!namespacedClassCommandNames.isEmpty()) {
-
-					Iterator<String> iterator =
-						namespacedClassCommandNames.iterator();
-
-					while (iterator.hasNext()) {
-						sb.append(iterator.next());
-
-						if (iterator.hasNext()) {
-							sb.append(" ");
-						}
-					}
-				}
-				else {
-					sb.append(PropsValues.TEST_NAME);
-				}
+				sb.append(PropsValues.TEST_NAME);
 
 				sb.append("\n");
 			}
@@ -1271,8 +1214,6 @@ public class PoshiRunnerContext {
 	private static final Map<String, String> _commandSummaries =
 		new HashMap<>();
 	private static final Set<String> _componentNames = new TreeSet<>();
-	private static final Map<String, Set<String>>
-		_componentNamespacedClassCommandNames = new TreeMap<>();
 	private static final Map<String, String> _filePaths = new HashMap<>();
 	private static final Map<String, Integer> _functionLocatorCounts =
 		new HashMap<>();
