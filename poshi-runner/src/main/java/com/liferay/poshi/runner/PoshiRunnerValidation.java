@@ -690,7 +690,7 @@ public class PoshiRunnerValidation {
 						getClassNameFromNamespacedClassCommandName(locator);
 
 				String defaultNamespace =
-					PoshiRunnerContext.getNamespaceFromFilePath(null);
+					PoshiRunnerContext.getDefaultNamespace();
 
 				if (!PoshiRunnerContext.isRootElement(
 						"path", pathName, namespace) &&
@@ -1087,8 +1087,7 @@ public class PoshiRunnerValidation {
 			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				namespacedClassCommandName);
 
-		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
-			null);
+		String defaultNamespace = PoshiRunnerContext.getDefaultNamespace();
 
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(

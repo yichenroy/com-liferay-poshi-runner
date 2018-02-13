@@ -38,7 +38,7 @@ public final class PoshiRunnerStackTraceUtil {
 
 	public static String getCurrentNamespace() {
 		if (_filePaths.isEmpty()) {
-			return PoshiRunnerContext.getNamespaceFromFilePath(null);
+			return PoshiRunnerContext.getDefaultNamespace();
 		}
 
 		String filePath = getCurrentFilePath();
@@ -52,8 +52,7 @@ public final class PoshiRunnerStackTraceUtil {
 	public static String getCurrentNamespace(
 		String namespacedClassCommandName) {
 
-		String defaultNamespace = PoshiRunnerContext.getNamespaceFromFilePath(
-			null);
+		String defaultNamespace = PoshiRunnerContext.getDefaultNamespace();
 
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
