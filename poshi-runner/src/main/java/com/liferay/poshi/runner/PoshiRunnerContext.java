@@ -1159,9 +1159,7 @@ public class PoshiRunnerContext {
 				sb.append(componentNameKey);
 
 				sb.append("=");
-
 				sb.append(PropsValues.TEST_NAME);
-
 				sb.append("\n");
 			}
 		}
