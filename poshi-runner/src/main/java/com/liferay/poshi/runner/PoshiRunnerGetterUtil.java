@@ -319,10 +319,10 @@ public class PoshiRunnerGetterUtil {
 	}
 
 	public static String getNamespaceFromNamespacedClassName(
-		String namespaceClassName) {
+		String namespacedClassName) {
 
 		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
-			namespaceClassName);
+			namespacedClassName);
 
 		if (matcher.find()) {
 			String namespace = matcher.group("namespace");
@@ -335,7 +335,7 @@ public class PoshiRunnerGetterUtil {
 		}
 
 		throw new RuntimeException(
-			"Unable to find namespace in " + namespaceClassName);
+			"Unable to find namespace in " + namespacedClassName);
 	}
 
 	public static String getProjectDirName() {
