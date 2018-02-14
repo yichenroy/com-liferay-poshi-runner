@@ -103,10 +103,12 @@ public class PoshiRunnerGetterUtil {
 				return className + "#" + commandName;
 			}
 
-			return matcher.group("className");
+			return className;
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find class name and/or command name in " +
+				namespacedClassCommandName);
 	}
 
 	public static String getClassNameFromFilePath(String filePath) {
@@ -130,7 +132,8 @@ public class PoshiRunnerGetterUtil {
 			return matcher.group("className");
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find class name in " + namespacedClassCommandName);
 	}
 
 	public static String getClassNameFromNamespacedClassName(
@@ -143,7 +146,8 @@ public class PoshiRunnerGetterUtil {
 			return matcher.group("className");
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find class name in " + namespacedClassName);
 	}
 
 	public static String getClassTypeFromFileExtension(String fileExtension) {
@@ -178,7 +182,8 @@ public class PoshiRunnerGetterUtil {
 			return commandName;
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find command name in " + namespacedClassCommandName);
 	}
 
 	public static String getExtendedTestCaseName() {
@@ -289,7 +294,8 @@ public class PoshiRunnerGetterUtil {
 			return namespace + "." + className;
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find class name in " + namespacedClassCommandName);
 	}
 
 	public static String getNamespaceFromNamespacedClassCommandName(
@@ -308,7 +314,8 @@ public class PoshiRunnerGetterUtil {
 			return namespace;
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find namespace in " + namespacedClassCommandName);
 	}
 
 	public static String getNamespaceFromNamespacedClassName(
@@ -327,7 +334,8 @@ public class PoshiRunnerGetterUtil {
 			return namespace;
 		}
 
-		throw new RuntimeException();
+		throw new RuntimeException(
+			"Unable to find namespace in " + namespaceClassName);
 	}
 
 	public static String getProjectDirName() {
