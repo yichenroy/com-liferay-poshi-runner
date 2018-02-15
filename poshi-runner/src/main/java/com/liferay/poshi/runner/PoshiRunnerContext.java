@@ -1145,12 +1145,6 @@ public class PoshiRunnerContext {
 
 			sb.append(_getTestBatchGroups());
 		}
-		else {
-			sb.append("Test case method names: ");
-			sb.append("=");
-			sb.append(PropsValues.TEST_NAME);
-			sb.append("\n");
-		}
 
 		FileUtil.write("test.case.method.names.properties", sb.toString());
 	}
