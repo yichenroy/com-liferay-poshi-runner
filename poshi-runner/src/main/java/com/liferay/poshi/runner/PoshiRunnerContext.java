@@ -987,6 +987,10 @@ public class PoshiRunnerContext {
 
 			String locator = locatorElement.getText();
 
+			if (locatorKey.equals("") && locator.equals("")) {
+				continue;
+			}
+
 			if (locatorKey.equals("EXTEND_ACTION_PATH")) {
 				_pathExtensions.put(namespace + "." + className, locator);
 			}
