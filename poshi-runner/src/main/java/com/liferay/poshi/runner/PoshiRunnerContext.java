@@ -782,6 +782,10 @@ public class PoshiRunnerContext {
 		_readPoshiFiles(poshiFileNames, _TEST_BASE_DIR_NAME);
 
 		_initComponentCommandNamesMap();
+
+		if (!_exceptions.isEmpty()) {
+			_throwExceptions();
+		}
 	}
 
 	private static void _readPoshiFiles(
@@ -968,6 +972,8 @@ public class PoshiRunnerContext {
 
 		_rootElements.put("path#" + namespace + "." + className, rootElement);
 
+		List<String> locatorKeys = new ArrayList<>();
+
 		Element bodyElement = rootElement.element("body");
 
 		Element tableElement = bodyElement.element("table");
@@ -990,6 +996,26 @@ public class PoshiRunnerContext {
 			if (locatorKey.equals("") && locator.equals("")) {
 				continue;
 			}
+
+			if (locatorKeys.contains(locatorKey)) {
+				String filePath = getFilePathFromFileName(
+					className + ".path", namespace);
+
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("Duplicate path locator key '");
+				sb.append(className + "#" + locatorKey);
+				sb.append("' at namespace '");
+				sb.append(namespace);
+				sb.append("' \n");
+				sb.append(filePath);
+				sb.append(": ");
+				sb.append(locatorKeyElement.attributeValue("line-number"));
+
+				_exceptions.add(sb.toString());
+			}
+
+			locatorKeys.add(locatorKey);
 
 			if (locatorKey.equals("EXTEND_ACTION_PATH")) {
 				_pathExtensions.put(namespace + "." + className, locator);
@@ -1126,6 +1152,19 @@ public class PoshiRunnerContext {
 		}
 	}
 
+	private static void _throwExceptions() throws Exception {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("Error(s) occurred when reading Poshi files into context:\n");
+
+		for (String exception : _exceptions) {
+			sb.append(exception);
+			sb.append("\n\n");
+		}
+
+		throw new Exception(sb.toString());
+	}
+
 	private static void _writeTestCaseMethodNamesProperties() throws Exception {
 		StringBuilder sb = new StringBuilder();
 
@@ -1184,6 +1223,7 @@ public class PoshiRunnerContext {
 		new HashMap<>();
 	private static final Map<String, String> _commandSummaries =
 		new HashMap<>();
+	private static final Set<String> _exceptions = new HashSet<>();
 	private static final Map<String, String> _filePaths = new HashMap<>();
 	private static final Map<String, Integer> _functionLocatorCounts =
 		new HashMap<>();
