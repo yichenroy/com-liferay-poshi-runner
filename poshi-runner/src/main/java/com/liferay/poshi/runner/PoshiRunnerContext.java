@@ -39,8 +39,6 @@ import java.net.URL;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,6 +55,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -814,30 +814,29 @@ public class PoshiRunnerContext {
 
 				String resourceURLString = resourceURL.toString();
 
+				System.out.println("resourceURL: " + resourceURLString);
+
 				int x = resourceURLString.indexOf("!");
 
 				try (FileSystem fileSystem = FileSystems.newFileSystem(
 						URI.create(resourceURLString.substring(0, x)),
 						new HashMap<String, String>(), classLoader)) {
 
-					Path namespacePath = fileSystem.getPath(
-						resourceName + "/namespace");
+					Matcher matcher = _poshiResourceJarNamePattern.matcher(
+						resourceURLString);
 
-					if (!Files.exists(namespacePath)) {
+					if (!matcher.find()) {
 						throw new RuntimeException(
-							"A namespace must be defined at " +
+							"A namespace must be defined for resource: " +
 								resourceURLString);
 					}
 
-					URI namespaceURI = namespacePath.toUri();
-
-					String namespace = StringUtil.trim(
-						FileUtil.read(namespaceURI.toURL()));
+					String namespace = matcher.group("namespace");
 
 					if (namespace.equals(_DEFAULT_NAMESPACE)) {
 						throw new RuntimeException(
 							"Namespace: '" + _DEFAULT_NAMESPACE +
-								"' is reserved\nat" + namespaceURI);
+								"' is reserved");
 					}
 					else if (_namespaces.contains(namespace)) {
 						throw new RuntimeException(
@@ -1190,6 +1189,9 @@ public class PoshiRunnerContext {
 	private static final List<String> _namespaces = new ArrayList<>();
 	private static final Map<String, String> _pathExtensions = new HashMap<>();
 	private static final Map<String, String> _pathLocators = new HashMap<>();
+	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
+		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
+			"(\\-\\w+)*)\\-(?<sha>\\w+)\\.jar.*");
 	private static final List<URL> _resourceURLs = new ArrayList<>();
 	private static final Map<String, Element> _rootElements = new HashMap<>();
 	private static final Map<String, Integer> _seleniumParameterCounts =
