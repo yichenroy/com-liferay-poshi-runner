@@ -1142,9 +1142,9 @@ public class PoshiRunnerContext {
 			Properties properties =
 				_namespacedClassCommandNamePropertiesMap.get(
 					testCaseNamespacedClassCommandName);
-			String testClassName =
+			String testNamespacedClassName =
 				PoshiRunnerGetterUtil.
-					getClassNameFromNamespacedClassCommandName(
+					getNamespacedClassNameFromNamespacedClassCommandName(
 						testCaseNamespacedClassCommandName);
 			String testCommandName =
 				PoshiRunnerGetterUtil.
@@ -1152,7 +1152,7 @@ public class PoshiRunnerContext {
 						testCaseNamespacedClassCommandName);
 
 			for (String propertyName : properties.stringPropertyNames()) {
-				sb.append(testClassName);
+				sb.append(testNamespacedClassName);
 				sb.append("TestCase.test");
 				sb.append(testCommandName);
 				sb.append(".");
