@@ -763,9 +763,7 @@ public class PoshiRunnerContext {
 			"**/*.testcase"
 		};
 
-		_readPoshiFilesFromClassPath(
-			poshiFileNames, "default/testFunctional",
-			"override/testFunctional");
+		_readPoshiFilesFromClassPath(poshiFileNames, "testFunctional");
 
 		if (Validator.isNotNull(PropsValues.TEST_INCLUDE_DIR_NAMES)) {
 			_readPoshiFiles(
