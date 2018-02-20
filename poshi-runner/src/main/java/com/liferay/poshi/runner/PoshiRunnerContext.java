@@ -77,7 +77,6 @@ public class PoshiRunnerContext {
 		_filePaths.clear();
 		_functionLocatorCounts.clear();
 		_pathLocators.clear();
-		_resourceURLs.clear();
 		_rootElements.clear();
 		_seleniumParameterCounts.clear();
 	}
@@ -90,6 +89,10 @@ public class PoshiRunnerContext {
 		String fileName, String namespace) {
 
 		return _filePaths.get(namespace + "." + fileName);
+	}
+
+	public static List<String> getFilePaths() {
+		return new ArrayList<>(_filePaths.values());
 	}
 
 	public static Element getFunctionCommandElement(
@@ -201,10 +204,6 @@ public class PoshiRunnerContext {
 		String className, String namespace) {
 
 		return _rootElements.get("path#" + namespace + "." + className);
-	}
-
-	public static List<URL> getResourceURLs() {
-		return _resourceURLs;
 	}
 
 	public static int getSeleniumParameterCount(String commandName) {
@@ -406,8 +405,6 @@ public class PoshiRunnerContext {
 				namespace + "." +
 					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
 				filePath);
-
-			_resourceURLs.add(url);
 		}
 
 		return urls;
@@ -1235,7 +1232,6 @@ public class PoshiRunnerContext {
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
 			"(\\-\\w+)*)\\-(?<sha>\\w+)\\.jar.*");
-	private static final List<URL> _resourceURLs = new ArrayList<>();
 	private static final Map<String, Element> _rootElements = new HashMap<>();
 	private static final Map<String, Integer> _seleniumParameterCounts =
 		new HashMap<>();
