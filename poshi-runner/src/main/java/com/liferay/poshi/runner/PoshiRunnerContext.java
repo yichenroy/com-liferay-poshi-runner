@@ -376,8 +376,7 @@ public class PoshiRunnerContext {
 	}
 
 	private static List<URL> _getPoshiURLs(
-			FileSystem fileSystem, String[] includes, String baseDirName,
-			String namespace)
+			FileSystem fileSystem, String[] includes, String baseDirName)
 		throws IOException {
 
 		List<URL> urls = null;
@@ -390,31 +389,14 @@ public class PoshiRunnerContext {
 				fileSystem, includes, baseDirName);
 		}
 
-		for (URL url : urls) {
-			String filePath = url.getFile();
-
-			if (OSDetector.isWindows()) {
-				if (filePath.startsWith("/")) {
-					filePath = filePath.substring(1);
-				}
-
-				filePath = filePath.replace("/", "\\");
-			}
-
-			_filePaths.put(
-				namespace + "." +
-					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
-				filePath);
-		}
-
 		return urls;
 	}
 
 	private static List<URL> _getPoshiURLs(
-			String[] includes, String baseDirName, String namespace)
+			String[] includes, String baseDirName)
 		throws Exception {
 
-		return _getPoshiURLs(null, includes, baseDirName, namespace);
+		return _getPoshiURLs(null, includes, baseDirName);
 	}
 
 	private static String _getTestBatchGroups() throws Exception {
@@ -790,13 +772,9 @@ public class PoshiRunnerContext {
 		throws Exception {
 
 		for (String baseDirName : baseDirNames) {
-			for (URL url :
-					_getPoshiURLs(includes, baseDirName, _DEFAULT_NAMESPACE)) {
+			List<URL> poshiURLs = _getPoshiURLs(includes, baseDirName);
 
-				_storeRootElement(
-					PoshiRunnerGetterUtil.getRootElementFromURL(url),
-					url.getFile(), _DEFAULT_NAMESPACE);
-			}
+			_storeRootElements(poshiURLs, _DEFAULT_NAMESPACE);
 		}
 	}
 
@@ -847,14 +825,9 @@ public class PoshiRunnerContext {
 
 					List<URL> poshiURLs = _getPoshiURLs(
 						fileSystem, includes,
-						resourceURLString.substring(x + 1), namespace);
+						resourceURLString.substring(x + 1));
 
-					for (URL poshiURL : poshiURLs) {
-						_storeRootElement(
-							PoshiRunnerGetterUtil.getRootElementFromURL(
-								poshiURL),
-							poshiURL.getFile(), namespace);
-					}
+					_storeRootElements(poshiURLs, namespace);
 				}
 			}
 		}
@@ -964,7 +937,8 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _storePathElement(
-			Element rootElement, String className, String namespace)
+			Element rootElement, String className, String filePath,
+			String namespace)
 		throws Exception {
 
 		_rootElements.put("path#" + namespace + "." + className, rootElement);
@@ -995,9 +969,6 @@ public class PoshiRunnerContext {
 			}
 
 			if (locatorKeys.contains(locatorKey)) {
-				String filePath = getFilePathFromFileName(
-					className + ".path", namespace);
-
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("Duplicate path locator key '");
@@ -1145,7 +1116,54 @@ public class PoshiRunnerContext {
 			}
 		}
 		else if (classType.equals("path")) {
-			_storePathElement(rootElement, className, namespace);
+			_storePathElement(rootElement, className, filePath, namespace);
+		}
+	}
+
+	private static void _storeRootElements(List<URL> urls, String namespace)
+		throws Exception {
+
+		Map<String, String> filePaths = new HashMap<>();
+
+		for (URL url : urls) {
+			String filePath = url.getFile();
+
+			if (OSDetector.isWindows()) {
+				if (filePath.startsWith("/")) {
+					filePath = filePath.substring(1);
+				}
+
+				filePath = filePath.replace("/", "\\");
+			}
+
+			String fileName = PoshiRunnerGetterUtil.getFileNameFromFilePath(
+				filePath);
+
+			if (filePaths.containsKey(fileName)) {
+				System.out.println(
+					"WARNING: Duplicate file name '" + fileName +
+						"' found within the namespace '" + namespace + "':\n" +
+							filePath + "\n" + filePaths.get(fileName) + "\n");
+			}
+
+			filePaths.put(fileName, filePath);
+
+			_storeRootElement(
+				PoshiRunnerGetterUtil.getRootElementFromURL(url), filePath,
+				namespace);
+
+			if (OSDetector.isWindows()) {
+				if (filePath.startsWith("/")) {
+					filePath = filePath.substring(1);
+				}
+
+				filePath = filePath.replace("/", "\\");
+			}
+
+			_filePaths.put(
+				namespace + "." +
+					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+				filePath);
 		}
 	}
 
