@@ -1042,9 +1042,37 @@ public class PoshiRunnerContext {
 				String classCommandName = className + "#" + commandName;
 
 				if (isCommandElement(classType, classCommandName, namespace)) {
-					System.out.println(
-						"Duplicate command name\n" + filePath + ":" +
-							commandElement.attributeValue("line-number"));
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Duplicate command name '");
+					sb.append(classCommandName);
+					sb.append("' at namespace '");
+					sb.append(namespace);
+					sb.append("'\n");
+					sb.append(filePath);
+					sb.append(": ");
+					sb.append(commandElement.attributeValue("line-number"));
+					sb.append("\n");
+
+					String duplicateElementFilePath = getFilePathFromFileName(
+						PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+						namespace);
+
+					if (Validator.isNull(duplicateElementFilePath)) {
+						duplicateElementFilePath = filePath;
+					}
+
+					sb.append(duplicateElementFilePath);
+					sb.append(": ");
+
+					Element duplicateElement = _commandElements.get(
+						classType + "#" + namespace + "." + classCommandName);
+
+					sb.append(duplicateElement.attributeValue("line-number"));
+
+					_exceptions.add(sb.toString());
+
+					continue;
 				}
 
 				String namespacedClassCommandName =
