@@ -1476,22 +1476,22 @@ public class PoshiRunnerValidation {
 	protected static void validateTestCaseContext(
 		Element element, String filePath) {
 
-		String testName = element.attributeValue("test-case");
-
 		String namespace = PoshiRunnerContext.getNamespaceFromFilePath(
 			filePath);
+
+		String testName = element.attributeValue("test-case");
 
 		String className =
 			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
 				testName);
 
-		String commandName =
-			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
-				testName);
-
 		if (className.equals("super")) {
 			className = PoshiRunnerGetterUtil.getExtendedTestCaseName(filePath);
 		}
+
+		String commandName =
+			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
+				testName);
 
 		validateTestName(
 			namespace + "." + className + "#" + commandName,
