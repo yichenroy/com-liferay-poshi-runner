@@ -375,6 +375,21 @@ public class PoshiRunnerContext {
 		return classCommandName;
 	}
 
+	private static Exception _getDuplicateLocatorsException() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(
+			"Duplicate locator(s) found while loading Poshi files into " +
+				"context:\n");
+
+		for (String exception : _duplicateLocatorMessages) {
+			sb.append(exception);
+			sb.append("\n\n");
+		}
+
+		return new Exception(sb.toString());
+	}
+
 	private static List<URL> _getPoshiURLs(
 			FileSystem fileSystem, String[] includes, String baseDirName)
 		throws IOException {
@@ -762,8 +777,8 @@ public class PoshiRunnerContext {
 
 		_initComponentCommandNamesMap();
 
-		if (!_exceptions.isEmpty()) {
-			_throwExceptions();
+		if (!_duplicateLocatorMessages.isEmpty()) {
+			throw _getDuplicateLocatorsException();
 		}
 	}
 
@@ -980,7 +995,7 @@ public class PoshiRunnerContext {
 				sb.append(": ");
 				sb.append(locatorKeyElement.attributeValue("line-number"));
 
-				_exceptions.add(sb.toString());
+				_duplicateLocatorMessages.add(sb.toString());
 			}
 
 			locatorKeys.add(locatorKey);
@@ -1070,7 +1085,7 @@ public class PoshiRunnerContext {
 
 					sb.append(duplicateElement.attributeValue("line-number"));
 
-					_exceptions.add(sb.toString());
+					_duplicateLocatorMessages.add(sb.toString());
 
 					continue;
 				}
@@ -1195,19 +1210,6 @@ public class PoshiRunnerContext {
 		}
 	}
 
-	private static void _throwExceptions() throws Exception {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("Error(s) occurred when reading Poshi files into context:\n");
-
-		for (String exception : _exceptions) {
-			sb.append(exception);
-			sb.append("\n\n");
-		}
-
-		throw new Exception(sb.toString());
-	}
-
 	private static void _writeTestCaseMethodNamesProperties() throws Exception {
 		StringBuilder sb = new StringBuilder();
 
@@ -1266,7 +1268,8 @@ public class PoshiRunnerContext {
 		new HashMap<>();
 	private static final Map<String, String> _commandSummaries =
 		new HashMap<>();
-	private static final Set<String> _exceptions = new HashSet<>();
+	private static final Set<String> _duplicateLocatorMessages =
+		new HashSet<>();
 	private static final Map<String, String> _filePaths = new HashMap<>();
 	private static final Map<String, Integer> _functionLocatorCounts =
 		new HashMap<>();
