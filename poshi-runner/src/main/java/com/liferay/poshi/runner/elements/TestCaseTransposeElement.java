@@ -34,6 +34,51 @@ public class TestCaseTransposeElement extends TransposeElement {
 		_transpose();
 	}
 
+	private void _overrideCommandElements() {
+		Element overrideElement = getOverrideElementCopy();
+
+		Element overrideSetUpElement = overrideElement.element("set-up");
+
+		if (Validator.isNotNull(overrideSetUpElement)) {
+			Element baseSetUpElement = element("set-up");
+
+			baseSetUpElement.detach();
+
+			add(overrideSetUpElement);
+		}
+
+		Element overrideTearDownElement = overrideElement.element("tear-down");
+
+		if (Validator.isNotNull(overrideTearDownElement)) {
+			Element baseTearDownElement = element("tear-down");
+
+			baseTearDownElement.detach();
+
+			add(overrideTearDownElement);
+		}
+
+		List<Element> baseCommandElements = elements("command");
+		List<Element> overrideCommandElements = overrideElement.elements(
+			"command");
+
+		for (Element overrideCommandElement : overrideCommandElements) {
+			String overrideCommandName = overrideCommandElement.attributeValue(
+				"name");
+
+			for (Element baseCommandElement : baseCommandElements) {
+				if (overrideCommandName.equals(
+						baseCommandElement.attributeValue("name"))) {
+
+					baseCommandElement.detach();
+
+					break;
+				}
+			}
+
+			add(overrideCommandElement);
+		}
+	}
+
 	private void _overridePropertyElements() {
 		Element overrideElement = getOverrideElementCopy();
 
@@ -62,7 +107,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 	private void _overrideRootSummaryAttribute() {
 		Element overrideElement = getOverrideElementCopy();
 
-		String overrideRootSummary = attributeValue("summary");
+		String overrideRootSummary = overrideElement.attributeValue("summary");
 
 		if (Validator.isNotNull(overrideRootSummary)) {
 			addAttribute("summary", overrideRootSummary);
@@ -97,6 +142,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 		setContent(baseElement.content());
 
+		_overrideCommandElements();
 		_overridePropertyElements();
 		_overrideRootSummaryAttribute();
 		_overrideVarElements();
