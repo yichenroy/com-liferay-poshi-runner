@@ -18,6 +18,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
+import com.liferay.poshi.runner.elements.TransposeElement;
+import com.liferay.poshi.runner.elements.TransposeElementFactory;
 import com.liferay.poshi.runner.pql.PQLEntity;
 import com.liferay.poshi.runner.pql.PQLEntityFactory;
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
@@ -765,10 +767,37 @@ public class PoshiRunnerContext {
 			String overrideNamespace, String baseNamespacedClassName)
 		throws Exception {
 
-		String className = PoshiRunnerGetterUtil.getClassNameFromFilePath(
-			filePath);
+		String baseClassName =
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+				baseNamespacedClassName);
+		String baseNamespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+				baseNamespacedClassName);
+		String overrideClassName =
+			PoshiRunnerGetterUtil.getClassNameFromFilePath(filePath);
 		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
 			filePath);
+
+		Element baseRootElement = getRootElementFromClassType(
+			baseClassName, classType, baseNamespace);
+
+		if (Validator.isNull(baseRootElement)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Unable to find root element for base class: ");
+			sb.append(baseNamespacedClassName);
+			sb.append("\n");
+			sb.append(filePath);
+			sb.append(":");
+			sb.append(overrideRootElement.attributeValue("line-number"));
+
+			throw new Exception(sb.toString());
+		}
+
+		TransposeElement transposeElement =
+			TransposeElementFactory.newTransposeElement(
+				baseRootElement, overrideRootElement, classType,
+				overrideNamespace + "." + overrideClassName);
 	}
 
 	private static void _readPoshiFiles() throws Exception {
