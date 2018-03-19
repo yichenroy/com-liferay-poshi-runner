@@ -206,6 +206,12 @@ public class PoshiRunnerContext {
 		return _rootElements.get("path#" + namespace + "." + className);
 	}
 
+	public static Element getRootElementFromClassType(
+		String className, String classType, String namespace) {
+
+		return _rootElements.get(classType + "#" + namespace + "." + className);
+	}
+
 	public static int getSeleniumParameterCount(String commandName) {
 		return _seleniumParameterCounts.get(commandName);
 	}
