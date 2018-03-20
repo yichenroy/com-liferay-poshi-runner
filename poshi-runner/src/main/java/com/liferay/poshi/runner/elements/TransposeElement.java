@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner.elements;
 
+import java.util.List;
+
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -50,6 +52,40 @@ public class TransposeElement extends DefaultElement {
 
 	public String getOverrideNamespacedClassName() {
 		return _overrideNamespacedClassName;
+	}
+
+	protected void overrideCommandElements() {
+		Element overrideElement = getOverrideElementCopy();
+
+		List<Element> baseCommandElements = elements("command");
+		List<Element> overrideCommandElements = overrideElement.elements(
+			"command");
+
+		for (Element overrideCommandElement : overrideCommandElements) {
+			String overrideCommandName = overrideCommandElement.attributeValue(
+				"name");
+
+			TransposeElement commandTransposeElement =
+				new CommandTransposeElement(
+					overrideCommandElement, overrideCommandElement,
+					getOverrideNamespacedClassName());
+
+			for (Element baseCommandElement : baseCommandElements) {
+				if (overrideCommandName.equals(
+						baseCommandElement.attributeValue("name"))) {
+
+					baseCommandElement.detach();
+
+					commandTransposeElement = new CommandTransposeElement(
+						baseCommandElement, overrideCommandElement,
+						getOverrideNamespacedClassName());
+
+					break;
+				}
+			}
+
+			add(commandTransposeElement);
+		}
 	}
 
 	private void _transpose() {
