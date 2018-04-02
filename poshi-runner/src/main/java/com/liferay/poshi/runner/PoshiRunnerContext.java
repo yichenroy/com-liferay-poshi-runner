@@ -793,11 +793,57 @@ public class PoshiRunnerContext {
 
 			throw new Exception(sb.toString());
 		}
+		else if (baseRootElement instanceof TransposeElement) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(baseNamespacedClassName);
+			sb.append(sb.append(" is already overridden by "));
+			sb.append(
+				((TransposeElement)baseRootElement).
+					getOverrideNamespacedClassName());
+
+			throw new Exception(sb.toString());
+		}
 
 		TransposeElement transposeElement =
 			TransposeElementFactory.newTransposeElement(
 				baseRootElement, overrideRootElement, classType,
 				overrideNamespace + "." + overrideClassName);
+
+		List<Element> overrideCommandElements = transposeElement.elements(
+			"command");
+
+		for (Element overrideCommandElement : overrideCommandElements) {
+			if (overrideCommandElement instanceof TransposeElement) {
+				String baseNamespacedClassCommandName =
+					baseNamespacedClassName + "#" +
+						overrideCommandElement.attributeValue("name");
+
+				Element baseCommandElement = _commandElements.get(
+					classType + "#" + baseNamespacedClassCommandName);
+
+				if (Validator.isNotNull(baseCommandElement) &&
+					(baseCommandElement instanceof TransposeElement)) {
+
+					StringBuilder sb = new StringBuilder();
+
+					sb.append(baseNamespacedClassCommandName);
+					sb.append(" is already overridden by ");
+					sb.append(
+						((TransposeElement)baseCommandElement).
+							getOverrideNamespacedClassName());
+					sb.append("#");
+					sb.append(baseCommandElement.attributeValue("name"));
+
+					throw new Exception(sb.toString());
+				}
+
+				_commandElements.put(
+					classType + "#" + baseNamespacedClassName + "#" +
+						overrideCommandElement.attributeValue("name"),
+					overrideCommandElement);
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
