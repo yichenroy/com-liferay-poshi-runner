@@ -44,7 +44,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 			baseSetUpElement.detach();
 
-			add(overrideSetUpElement);
+			add(overrideSetUpElement.createCopy());
 		}
 
 		Element overrideTearDownElement = overrideElement.element("tear-down");
@@ -54,7 +54,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 			baseTearDownElement.detach();
 
-			add(overrideTearDownElement);
+			add(overrideTearDownElement.createCopy());
 		}
 
 		List<Element> baseCommandElements = elements("command");
@@ -75,7 +75,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 				}
 			}
 
-			add(overrideCommandElement);
+			add(overrideCommandElement.createCopy());
 		}
 	}
 
@@ -100,7 +100,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 				}
 			}
 
-			add(overridePropertyElement);
+			add(overridePropertyElement.createCopy());
 		}
 	}
 
@@ -133,7 +133,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 				}
 			}
 
-			add(overrideVarElement);
+			add(overrideVarElement.createCopy());
 		}
 	}
 
