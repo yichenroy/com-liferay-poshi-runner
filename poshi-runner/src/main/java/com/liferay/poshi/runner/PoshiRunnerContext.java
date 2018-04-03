@@ -810,6 +810,9 @@ public class PoshiRunnerContext {
 				baseRootElement, overrideRootElement, classType,
 				overrideNamespace + "." + overrideClassName);
 
+		_rootElements.put(
+			classType + "#" + baseNamespacedClassName, transposeElement);
+
 		List<Element> overrideCommandElements = transposeElement.elements(
 			"command");
 
