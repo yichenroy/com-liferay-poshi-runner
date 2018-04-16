@@ -102,34 +102,11 @@ public class TestCaseTransposeElement extends TransposeElement {
 		}
 	}
 
-	private void _overrideVarElements() {
-		Element overrideElement = getOverrideElementCopy();
-
-		List<Element> baseVarElements = elements("var");
-		List<Element> overrideVarElements = overrideElement.elements("var");
-
-		for (Element overrideVarElement : overrideVarElements) {
-			String overrideVarName = overrideVarElement.attributeValue("name");
-
-			for (Element baseVarElement : baseVarElements) {
-				if (overrideVarName.equals(
-						baseVarElement.attributeValue("name"))) {
-
-					baseVarElement.detach();
-
-					break;
-				}
-			}
-
-			add(overrideVarElement.createCopy());
-		}
-	}
-
 	private void _transpose() {
 		overrideCommandElements();
+		overrideVarElements();
 		_overridePropertyElements();
 		_overrideRootSummaryAttribute();
-		_overrideVarElements();
 	}
 
 }
