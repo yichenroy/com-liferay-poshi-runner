@@ -208,7 +208,7 @@ public class WebDriverUtil extends PropsValues {
 		}
 		catch (Exception e) {
 			System.out.println(
-				"Could not add the jserrorcollector.xpi extension to the " +
+				"Unable to add the jserrorcollector.xpi extension to the " +
 					"Firefox profile.");
 		}
 
