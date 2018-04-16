@@ -35,7 +35,7 @@ public class TransposeElement extends DefaultElement {
 		_overrideElement = overrideElement;
 		_overrideNamespacedClassName = overrideNamespacedClassName;
 
-		_transpose();
+		transpose();
 	}
 
 	public Element getBaseElementCopy() {
@@ -111,7 +111,7 @@ public class TransposeElement extends DefaultElement {
 		}
 	}
 
-	private void _transpose() {
+	protected void transpose() {
 		Element baseElement = getBaseElementCopy();
 
 		setQName(baseElement.getQName());
