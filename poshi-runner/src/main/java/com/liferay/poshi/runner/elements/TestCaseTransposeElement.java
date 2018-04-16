@@ -34,7 +34,8 @@ public class TestCaseTransposeElement extends TransposeElement {
 		_transpose();
 	}
 
-	private void _overrideCommandElements() {
+	@Override
+	protected void overrideCommandElements() {
 		Element overrideElement = getOverrideElementCopy();
 
 		Element overrideSetUpElement = overrideElement.element("set-up");
@@ -44,7 +45,10 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 			baseSetUpElement.detach();
 
-			add(overrideSetUpElement.createCopy());
+			add(
+				new CommandTransposeElement(
+					baseSetUpElement, overrideSetUpElement,
+					getOverrideNamespacedClassName()));
 		}
 
 		Element overrideTearDownElement = overrideElement.element("tear-down");
@@ -54,29 +58,13 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 			baseTearDownElement.detach();
 
-			add(overrideTearDownElement.createCopy());
+			add(
+				new CommandTransposeElement(
+					baseTearDownElement, overrideTearDownElement,
+					getOverrideNamespacedClassName()));
 		}
 
-		List<Element> baseCommandElements = elements("command");
-		List<Element> overrideCommandElements = overrideElement.elements(
-			"command");
-
-		for (Element overrideCommandElement : overrideCommandElements) {
-			String overrideCommandName = overrideCommandElement.attributeValue(
-				"name");
-
-			for (Element baseCommandElement : baseCommandElements) {
-				if (overrideCommandName.equals(
-						baseCommandElement.attributeValue("name"))) {
-
-					baseCommandElement.detach();
-
-					break;
-				}
-			}
-
-			add(overrideCommandElement.createCopy());
-		}
+		super.overrideCommandElements();
 	}
 
 	private void _overridePropertyElements() {
@@ -138,11 +126,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 	}
 
 	private void _transpose() {
-		Element baseElement = getBaseElementCopy();
-
-		setContent(baseElement.content());
-
-		_overrideCommandElements();
+		overrideCommandElements();
 		_overridePropertyElements();
 		_overrideRootSummaryAttribute();
 		_overrideVarElements();
