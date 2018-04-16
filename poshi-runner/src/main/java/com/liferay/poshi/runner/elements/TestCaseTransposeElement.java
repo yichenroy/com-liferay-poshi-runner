@@ -30,8 +30,6 @@ public class TestCaseTransposeElement extends TransposeElement {
 		String overrideNamespacedClassName) {
 
 		super(baseElement, overrideElement, overrideNamespacedClassName);
-
-		_transpose();
 	}
 
 	@Override
@@ -67,6 +65,16 @@ public class TestCaseTransposeElement extends TransposeElement {
 		super.overrideCommandElements();
 	}
 
+	@Override
+	protected void transpose() {
+		super.transpose();
+
+		overrideCommandElements();
+		overrideVarElements();
+		_overridePropertyElements();
+		_overrideRootSummaryAttribute();
+	}
+
 	private void _overridePropertyElements() {
 		Element overrideElement = getOverrideElementCopy();
 
@@ -100,13 +108,6 @@ public class TestCaseTransposeElement extends TransposeElement {
 		if (Validator.isNotNull(overrideRootSummary)) {
 			addAttribute("summary", overrideRootSummary);
 		}
-	}
-
-	private void _transpose() {
-		overrideCommandElements();
-		overrideVarElements();
-		_overridePropertyElements();
-		_overrideRootSummaryAttribute();
 	}
 
 }
