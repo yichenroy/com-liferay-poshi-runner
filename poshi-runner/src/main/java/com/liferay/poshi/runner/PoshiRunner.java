@@ -299,11 +299,9 @@ public class PoshiRunner {
 						return;
 					}
 					catch (Throwable t) {
-						if (i == _maxRetryCount) {
-							throw t;
-						}
+						if ((i == _maxRetryCount) ||
+							!_isValidRetryThrowable(t)) {
 
-						if (!_isValidRetryThrowable(t)) {
 							throw t;
 						}
 					}
