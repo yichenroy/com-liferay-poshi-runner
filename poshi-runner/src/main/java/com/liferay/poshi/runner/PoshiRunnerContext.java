@@ -813,6 +813,32 @@ public class PoshiRunnerContext {
 		_rootElements.put(
 			classType + "#" + baseNamespacedClassName, transposeElement);
 
+		Element overrideSetUpElement = transposeElement.element("set-up");
+
+		if ((overrideSetUpElement != null) &&
+			(overrideSetUpElement instanceof TransposeElement)) {
+
+			String baseNamespacedClassCommandName =
+				baseNamespacedClassName + "#set-up";
+
+			_commandElements.put(
+				classType + "#" + baseNamespacedClassCommandName,
+				overrideSetUpElement);
+		}
+
+		Element overrideTearDownElement = transposeElement.element("tear-down");
+
+		if ((overrideTearDownElement != null) &&
+			(overrideTearDownElement instanceof TransposeElement)) {
+
+			String baseNamespacedClassCommandName =
+				baseNamespacedClassName + "#tear-down";
+
+			_commandElements.put(
+				classType + "#" + baseNamespacedClassCommandName,
+				overrideTearDownElement);
+		}
+
 		List<Element> overrideCommandElements = transposeElement.elements(
 			"command");
 
