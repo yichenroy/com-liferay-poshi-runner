@@ -786,6 +786,8 @@ public class PoshiRunnerContext {
 
 			sb.append("Unable to find root element for base class: ");
 			sb.append(baseNamespacedClassName);
+			sb.append(".");
+			sb.append(classType);
 			sb.append("\n");
 			sb.append(filePath);
 			sb.append(":");
@@ -796,11 +798,37 @@ public class PoshiRunnerContext {
 		else if (baseRootElement instanceof TransposeElement) {
 			StringBuilder sb = new StringBuilder();
 
-			sb.append(baseNamespacedClassName);
-			sb.append(sb.append(" is already overridden by "));
-			sb.append(
+			sb.append("Duplicate override for: ");
+			sb.append(baseClassName);
+			sb.append(".");
+			sb.append(classType);
+			sb.append(" at namespace '");
+			sb.append(baseNamespace);
+			sb.append("'\n");
+			sb.append(filePath);
+			sb.append(": ");
+			sb.append(baseRootElement.attributeValue("line-number"));
+			sb.append("\n");
+
+			Element duplicateOverrideElement =
+				((TransposeElement)baseRootElement).getOverrideElementCopy();
+
+			String duplicateOverrideNamespacedClassName =
 				((TransposeElement)baseRootElement).
-					getOverrideNamespacedClassName());
+					getOverrideNamespacedClassName();
+
+			String duplicateOverrideFilePath = getFilePathFromFileName(
+				PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+					duplicateOverrideNamespacedClassName) + "." +
+						PoshiRunnerGetterUtil.getFileExtensionFromClassType(
+							classType),
+				PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+					duplicateOverrideNamespacedClassName));
+
+			sb.append(duplicateOverrideFilePath);
+
+			sb.append(": ");
+			sb.append(duplicateOverrideElement.attributeValue("line-number"));
 
 			throw new Exception(sb.toString());
 		}
@@ -809,6 +837,11 @@ public class PoshiRunnerContext {
 			TransposeElementFactory.newTransposeElement(
 				baseRootElement, overrideRootElement, classType,
 				overrideNamespace + "." + overrideClassName);
+
+		_filePaths.put(
+			overrideNamespace + "." +
+				PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+			filePath);
 
 		_rootElements.put(
 			classType + "#" + baseNamespacedClassName, transposeElement);
@@ -854,15 +887,44 @@ public class PoshiRunnerContext {
 				if (Validator.isNotNull(baseCommandElement) &&
 					(baseCommandElement instanceof TransposeElement)) {
 
+					String commandName = baseCommandElement.attributeValue(
+						"name");
+
 					StringBuilder sb = new StringBuilder();
 
-					sb.append(baseNamespacedClassCommandName);
-					sb.append(" is already overridden by ");
-					sb.append(
-						((TransposeElement)baseCommandElement).
-							getOverrideNamespacedClassName());
+					sb.append("Duplicate override for command: ");
+					sb.append(baseClassName);
 					sb.append("#");
-					sb.append(baseCommandElement.attributeValue("name"));
+					sb.append(commandName);
+					sb.append(" at namespace '");
+					sb.append(baseNamespace);
+					sb.append("'\n");
+					sb.append(filePath);
+					sb.append(": ");
+					sb.append(
+						overrideCommandElement.attributeValue("line-number"));
+					sb.append("\n");
+
+					Element duplicateOverrideCommandElement =
+						((TransposeElement)baseCommandElement).
+							getOverrideElementCopy();
+
+					String duplicateOverrideNamespacedClassName =
+						((TransposeElement)baseCommandElement).
+							getOverrideNamespacedClassName();
+
+					String duplicateOverrideFilePath = getFilePathFromFileName(
+						PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+						PoshiRunnerGetterUtil.
+							getNamespaceFromNamespacedClassName(
+								duplicateOverrideNamespacedClassName));
+
+					sb.append(duplicateOverrideFilePath);
+
+					sb.append(": ");
+					sb.append(
+						duplicateOverrideCommandElement.attributeValue(
+							"line-number"));
 
 					throw new Exception(sb.toString());
 				}
