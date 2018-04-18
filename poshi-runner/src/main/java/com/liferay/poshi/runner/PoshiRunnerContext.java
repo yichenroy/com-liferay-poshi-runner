@@ -83,6 +83,13 @@ public class PoshiRunnerContext {
 		_seleniumParameterCounts.clear();
 	}
 
+	public static Element getCommandElementByClassType(
+		String classCommandName, String classType, String namespace) {
+
+		return _commandElements.get(
+			classType + "#" + namespace + "." + classCommandName);
+	}
+
 	public static String getDefaultNamespace() {
 		return _DEFAULT_NAMESPACE;
 	}
