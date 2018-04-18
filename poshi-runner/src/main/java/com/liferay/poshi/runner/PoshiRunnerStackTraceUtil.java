@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner;
 
+import com.liferay.poshi.runner.elements.TransposeElement;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.util.Stack;
@@ -213,6 +214,38 @@ public final class PoshiRunnerStackTraceUtil {
 		String commandName =
 			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
 				namespacedClassCommandName);
+
+		String namespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
+				namespacedClassCommandName);
+
+		Element commandElement =
+			PoshiRunnerContext.getCommandElementByClassType(
+				classCommandName, classType, namespace);
+
+		if (Validator.isNotNull(commandElement) &&
+			(commandElement instanceof TransposeElement)) {
+
+			String overrideNamespacedClassName =
+				((TransposeElement)commandElement).
+					getOverrideNamespacedClassName();
+
+			String overrideNamespace =
+				PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+					overrideNamespacedClassName);
+
+			String overrideClassName =
+				PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+					overrideNamespacedClassName);
+
+			String overrideFilePath =
+				PoshiRunnerContext.getFilePathFromFileName(
+					overrideClassName + "." + fileExtension, overrideNamespace);
+
+			_filePaths.push(overrideFilePath + "[" + commandName + "]");
+
+			return;
+		}
 
 		_filePaths.push(filePath + "[" + commandName + "]");
 	}
