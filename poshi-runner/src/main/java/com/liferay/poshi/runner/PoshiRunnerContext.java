@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -252,6 +254,10 @@ public class PoshiRunnerContext {
 		String className, String namespace) {
 
 		return _rootElements.get("test-case#" + namespace + "." + className);
+	}
+
+	public static String getTypedClassNameFromElement(Element element) {
+		return _typedNamespacedClassNames.get(element);
 	}
 
 	public static boolean isCommandElement(
@@ -1014,6 +1020,8 @@ public class PoshiRunnerContext {
 
 			_storeRootElements(poshiURLs, _DEFAULT_NAMESPACE);
 		}
+
+		_typedNamespacedClassNames = _rootElements.inverse();
 	}
 
 	private static void _readPoshiFilesFromClassPath(
@@ -1513,7 +1521,8 @@ public class PoshiRunnerContext {
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
 			"(\\-\\w+)*)\\-(?<sha>\\w+)\\.jar.*");
-	private static final Map<String, Element> _rootElements = new HashMap<>();
+	private static final BiMap<String, Element> _rootElements =
+		HashBiMap.create();
 	private static final Map<String, Integer> _seleniumParameterCounts =
 		new HashMap<>();
 	private static final List<String> _testCaseAvailablePropertyNames =
@@ -1530,6 +1539,7 @@ public class PoshiRunnerContext {
 	private static final Set<String> _testToggleNames = new HashSet<>();
 	private static final SimpleDateFormat _toggleDateFormat =
 		new SimpleDateFormat("YYYY-MM-dd");
+	private static BiMap<Element, String> _typedNamespacedClassNames;
 
 	static {
 		String testCaseAvailablePropertyNames =
