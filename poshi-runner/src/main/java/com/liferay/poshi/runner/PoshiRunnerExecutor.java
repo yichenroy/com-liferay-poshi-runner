@@ -654,6 +654,11 @@ public class PoshiRunnerExecutor {
 		String namespace = PoshiRunnerStackTraceUtil.getCurrentNamespace(
 			namespacedClassCommandName);
 
+		if (!PoshiRunnerContext.containsNamespace(namespacedClassCommandName)) {
+			namespace = PoshiRunnerGetterUtil.getNamespaceOfRootElement(
+				executeElement);
+		}
+
 		Element rootElement = PoshiRunnerContext.getMacroRootElement(
 			className, namespace);
 
