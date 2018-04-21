@@ -17,6 +17,7 @@ package com.liferay.poshi.runner;
 import com.liferay.poshi.runner.elements.PoshiElement;
 import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.elements.PoshiNodeFactory;
+import com.liferay.poshi.runner.elements.TransposeElement;
 import com.liferay.poshi.runner.selenium.SeleniumUtil;
 import com.liferay.poshi.runner.util.Dom4JUtil;
 import com.liferay.poshi.runner.util.ExternalMethod;
@@ -341,6 +342,42 @@ public class PoshiRunnerGetterUtil {
 			"Unable to find namespace in " + namespacedClassName);
 	}
 
+	public static String getNamespaceFromTypedNamespacedClassName(
+		String typedNamespacedClassName) {
+
+		Matcher matcher = _typedNamespacedClassNamePattern.matcher(
+			typedNamespacedClassName);
+
+		if (matcher.find()) {
+			String namespace = matcher.group("namespace");
+
+			if (Validator.isNotNull(namespace)) {
+				return namespace;
+			}
+		}
+
+		return PoshiRunnerContext.getDefaultNamespace();
+	}
+
+	public static String getNamespaceOfRootElement(Element element) {
+		while (Validator.isNotNull(element.getParent())) {
+			element = element.getParent();
+		}
+
+		if (element instanceof TransposeElement) {
+			String baseNamespacedClassName =
+				((TransposeElement)element).getBaseNamespacedClassName();
+
+			return getNamespaceFromNamespacedClassName(baseNamespacedClassName);
+		}
+
+		String typedNamespacedClassName =
+			PoshiRunnerContext.getTypedClassNameFromElement(element);
+
+		return getNamespaceFromTypedNamespacedClassName(
+			typedNamespacedClassName);
+	}
+
 	public static String getProjectDirName() {
 		return getCanonicalPath(PropsValues.PROJECT_DIR);
 	}
@@ -532,6 +569,10 @@ public class PoshiRunnerGetterUtil {
 			"then", "title", "toggle", "tr", "var", "while"
 		});
 	private static final Pattern _tagPattern = Pattern.compile("<[a-z\\-]+");
+	private static final Pattern _typedNamespacedClassNamePattern =
+		Pattern.compile(
+			"((?<classType>)\\w+)\\#((?<namespace>\\w+)\\.)?" +
+				"(?<className>\\w+)");
 	private static final Pattern _variablePattern = Pattern.compile(
 		"\\$\\{([^}]*)\\}");
 
