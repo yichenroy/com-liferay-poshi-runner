@@ -179,6 +179,21 @@ public final class PoshiRunnerStackTraceUtil {
 					"|test-case) attribute");
 		}
 
+		String namespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
+				namespacedClassCommandName);
+
+		if (!PoshiRunnerContext.containsNamespace(namespacedClassCommandName)) {
+			namespace = PoshiRunnerGetterUtil.getNamespaceOfRootElement(
+				element);
+		}
+
+		namespacedClassCommandName =
+			namespace + "." +
+				PoshiRunnerGetterUtil.
+					getClassCommandNameFromNamespacedClassCommandName(
+						namespacedClassCommandName);
+
 		_pushFilePath(namespacedClassCommandName, classType);
 	}
 
@@ -207,10 +222,6 @@ public final class PoshiRunnerStackTraceUtil {
 		String fileExtension =
 			PoshiRunnerGetterUtil.getFileExtensionFromClassType(classType);
 
-		String filePath = PoshiRunnerContext.getFilePathFromFileName(
-			className + "." + fileExtension,
-			getCurrentNamespace(namespacedClassCommandName));
-
 		String commandName =
 			PoshiRunnerGetterUtil.getCommandNameFromNamespacedClassCommandName(
 				namespacedClassCommandName);
@@ -223,6 +234,14 @@ public final class PoshiRunnerStackTraceUtil {
 			PoshiRunnerContext.getCommandElementByClassType(
 				classCommandName, classType, namespace);
 
+		if (!PoshiRunnerContext.containsNamespace(namespacedClassCommandName)) {
+			namespace = PoshiRunnerGetterUtil.getNamespaceOfRootElement(
+				commandElement);
+		}
+
+		String filePath = PoshiRunnerContext.getFilePathFromFileName(
+			className + "." + fileExtension, namespace);
+
 		if (Validator.isNotNull(commandElement) &&
 			(commandElement instanceof TransposeElement)) {
 
@@ -230,17 +249,12 @@ public final class PoshiRunnerStackTraceUtil {
 				((TransposeElement)commandElement).
 					getOverrideNamespacedClassName();
 
-			String overrideNamespace =
-				PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
-					overrideNamespacedClassName);
-
-			String overrideClassName =
-				PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
-					overrideNamespacedClassName);
-
 			String overrideFilePath =
 				PoshiRunnerContext.getFilePathFromFileName(
-					overrideClassName + "." + fileExtension, overrideNamespace);
+					PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+						overrideNamespacedClassName) + "." + fileExtension,
+					PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+						overrideNamespacedClassName));
 
 			_filePaths.push(overrideFilePath + "[" + commandName + "]");
 
