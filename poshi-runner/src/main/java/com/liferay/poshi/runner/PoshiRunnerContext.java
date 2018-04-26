@@ -85,6 +85,18 @@ public class PoshiRunnerContext {
 		_seleniumParameterCounts.clear();
 	}
 
+	public static boolean containsNamespace(String namespacedClassCommandName) {
+		Matcher matcher =
+			PoshiRunnerGetterUtil.namespacedClassCommandNamePattern.matcher(
+				namespacedClassCommandName);
+
+		if (!matcher.find() || Validator.isNull(matcher.group("namespace"))) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public static Element getCommandElementByClassType(
 		String classCommandName, String classType, String namespace) {
 
