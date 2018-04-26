@@ -873,6 +873,38 @@ public class PoshiRunnerContext {
 					overrideCommandElement);
 			}
 		}
+
+		if (classType.equals("function")) {
+			String defaultClassCommandName =
+				baseClassName + "#" +
+					transposeElement.attributeValue("default");
+
+			Element defaultCommandElement = getFunctionCommandElement(
+				defaultClassCommandName, baseNamespace);
+
+			if (defaultCommandElement instanceof TransposeElement) {
+				_commandElements.put(
+					classType + "#" + baseNamespace + "." + baseClassName,
+					defaultCommandElement);
+			}
+
+			String xml = transposeElement.asXML();
+
+			for (int i = 1;; i++) {
+				if (xml.contains("${locator" + i + "}")) {
+					continue;
+				}
+
+				if (i > 1) {
+					i--;
+				}
+
+				_functionLocatorCounts.put(
+					baseNamespace + "." + baseClassName, i);
+
+				break;
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
