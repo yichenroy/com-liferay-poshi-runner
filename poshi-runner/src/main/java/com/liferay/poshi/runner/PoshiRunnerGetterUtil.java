@@ -94,7 +94,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getClassCommandNameFromNamespacedClassCommandName(
 		String namespacedClassCommandName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassCommandName);
 
 		if (matcher.find()) {
@@ -128,7 +128,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getClassNameFromNamespacedClassCommandName(
 		String namespacedClassCommandName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassCommandName);
 
 		if (matcher.find()) {
@@ -142,7 +142,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getClassNameFromNamespacedClassName(
 		String namespacedClassName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassName);
 
 		if (matcher.find()) {
@@ -172,7 +172,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getCommandNameFromNamespacedClassCommandName(
 		String namespacedClassCommandName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassCommandName);
 
 		if (matcher.find()) {
@@ -282,7 +282,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getNamespacedClassNameFromNamespacedClassCommandName(
 		String namespacedClassCommandName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassCommandName);
 
 		if (matcher.find()) {
@@ -304,7 +304,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getNamespaceFromNamespacedClassCommandName(
 		String namespacedClassCommandName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassCommandName);
 
 		if (matcher.find()) {
@@ -324,7 +324,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getNamespaceFromNamespacedClassName(
 		String namespacedClassName) {
 
-		Matcher matcher = _namespacedClassCommandNamePattern.matcher(
+		Matcher matcher = namespacedClassCommandNamePattern.matcher(
 			namespacedClassName);
 
 		if (matcher.find()) {
@@ -515,10 +515,11 @@ public class PoshiRunnerGetterUtil {
 		return returnObject;
 	}
 
-	private static final Pattern _namespacedClassCommandNamePattern =
+	protected static final Pattern namespacedClassCommandNamePattern =
 		Pattern.compile(
 			"((?<namespace>\\w+)\\.)?(?<className>\\w+)(\\#(?<commandName>" +
 				"(\\w+(\\-\\w+)*|\\$\\{\\w+\\}|\\w+)*))?");
+
 	private static final Pattern _parameterPattern = Pattern.compile(
 		"('([^'\\\\]|\\\\.)*'|[^',\\s]+)");
 	private static final List<String> _reservedTags = Arrays.asList(
