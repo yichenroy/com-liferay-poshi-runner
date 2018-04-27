@@ -238,11 +238,16 @@ public class JSONCurlUtil {
 			for (int i = 0; i < tokens.size(); i++) {
 				String token = _formatToken(tokens.get(i));
 
-				if (token.matches(_requestPatternString)) {
+				Matcher tokenMatcher = _requestPattern.matcher(token);
+
+				if (tokenMatcher.matches()) {
 					if (i < (tokens.size() - 1)) {
 						String nextToken = tokens.get(i + 1);
 
-						if (!nextToken.matches(_requestPatternString)) {
+						Matcher nextTokenMatcher = _requestPattern.matcher(
+							nextToken);
+
+						if (!nextTokenMatcher.matches()) {
 							if (nextToken.matches("\\$CURLDATA:\\w{10}")) {
 								nextToken = _curlDataMap.get(nextToken);
 							}
@@ -259,8 +264,8 @@ public class JSONCurlUtil {
 
 							optionValues.add(nextToken);
 
-							if (_customOptions.containsKey(token)) {
-								token = _customOptions.get(token);
+							if (_customOptionsMap.containsKey(token)) {
+								token = _customOptionsMap.get(token);
 							}
 
 							_requestOptions.put(token, optionValues);
@@ -334,17 +339,14 @@ public class JSONCurlUtil {
 			}
 		}
 
-		private static Map<String, String> _customOptions = new HashMap<>();
+		private static Map<String, String> _customOptionsMap = new HashMap<>();
 		private static Pattern _escapePattern = Pattern.compile(
 			"<CURL_DATA\\[(.*?)\\]CURL_DATA>");
-		private static Pattern _requestPattern;
-		private static String _requestPatternString =
-			"(-[\\w#:\\.]|--[\\w#:\\.-]{2,}|https?:[^\\s]+)(\\s+|\\Z)";
+		private static Pattern _requestPattern = Pattern.compile(
+			"(-[\\w#:\\.]|--[\\w#:\\.-]{2,}|https?:[^\\s]+)(\\s+|\\Z)");
 
 		static {
-			_customOptions.put("--json-data", "--data");
-
-			_requestPattern = Pattern.compile(_requestPatternString);
+			_customOptionsMap.put("--json-data", "--data");
 		}
 
 		private Map<String, String> _curlDataMap = new HashMap<>();
