@@ -33,6 +33,39 @@ public class TestCaseTransposeElement extends TransposeElement {
 	}
 
 	@Override
+	protected void overrideCommandElements() {
+		Element overrideElement = getOverrideElementCopy();
+
+		Element overrideSetUpElement = overrideElement.element("set-up");
+
+		if (Validator.isNotNull(overrideSetUpElement)) {
+			Element baseSetUpElement = element("set-up");
+
+			baseSetUpElement.detach();
+
+			add(
+				new CommandTransposeElement(
+					baseSetUpElement, overrideSetUpElement,
+					getOverrideNamespacedClassName()));
+		}
+
+		Element overrideTearDownElement = overrideElement.element("tear-down");
+
+		if (Validator.isNotNull(overrideTearDownElement)) {
+			Element baseTearDownElement = element("tear-down");
+
+			baseTearDownElement.detach();
+
+			add(
+				new CommandTransposeElement(
+					baseTearDownElement, overrideTearDownElement,
+					getOverrideNamespacedClassName()));
+		}
+
+		super.overrideCommandElements();
+	}
+
+	@Override
 	protected void transpose() {
 		super.transpose();
 
