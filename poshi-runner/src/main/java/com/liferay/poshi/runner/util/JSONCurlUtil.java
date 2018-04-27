@@ -236,47 +236,44 @@ public class JSONCurlUtil {
 
 		private void _setRequestOptions(List<String> tokens) {
 			for (int i = 0; i < tokens.size(); i++) {
-				String token = _formatToken(tokens.get(i));
+				String optionType = _formatToken(tokens.get(i));
 
-				Matcher tokenMatcher = _requestPattern.matcher(token);
+				Matcher optionTypeMatcher = _requestPattern.matcher(optionType);
 
-				if (tokenMatcher.matches()) {
+				if (optionTypeMatcher.matches()) {
+					String optionValue = "";
+
 					if (i < (tokens.size() - 1)) {
 						String nextToken = tokens.get(i + 1);
 
-						Matcher nextTokenMatcher = _requestPattern.matcher(
-							nextToken);
+						optionTypeMatcher = _requestPattern.matcher(nextToken);
 
-						if (!nextTokenMatcher.matches()) {
+						if (!optionTypeMatcher.matches()) {
 							if (nextToken.matches("\\$CURLDATA:\\w{10}")) {
 								nextToken = _curlDataMap.get(nextToken);
 							}
 
-							nextToken = _formatToken(nextToken);
-
-							_validateRequestOption(token, nextToken);
-
-							List<String> optionValues = new ArrayList<>();
-
-							if (_requestOptions.containsKey(token)) {
-								optionValues = _requestOptions.get(token);
-							}
-
-							optionValues.add(nextToken);
-
-							if (_customOptionsMap.containsKey(token)) {
-								token = _customOptionsMap.get(token);
-							}
-
-							_requestOptions.put(token, optionValues);
+							optionValue = _formatToken(nextToken);
 
 							i++;
-
-							continue;
 						}
 					}
 
-					_requestOptions.put(token, new ArrayList<String>());
+					_validateRequestOption(optionType, optionValue);
+
+					if (_customOptionsMap.containsKey(optionType)) {
+						optionType = _customOptionsMap.get(optionType);
+					}
+
+					List<String> optionValues = new ArrayList<>();
+
+					if (_requestOptions.containsKey(optionType)) {
+						optionValues = _requestOptions.get(optionType);
+					}
+
+					optionValues.add(optionValue);
+
+					_requestOptions.put(optionType, optionValues);
 				}
 			}
 		}
