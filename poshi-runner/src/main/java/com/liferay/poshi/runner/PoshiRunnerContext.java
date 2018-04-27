@@ -871,6 +871,70 @@ public class PoshiRunnerContext {
 				classType + "#" + baseNamespacedClassCommandName,
 				overrideTearDownElement);
 		}
+
+		List<Element> overrideCommandElements = transposeElement.elements(
+			"command");
+
+		for (Element overrideCommandElement : overrideCommandElements) {
+			if (overrideCommandElement instanceof TransposeElement) {
+				String baseNamespacedClassCommandName =
+					baseNamespacedClassName + "#" +
+						overrideCommandElement.attributeValue("name");
+
+				Element baseCommandElement = _commandElements.get(
+					classType + "#" + baseNamespacedClassCommandName);
+
+				if (Validator.isNotNull(baseCommandElement) &&
+					(baseCommandElement instanceof TransposeElement)) {
+
+					String commandName = baseCommandElement.attributeValue(
+						"name");
+
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Duplicate override for command: ");
+					sb.append(baseClassName);
+					sb.append("#");
+					sb.append(commandName);
+					sb.append(" at namespace '");
+					sb.append(baseNamespace);
+					sb.append("'\n");
+					sb.append(filePath);
+					sb.append(": ");
+					sb.append(
+						overrideCommandElement.attributeValue("line-number"));
+					sb.append("\n");
+
+					Element duplicateOverrideCommandElement =
+						((TransposeElement)baseCommandElement).
+							getOverrideElementCopy();
+
+					String duplicateOverrideNamespacedClassName =
+						((TransposeElement)baseCommandElement).
+							getOverrideNamespacedClassName();
+
+					String duplicateOverrideFilePath = getFilePathFromFileName(
+						PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+						PoshiRunnerGetterUtil.
+							getNamespaceFromNamespacedClassName(
+								duplicateOverrideNamespacedClassName));
+
+					sb.append(duplicateOverrideFilePath);
+
+					sb.append(": ");
+					sb.append(
+						duplicateOverrideCommandElement.attributeValue(
+							"line-number"));
+
+					throw new Exception(sb.toString());
+				}
+
+				_commandElements.put(
+					classType + "#" + baseNamespacedClassName + "#" +
+						overrideCommandElement.attributeValue("name"),
+					overrideCommandElement);
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
