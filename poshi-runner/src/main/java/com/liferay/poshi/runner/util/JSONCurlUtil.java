@@ -96,7 +96,7 @@ public class JSONCurlUtil {
 
 			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", "\n");
 
-			requestString = _escapeRequestString(requestString);
+			requestString = _encodeCurlData(requestString);
 
 			List<String> tokens = _tokenize(requestString.trim());
 
@@ -146,21 +146,21 @@ public class JSONCurlUtil {
 			return response;
 		}
 
-		private String _escapeRequestString(String requestString) {
+		private String _encodeCurlData(String requestString) {
 			Matcher matcher = _escapePattern.matcher(requestString);
 
-			String escapedRequestString = requestString;
+			String encodedRequestString = requestString;
 
 			while (matcher.find()) {
 				String key = "$CURLDATA:" + StringUtil.randomString("10");
 
-				_escapedValues.put(key, matcher.group(1));
+				_curlDataMap.put(key, matcher.group(1));
 
-				escapedRequestString = escapedRequestString.replace(
+				encodedRequestString = encodedRequestString.replace(
 					matcher.group(0), key);
 			}
 
-			return escapedRequestString;
+			return encodedRequestString;
 		}
 
 		private String _escapeToken(String token) {
@@ -244,7 +244,7 @@ public class JSONCurlUtil {
 
 						if (!nextToken.matches(_requestPatternString)) {
 							if (nextToken.matches("\\$CURLDATA:\\w{10}")) {
-								nextToken = _escapedValues.get(nextToken);
+								nextToken = _curlDataMap.get(nextToken);
 							}
 
 							nextToken = _formatToken(nextToken);
@@ -347,7 +347,7 @@ public class JSONCurlUtil {
 			_requestPattern = Pattern.compile(_requestPatternString);
 		}
 
-		private Map<String, String> _escapedValues = new HashMap<>();
+		private Map<String, String> _curlDataMap = new HashMap<>();
 		private final String _requestMethod;
 		private Map<String, List<String>> _requestOptions = new HashMap<>();
 		private final String _requestURL;
