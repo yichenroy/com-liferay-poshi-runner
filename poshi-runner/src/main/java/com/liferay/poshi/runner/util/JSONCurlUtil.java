@@ -146,12 +146,6 @@ public class JSONCurlUtil {
 			return response;
 		}
 
-		private String _escapeOptionValue(String optionValue) {
-			optionValue = optionValue.replaceAll("(?<!\\\\)\"", "\\\\\"");
-
-			return optionValue;
-		}
-
 		private String _escapeRequestString(String requestString) {
 			Matcher matcher = _escapePattern.matcher(requestString);
 
@@ -169,6 +163,14 @@ public class JSONCurlUtil {
 			return escapedRequestString;
 		}
 
+		private String _escapeToken(String token) {
+			if (token == null) {
+				return null;
+			}
+
+			return token.replaceAll("\\\\\"", "\"");
+		}
+
 		private String _formatToken(String token) {
 			if ((token.startsWith("'") && token.endsWith("'")) ||
 				(token.startsWith("\"") && token.endsWith("\""))) {
@@ -176,9 +178,7 @@ public class JSONCurlUtil {
 				token = token.substring(1, token.length() - 1);
 			}
 
-			token = token.replaceAll("\\\\\"", "\"");
-
-			return token;
+			return _escapeToken(token);
 		}
 
 		private String _getRequestOptionsString() {
@@ -196,7 +196,7 @@ public class JSONCurlUtil {
 					for (String optionValue : optionValues) {
 						sb.append(requestOption.getKey());
 						sb.append(" \"");
-						sb.append(_escapeOptionValue(optionValue));
+						sb.append(_unEscapeToken(optionValue));
 						sb.append("\" ");
 					}
 				}
@@ -308,6 +308,16 @@ public class JSONCurlUtil {
 			}
 
 			return tokens;
+		}
+
+		private String _unEscapeToken(String token) {
+			if (token == null) {
+				return null;
+			}
+
+			token = token.replaceAll("(?<!\\\\)\"", "\\\\\"");
+
+			return token;
 		}
 
 		private void _validateRequestOption(
