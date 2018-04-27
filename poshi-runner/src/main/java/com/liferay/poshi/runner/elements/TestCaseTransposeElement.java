@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner.elements;
 
+import java.util.List;
+
 import org.dom4j.Element;
 
 /**
@@ -34,6 +36,32 @@ public class TestCaseTransposeElement extends TransposeElement {
 
 		overrideCommandElements();
 		overrideVarElements();
+		_overridePropertyElements();
+	}
+
+	private void _overridePropertyElements() {
+		Element overrideElement = getOverrideElementCopy();
+
+		List<Element> basePropertyElements = elements("property");
+		List<Element> overridePropertyElements = overrideElement.elements(
+			"property");
+
+		for (Element overridePropertyElement : overridePropertyElements) {
+			String overridePropertyName =
+				overridePropertyElement.attributeValue("name");
+
+			for (Element basePropertyElement : basePropertyElements) {
+				if (overridePropertyName.equals(
+						basePropertyElement.attributeValue("name"))) {
+
+					basePropertyElement.detach();
+
+					break;
+				}
+			}
+
+			add(overridePropertyElement.createCopy());
+		}
 	}
 
 }
