@@ -89,7 +89,7 @@ public class JSONCurlUtil {
 		public Request(String requestString, String requestMethod) {
 			_requestMethod = requestMethod;
 
-			requestString = requestString.replaceAll("\\s+\\\\?\\s+", "\n");
+			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", "\n");
 
 			requestString = _escapeRequestString(requestString);
 
