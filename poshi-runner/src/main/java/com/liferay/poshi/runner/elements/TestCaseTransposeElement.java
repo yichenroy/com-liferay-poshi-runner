@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.liferay.poshi.runner.util.Validator;
+
 import java.util.List;
 
 import org.dom4j.Element;
@@ -37,6 +39,7 @@ public class TestCaseTransposeElement extends TransposeElement {
 		overrideCommandElements();
 		overrideVarElements();
 		_overridePropertyElements();
+		_overrideRootSummaryAttribute();
 	}
 
 	private void _overridePropertyElements() {
@@ -61,6 +64,16 @@ public class TestCaseTransposeElement extends TransposeElement {
 			}
 
 			add(overridePropertyElement.createCopy());
+		}
+	}
+
+	private void _overrideRootSummaryAttribute() {
+		Element overrideElement = getOverrideElementCopy();
+
+		String overrideRootSummary = overrideElement.attributeValue("summary");
+
+		if (Validator.isNotNull(overrideRootSummary)) {
+			addAttribute("summary", overrideRootSummary);
 		}
 	}
 
