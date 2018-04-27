@@ -88,6 +88,29 @@ public class TransposeElement extends DefaultElement {
 		}
 	}
 
+	protected void overrideVarElements() {
+		Element overrideElement = getOverrideElementCopy();
+
+		List<Element> baseVarElements = elements("var");
+		List<Element> overrideVarElements = overrideElement.elements("var");
+
+		for (Element overrideVarElement : overrideVarElements) {
+			String overrideVarName = overrideVarElement.attributeValue("name");
+
+			for (Element baseVarElement : baseVarElements) {
+				if (overrideVarName.equals(
+						baseVarElement.attributeValue("name"))) {
+
+					baseVarElement.detach();
+
+					break;
+				}
+			}
+
+			add(overrideVarElement.createCopy());
+		}
+	}
+
 	protected void transpose() {
 		Element baseElement = getBaseElementCopy();
 
