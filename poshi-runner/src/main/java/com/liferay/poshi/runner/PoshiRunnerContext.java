@@ -18,6 +18,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
+import com.liferay.poshi.runner.elements.TransposeElement;
+import com.liferay.poshi.runner.elements.TransposeElementFactory;
 import com.liferay.poshi.runner.pql.PQLEntity;
 import com.liferay.poshi.runner.pql.PQLEntityFactory;
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
@@ -765,10 +767,84 @@ public class PoshiRunnerContext {
 			String overrideNamespace, String baseNamespacedClassName)
 		throws Exception {
 
-		String className = PoshiRunnerGetterUtil.getClassNameFromFilePath(
-			filePath);
+		String baseClassName =
+			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+				baseNamespacedClassName);
+		String baseNamespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+				baseNamespacedClassName);
+		String overrideClassName =
+			PoshiRunnerGetterUtil.getClassNameFromFilePath(filePath);
 		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
 			filePath);
+
+		Element baseRootElement = getRootElementFromClassType(
+			baseClassName, classType, baseNamespace);
+
+		if (Validator.isNull(baseRootElement)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Unable to find root element for base class: ");
+			sb.append(baseNamespacedClassName);
+			sb.append(".");
+			sb.append(classType);
+			sb.append("\n");
+			sb.append(filePath);
+			sb.append(":");
+			sb.append(overrideRootElement.attributeValue("line-number"));
+
+			throw new Exception(sb.toString());
+		}
+		else if (baseRootElement instanceof TransposeElement) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Duplicate override for: ");
+			sb.append(baseClassName);
+			sb.append(".");
+			sb.append(classType);
+			sb.append(" at namespace '");
+			sb.append(baseNamespace);
+			sb.append("'\n");
+			sb.append(filePath);
+			sb.append(": ");
+			sb.append(baseRootElement.attributeValue("line-number"));
+			sb.append("\n");
+
+			Element duplicateOverrideElement =
+				((TransposeElement)baseRootElement).getOverrideElementCopy();
+
+			String duplicateOverrideNamespacedClassName =
+				((TransposeElement)baseRootElement).
+					getOverrideNamespacedClassName();
+
+			String duplicateOverrideFilePath = getFilePathFromFileName(
+				PoshiRunnerGetterUtil.getClassNameFromNamespacedClassName(
+					duplicateOverrideNamespacedClassName) + "." +
+						PoshiRunnerGetterUtil.getFileExtensionFromClassType(
+							classType),
+				PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+					duplicateOverrideNamespacedClassName));
+
+			sb.append(duplicateOverrideFilePath);
+
+			sb.append(": ");
+			sb.append(duplicateOverrideElement.attributeValue("line-number"));
+
+			throw new Exception(sb.toString());
+		}
+
+		TransposeElement transposeElement =
+			TransposeElementFactory.newTransposeElement(
+				baseRootElement, overrideRootElement, classType,
+				overrideNamespace + "." + overrideClassName);
+
+		_filePaths.put(
+			overrideNamespace + "." +
+				PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+			filePath);
+
+		_rootElements.put(
+			classType + "#" + baseNamespacedClassName, transposeElement);
 	}
 
 	private static void _readPoshiFiles() throws Exception {
