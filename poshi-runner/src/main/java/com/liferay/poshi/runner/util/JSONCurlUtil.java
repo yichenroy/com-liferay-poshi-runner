@@ -81,6 +81,11 @@ public class JSONCurlUtil {
 
 		Object object = documentContext.read(jsonPath);
 
+		if (object == null) {
+			throw new IOException(
+				"Invalid JSON path " + jsonPath + " in " + response);
+		}
+
 		return object.toString();
 	}
 
