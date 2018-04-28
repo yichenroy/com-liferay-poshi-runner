@@ -282,7 +282,7 @@ public class JSONCurlUtil {
 
 			_optionValue = _formatOptionValue(optionValue);
 
-			_validationRequestOption();
+			_validateRequestOption();
 		}
 
 		public String getRequestOptionType() {
@@ -336,7 +336,7 @@ public class JSONCurlUtil {
 			return optionValue;
 		}
 
-		private void _validationRequestOption() {
+		private void _validateRequestOption() {
 			if (_optionType.equals("--json-data")) {
 				try {
 					new JSONObject(_optionValue);
