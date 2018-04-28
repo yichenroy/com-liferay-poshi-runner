@@ -28,6 +28,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -163,46 +165,8 @@ public class JSONCurlUtil {
 			return encodedRequestString;
 		}
 
-		private String _escapeToken(String token) {
-			if (token == null) {
-				return null;
-			}
-
-			return token.replaceAll("\\\\\"", "\"");
-		}
-
-		private String _formatToken(String token) {
-			if ((token.startsWith("'") && token.endsWith("'")) ||
-				(token.startsWith("\"") && token.endsWith("\""))) {
-
-				token = token.substring(1, token.length() - 1);
-			}
-
-			return _escapeToken(token);
-		}
-
 		private String _getRequestOptionsString() {
-			StringBuilder sb = new StringBuilder();
-
-			for (Map.Entry<String, List<String>> requestOption :
-					_requestOptions.entrySet()) {
-
-				List<String> optionValues = requestOption.getValue();
-
-				if (optionValues.isEmpty()) {
-					sb.append(requestOption.getKey());
-				}
-				else {
-					for (String optionValue : optionValues) {
-						sb.append(requestOption.getKey());
-						sb.append(" \"");
-						sb.append(_unEscapeToken(optionValue));
-						sb.append("\" ");
-					}
-				}
-			}
-
-			return sb.toString();
+			return StringUtils.join(_requestOptions, " ");
 		}
 
 		private String _getRequestURL(List<String> tokens) {
@@ -236,7 +200,7 @@ public class JSONCurlUtil {
 
 		private void _setRequestOptions(List<String> tokens) {
 			for (int i = 0; i < tokens.size(); i++) {
-				String optionType = _formatToken(tokens.get(i));
+				String optionType = tokens.get(i);
 
 				Matcher optionTypeMatcher = _requestPattern.matcher(optionType);
 
@@ -253,27 +217,14 @@ public class JSONCurlUtil {
 								nextToken = _curlDataMap.get(nextToken);
 							}
 
-							optionValue = _formatToken(nextToken);
+							optionValue = nextToken;
 
 							i++;
 						}
 					}
 
-					_validateRequestOption(optionType, optionValue);
-
-					if (_customOptionsMap.containsKey(optionType)) {
-						optionType = _customOptionsMap.get(optionType);
-					}
-
-					List<String> optionValues = new ArrayList<>();
-
-					if (_requestOptions.containsKey(optionType)) {
-						optionValues = _requestOptions.get(optionType);
-					}
-
-					optionValues.add(optionValue);
-
-					_requestOptions.put(optionType, optionValues);
+					_requestOptions.add(
+						new RequestOption(optionType, optionValue));
 				}
 			}
 		}
@@ -312,44 +263,99 @@ public class JSONCurlUtil {
 			return tokens;
 		}
 
-		private String _unEscapeToken(String token) {
-			if (token == null) {
-				return null;
-			}
-
-			token = token.replaceAll("(?<!\\\\)\"", "\\\\\"");
-
-			return token;
-		}
-
-		private void _validateRequestOption(
-			String optionType, String optionValue) {
-
-			if (optionType.equals("--json-data")) {
-				try {
-					new JSONObject(optionValue);
-				}
-				catch (JSONException jsone) {
-					throw new RuntimeException(
-						"Invalid JSON: '" + optionValue + "'");
-				}
-			}
-		}
-
-		private static Map<String, String> _customOptionsMap = new HashMap<>();
 		private static Pattern _escapePattern = Pattern.compile(
 			"<CURL_DATA\\[(.*?)\\]CURL_DATA>");
 		private static Pattern _requestPattern = Pattern.compile(
 			"(-[\\w#:\\.]|--[\\w#:\\.-]{2,}|https?:[^\\s]+)(\\s+|\\Z)");
 
+		private Map<String, String> _curlDataMap = new HashMap<>();
+		private final String _requestMethod;
+		private List<RequestOption> _requestOptions = new ArrayList<>();
+		private final String _requestURL;
+
+	}
+
+	private static class RequestOption {
+
+		public RequestOption(String optionType, String optionValue) {
+			_optionType = optionType;
+
+			_optionValue = _formatOptionValue(optionValue);
+
+			_validationRequestOption();
+		}
+
+		public String getRequestOptionType() {
+			if (_customOptionsMap.containsKey(_optionType)) {
+				return _customOptionsMap.get(_optionType);
+			}
+
+			return _optionType;
+		}
+
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(getRequestOptionType());
+
+			if (!_optionValue.isEmpty()) {
+				sb.append(" \"");
+				sb.append(_unEscapeOptionValue(_optionValue));
+				sb.append("\"");
+			}
+
+			return sb.toString();
+		}
+
+		private String _escapeOptionValue(String optionValue) {
+			if (optionValue == null) {
+				return null;
+			}
+
+			return optionValue.replaceAll("\\\\\"", "\"");
+		}
+
+		private String _formatOptionValue(String optionValue) {
+			if ((optionValue.startsWith("'") && optionValue.endsWith("'")) ||
+				(optionValue.startsWith("\"") && optionValue.endsWith("\""))) {
+
+				optionValue = optionValue.substring(
+					1, optionValue.length() - 1);
+			}
+
+			return _escapeOptionValue(optionValue);
+		}
+
+		private String _unEscapeOptionValue(String optionValue) {
+			if (optionValue == null) {
+				return null;
+			}
+
+			optionValue = optionValue.replaceAll("(?<!\\\\)\"", "\\\\\"");
+
+			return optionValue;
+		}
+
+		private void _validationRequestOption() {
+			if (_optionType.equals("--json-data")) {
+				try {
+					new JSONObject(_optionValue);
+				}
+				catch (JSONException jsone) {
+					throw new RuntimeException(
+						"Invalid JSON: '" + _optionValue + "'");
+				}
+			}
+		}
+
+		private static Map<String, String> _customOptionsMap = new HashMap<>();
+
 		static {
 			_customOptionsMap.put("--json-data", "--data");
 		}
 
-		private Map<String, String> _curlDataMap = new HashMap<>();
-		private final String _requestMethod;
-		private Map<String, List<String>> _requestOptions = new HashMap<>();
-		private final String _requestURL;
+		private final String _optionType;
+		private final String _optionValue;
 
 	}
 
