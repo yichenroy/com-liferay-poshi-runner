@@ -96,7 +96,7 @@ public class JSONCurlUtil {
 		public Request(String requestString, String requestMethod) {
 			_requestMethod = requestMethod;
 
-			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", "\n");
+			requestString = requestString.replaceAll("\\s+\\\\?\\s*\\n", " ");
 
 			requestString = _encodeCurlData(requestString);
 
@@ -264,7 +264,7 @@ public class JSONCurlUtil {
 		}
 
 		private static Pattern _escapePattern = Pattern.compile(
-			"<CURL_DATA\\[(.*?)\\]CURL_DATA>");
+			"<CURL_DATA\\[([\\s\\S]*?)\\]CURL_DATA>");
 		private static Pattern _requestPattern = Pattern.compile(
 			"(-[\\w#:\\.]|--[\\w#:\\.-]{2,}|https?:[^\\s]+)(\\s+|\\Z)");
 
