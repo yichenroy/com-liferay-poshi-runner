@@ -65,6 +65,10 @@ public abstract class PoshiElement
 			return true;
 		}
 
+		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
+			return true;
+		}
+
 		return false;
 	}
 
