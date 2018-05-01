@@ -23,26 +23,60 @@ public class MultilinePoshiComment extends PoshiComment {
 
 	@Override
 	public PoshiComment clone(Comment comment) {
+		String commentText = comment.getText();
+
+		if (commentText.contains("\n")) {
+			return new MultilinePoshiComment(comment);
+		}
+
 		return null;
 	}
 
 	@Override
 	public PoshiComment clone(String readableSyntax) {
+		if (isReadableSyntaxComment(readableSyntax)) {
+			return new MultilinePoshiComment(readableSyntax);
+		}
+
 		return null;
 	}
 
 	@Override
 	public boolean isReadableSyntaxComment(String readableSyntax) {
+		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
+			return true;
+		}
+
 		return false;
 	}
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
+		String text = readableSyntax.substring(2, readableSyntax.length() - 2);
+
+		setText(text);
 	}
 
 	@Override
 	public String toReadableSyntax() {
-		return null;
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("\n\t/*");
+		sb.append(getText());
+		sb.append("*/");
+
+		return sb.toString();
+	}
+
+	protected MultilinePoshiComment() {
+	}
+
+	protected MultilinePoshiComment(Comment comment) {
+		super(comment);
+	}
+
+	protected MultilinePoshiComment(String readableSyntax) {
+		super(readableSyntax);
 	}
 
 }
