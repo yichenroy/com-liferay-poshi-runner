@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,16 @@ public class ListUtil {
 		Collections.sort(list, comparator);
 
 		return list;
+	}
+
+	public static String sort(String s) {
+		return sort(s, StringPool.COMMA);
+	}
+
+	public static String sort(String s, String delimiter) {
+		List<String> list = Arrays.asList(s.split(delimiter));
+
+		return toString(sort(list), delimiter);
 	}
 
 	public static String toString(List<?> list) {

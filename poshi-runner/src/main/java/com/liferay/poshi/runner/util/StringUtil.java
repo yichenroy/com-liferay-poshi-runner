@@ -15,7 +15,6 @@
 package com.liferay.poshi.runner.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -552,16 +551,6 @@ public class StringUtil {
 		}
 
 		return new String(reverse);
-	}
-
-	public static String sortListAsString(String list) {
-		return sortListAsString(list, StringPool.COMMA);
-	}
-
-	public static String sortListAsString(String list, String delimiter) {
-		List<String> items = Arrays.asList(list.split(delimiter));
-
-		return ListUtil.toString(ListUtil.sort(items), delimiter);
 	}
 
 	public static String[] split(String s) {
