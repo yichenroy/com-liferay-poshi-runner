@@ -191,7 +191,7 @@ public class CommandPoshiElement extends PoshiElement {
 				continue;
 			}
 
-			if (isMultilineComment(item)) {
+			if (isMultilineReadableSyntaxComment(item)) {
 				item = item.replaceFirst("\t", pad + "\t");
 
 				sb.append(item);
@@ -272,16 +272,6 @@ public class CommandPoshiElement extends PoshiElement {
 
 	protected boolean isCDATAVar(String readableSyntax) {
 		if (readableSyntax.contains("escapeText(")) {
-			return true;
-		}
-
-		return false;
-	}
-
-	protected boolean isMultilineComment(String readableSyntax) {
-		readableSyntax = readableSyntax.trim();
-
-		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
 			return true;
 		}
 

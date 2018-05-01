@@ -65,7 +65,7 @@ public abstract class PoshiElement
 			return true;
 		}
 
-		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
+		if (isMultilineReadableSyntaxComment(readableSyntax)) {
 			return true;
 		}
 
@@ -248,6 +248,16 @@ public abstract class PoshiElement
 
 	protected boolean isElementType(String name, Element element) {
 		if (name.equals(element.getName())) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean isMultilineReadableSyntaxComment(String readableSyntax) {
+		readableSyntax = readableSyntax.trim();
+
+		if (readableSyntax.endsWith("*/") && readableSyntax.startsWith("/*")) {
 			return true;
 		}
 
