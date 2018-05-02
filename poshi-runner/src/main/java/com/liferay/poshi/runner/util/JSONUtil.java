@@ -23,7 +23,7 @@ import org.json.JSONObject;
  */
 public class JSONUtil {
 
-	public static String formatJSONObjectString(String json) {
+	public static String formatJSONString(String json) {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 
