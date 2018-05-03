@@ -53,6 +53,28 @@ public class WhilePoshiElement extends IfPoshiElement {
 	}
 
 	@Override
+	protected String getBlockName() {
+		String parentheticalContent = getParentheticalContent(
+			super.getBlockName());
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(getReadableName());
+		sb.append(" (");
+		sb.append(parentheticalContent);
+
+		if (attributeValue("max-iterations") != null) {
+			sb.append(" && (maxIterations = \"");
+			sb.append(attributeValue("max-iterations"));
+			sb.append("\")");
+		}
+
+		sb.append(")");
+
+		return sb.toString();
+	}
+
+	@Override
 	protected String getCondition(String readableSyntax) {
 		String parentheticalContent = getParentheticalContent(readableSyntax);
 
