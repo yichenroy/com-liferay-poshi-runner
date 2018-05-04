@@ -119,6 +119,25 @@ public class ExecUtil {
 	public static String readInputStream(InputStream inputStream)
 		throws IOException {
 
+		return readInputStream(inputStream, false);
+	}
+
+	public static String readInputStream(
+			InputStream inputStream, boolean resetAfterReading)
+		throws IOException {
+
+		if (resetAfterReading && !inputStream.markSupported()) {
+			Class<?> inputStreamClass = inputStream.getClass();
+
+			System.out.println(
+				"Unable to reset after reading input stream " +
+					inputStreamClass.getName());
+		}
+
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.mark(Integer.MAX_VALUE);
+		}
+
 		StringBuffer sb = new StringBuffer();
 
 		byte[] bytes = new byte[1024];
@@ -129,6 +148,10 @@ public class ExecUtil {
 			sb.append(new String(Arrays.copyOf(bytes, size)));
 
 			size = inputStream.read(bytes);
+		}
+
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.reset();
 		}
 
 		return sb.toString();
