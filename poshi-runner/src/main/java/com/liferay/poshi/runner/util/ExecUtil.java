@@ -74,11 +74,31 @@ public class ExecUtil {
 		Process process = processBuilder.start();
 
 		long duration = 0;
+		int returnCode = -1;
 		long start = System.currentTimeMillis();
 
 		while (true) {
 			try {
-				process.exitValue();
+				returnCode = process.exitValue();
+
+				if (returnCode == 0) {
+					String standardOut = readInputStream(
+						process.getInputStream(), true);
+
+					duration = System.currentTimeMillis() - start;
+
+					while (!standardOut.contains(
+								"Finished executing commands.") &&
+						   (duration < timeout)) {
+
+						sleep(10);
+
+						standardOut = readInputStream(
+							process.getInputStream(), true);
+
+						duration = System.currentTimeMillis() - start;
+					}
+				}
 
 				break;
 			}
@@ -87,7 +107,7 @@ public class ExecUtil {
 
 				if (duration >= timeout) {
 					System.out.print(
-						"Timeout occurred while executing Bash commands: " +
+						"Timeout occurred while executing commands: " +
 							Arrays.toString(commands));
 
 					throw itse;
