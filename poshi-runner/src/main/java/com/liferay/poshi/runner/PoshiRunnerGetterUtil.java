@@ -261,6 +261,9 @@ public class PoshiRunnerGetterUtil {
 
 				parameter = GetterUtil.getInteger((String)parameter);
 			}
+			else if (className.endsWith("StringUtil")) {
+				parameter = String.valueOf(parameter);
+			}
 
 			parameters[i] = parameter;
 		}
