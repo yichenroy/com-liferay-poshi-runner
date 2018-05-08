@@ -69,7 +69,7 @@ public class CommandPoshiElement extends PoshiElement {
 
 			if (readableBlock.endsWith("{")) {
 				String name = RegexUtil.getGroup(
-					readableBlock, "test([\\w]*)", 1);
+					readableBlock, "test ([\\w]*)", 1);
 
 				addAttribute("name", name);
 
@@ -250,7 +250,7 @@ public class CommandPoshiElement extends PoshiElement {
 			}
 
 			if ((trimmedLine.endsWith(" {") &&
-				 trimmedLine.startsWith("test")) ||
+				 trimmedLine.startsWith("test ")) ||
 				trimmedLine.startsWith("@")) {
 
 				readableBlocks.add(trimmedLine);
@@ -280,7 +280,7 @@ public class CommandPoshiElement extends PoshiElement {
 	}
 
 	protected String getReadableCommandTitle() {
-		return "test" + attributeValue("name");
+		return "test " + attributeValue("name");
 	}
 
 	protected boolean isCDATAVar(String readableSyntax) {
