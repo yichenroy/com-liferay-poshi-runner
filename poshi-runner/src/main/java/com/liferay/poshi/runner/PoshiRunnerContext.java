@@ -1117,6 +1117,25 @@ public class PoshiRunnerContext {
 					PoshiProseMatcher.storePoshiProseMatcher(
 						commandElement.attributeValue("prose"),
 						namespacedClassCommandName);
+
+					PoshiProseMatcher ppm =
+						PoshiProseMatcher.getPoshiProseMatcher(prose);
+
+					System.out.println("new Poshi Prose Matcher Created");
+					System.out.println(ppm);
+					System.out.println(ppm.getPoshiProse());
+					System.out.println("Parameter names: ");
+
+					List<String> parameterNames = ppm.getParameterNames();
+
+					for (String parameterName : parameterNames) {
+						System.out.println(parameterName);
+					}
+
+					System.out.println("macro class command name: ");
+					System.out.println(
+						ppm.getMacroNamespacedClassCommandName());
+					System.out.println();
 				}
 
 				if (classType.equals("test-case")) {
