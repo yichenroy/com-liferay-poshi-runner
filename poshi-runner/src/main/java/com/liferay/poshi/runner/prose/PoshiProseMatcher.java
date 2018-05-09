@@ -26,20 +26,38 @@ import java.util.regex.Pattern;
  */
 public class PoshiProseMatcher {
 
-	public static PoshiProseMatcher getPoshiProseMacro(
-		String poshiProse, String macroNamespacedClassCommandName) {
+	public static PoshiProseMatcher getPoshiProseMatcher(String poshiProse) {
+		String key = _toString(poshiProse);
+
+		return poshiProseMacroMap.get(key);
+	}
+
+	public static void storePoshiProseMatcher(
+			String poshiProse, String macroNamespacedClassCommandName)
+		throws Exception {
 
 		String key = _toString(poshiProse);
 
 		if (poshiProseMacroMap.containsKey(key)) {
-			return poshiProseMacroMap.get(key);
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Duplicate prose '");
+			sb.append(key);
+			sb.append("' already exists for ");
+
+			PoshiProseMatcher ppm = getPoshiProseMatcher(key);
+
+			sb.append(ppm.getMacroNamespacedClassCommandName());
+
+			sb.append("\n in ");
+			sb.append(macroNamespacedClassCommandName);
+
+			throw new RuntimeException(sb.toString());
 		}
 
 		poshiProseMacroMap.put(
 			key,
 			new PoshiProseMatcher(poshiProse, macroNamespacedClassCommandName));
-
-		return poshiProseMacroMap.get(key);
 	}
 
 	public String getMacroNamespacedClassCommandName() {
@@ -65,12 +83,6 @@ public class PoshiProseMatcher {
 	@Override
 	public String toString() {
 		return _toString(_poshiProse);
-	}
-
-	protected static PoshiProseMatcher getPoshiProseMacro(
-		String matchingString) {
-
-		return poshiProseMacroMap.get(matchingString);
 	}
 
 	protected static final Map<String, PoshiProseMatcher> poshiProseMacroMap =
