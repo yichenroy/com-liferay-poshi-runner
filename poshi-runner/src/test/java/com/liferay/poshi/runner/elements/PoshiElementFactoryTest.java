@@ -68,8 +68,8 @@ public class PoshiElementFactoryTest {
 
 		System.setProperty(
 			"poshiRunnerExtPropertyFileNames",
-			"src/test/resources/com/liferay/poshi/runner/dependencies/prose/" +
-				"poshi-runner-prose.properties");
+			"src/test/resources/com/liferay/poshi/runner/dependencies/prose" +
+				"/poshi-runner-prose.properties");
 
 		String[] poshiCommands = {"validatePoshi", "runPoshi"};
 
@@ -172,11 +172,11 @@ public class PoshiElementFactoryTest {
 
 	private static final String _POSHI_PROSE_FILE_PATH =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/prose" +
-		"/PoshiProse.prose";
+			"/PoshiProse.prose";
 
 	private static final String _POSHI_PROSE_IN_XML_FILE_PATH =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/prose" +
-		"/PoshiProseInXML.testcase";
+			"/PoshiProseInXML.testcase";
 
 	private static final String _POSHI_TEST_FILE_PATH =
 		"src/test/resources/com/liferay/poshi/runner/dependencies" +
