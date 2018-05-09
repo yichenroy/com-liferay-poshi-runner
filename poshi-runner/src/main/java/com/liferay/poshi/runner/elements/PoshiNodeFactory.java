@@ -86,20 +86,35 @@ public abstract class PoshiNodeFactory {
 	}
 
 	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
-		File file = new File(filePath);
-
 		try {
+			DefinitionPoshiElement definitionPoshiElement = null;
+
+			File file = new File(filePath);
+
 			String content = FileUtil.read(file);
+
+			int index = filePath.lastIndexOf(".");
+
+			String fileType = filePath.substring(index + 1);
+
+			for (PoshiElement poshiElement : _poshiElements) {
+				if (poshiElement instanceof DefinitionPoshiElement &&
+					fileType.equals(poshiElement.getFileType())) {
+
+					definitionPoshiElement =
+						(DefinitionPoshiElement)poshiElement;
+				}
+			}
 
 			if (content.contains("<definition")) {
 				Document document = Dom4JUtil.parse(content);
 
 				Element rootElement = document.getRootElement();
 
-				return newPoshiNode(rootElement);
+				return definitionPoshiElement.clone(rootElement);
 			}
 
-			return newPoshiNode(null, content);
+			return definitionPoshiElement.clone(content);
 		}
 		catch (Exception e) {
 			System.out.println("Unable to generate the Poshi element");
