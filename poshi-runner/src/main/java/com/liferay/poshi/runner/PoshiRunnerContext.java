@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
 
 import com.liferay.poshi.runner.pql.PQLEntity;
 import com.liferay.poshi.runner.pql.PQLEntityFactory;
-import com.liferay.poshi.runner.prose.PoshiProseMacroMatchingString;
+import com.liferay.poshi.runner.prose.PoshiProseMatcher;
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
 import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.MathUtil;
@@ -1109,16 +1109,14 @@ public class PoshiRunnerContext {
 					classType + "#" + namespacedClassCommandName,
 					_getCommandReturns(commandElement));
 
-				String matchingString = commandElement.attributeValue(
-					"matching-string");
+				String prose = commandElement.attributeValue("prose");
 
-				if (classType.equals("macro") && matchingString != null &&
-					!matchingString.isEmpty()) {
+				if (classType.equals("macro") && (prose != null) &&
+					!prose.isEmpty()) {
 
-					PoshiProseMacroMatchingString.
-						getPoshiProseMacroMatchingString(
-							commandElement.attributeValue("matching-string"),
-							namespacedClassCommandName);
+					PoshiProseMatcher.storePoshiProseMatcher(
+						commandElement.attributeValue("prose"),
+						namespacedClassCommandName);
 				}
 
 				if (classType.equals("test-case")) {
