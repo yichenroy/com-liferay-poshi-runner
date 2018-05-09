@@ -150,6 +150,10 @@ public class DefinitionPoshiElement extends PoshiElement {
 		return "definition";
 	}
 
+	protected String getFileType() {
+		return null;
+	}
+
 	@Override
 	protected String getPad() {
 		return "";

@@ -179,6 +179,12 @@ public abstract class PoshiElement
 		return RegexUtil.getGroup(readableSyntax, ".*?\\{(.*)\\}", 1);
 	}
 
+	protected String getFileType() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getFileType();
+	}
+
 	protected String getNameFromAssignment(String assignment) {
 		String name = assignment.split("=")[0];
 
