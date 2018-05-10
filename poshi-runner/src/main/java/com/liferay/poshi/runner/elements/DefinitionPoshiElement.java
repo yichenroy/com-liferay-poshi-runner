@@ -198,7 +198,7 @@ public abstract class DefinitionPoshiElement extends PoshiElement {
 		return false;
 	}
 
-	private boolean _isElementType(String readableSyntax) {
+	protected boolean isElementType(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 
 		if (!isBalancedReadableSyntax(readableSyntax)) {
