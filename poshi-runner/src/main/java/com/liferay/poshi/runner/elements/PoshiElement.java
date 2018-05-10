@@ -211,6 +211,12 @@ public abstract class PoshiElement
 		return RegexUtil.getGroup(readableSyntax, ".*?\"(.*)\"", 1);
 	}
 
+	protected String getReadableCommandKeyword() {
+		PoshiElement poshiParentElement = (PoshiElement)getParent();
+
+		return poshiParentElement.getReadableCommandKeyword();
+	}
+
 	protected String getReadableEscapedContent(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 

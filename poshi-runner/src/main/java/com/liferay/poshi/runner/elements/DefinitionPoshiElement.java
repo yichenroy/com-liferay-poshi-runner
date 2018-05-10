@@ -183,6 +183,14 @@ public abstract class DefinitionPoshiElement extends PoshiElement {
 		return readableBlocks;
 	}
 
+	protected String getReadableCommandKeyword() {
+		if (getFileType().equals("testcase")) {
+			return "test";
+		}
+
+		return getFileType();
+	}
+
 	@Override
 	protected boolean isBalanceValidationRequired(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
