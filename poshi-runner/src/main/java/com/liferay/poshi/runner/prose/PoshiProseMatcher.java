@@ -29,7 +29,7 @@ public class PoshiProseMatcher {
 	public static PoshiProseMatcher getPoshiProseMatcher(String poshiProse) {
 		String key = _toString(poshiProse);
 
-		return poshiProseMacroMap.get(key);
+		return poshiProseMatcherMap.get(key);
 	}
 
 	public static void storePoshiProseMatcher(
@@ -38,7 +38,7 @@ public class PoshiProseMatcher {
 
 		String key = _toString(poshiProse);
 
-		if (poshiProseMacroMap.containsKey(key)) {
+		if (poshiProseMatcherMap.containsKey(key)) {
 			StringBuilder sb = new StringBuilder();
 
 			sb.append("Duplicate prose '");
@@ -55,7 +55,7 @@ public class PoshiProseMatcher {
 			throw new RuntimeException(sb.toString());
 		}
 
-		poshiProseMacroMap.put(
+		poshiProseMatcherMap.put(
 			key,
 			new PoshiProseMatcher(poshiProse, macroNamespacedClassCommandName));
 	}
@@ -77,7 +77,7 @@ public class PoshiProseMatcher {
 		return _toString(_poshiProse);
 	}
 
-	protected static final Map<String, PoshiProseMatcher> poshiProseMacroMap =
+	protected static final Map<String, PoshiProseMatcher> poshiProseMatcherMap =
 		new HashMap<>();
 
 	private static String _toString(String matchingString) {
