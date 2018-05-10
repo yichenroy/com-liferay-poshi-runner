@@ -14,10 +14,56 @@
 
 package com.liferay.poshi.runner.elements;
 
+import org.dom4j.Attribute;
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+import java.util.List;
+
 /**
  * @author Kenji Heigel
  */
 public class MacroDefinitionPoshiElement extends DefinitionPoshiElement {
+
+	@Override
+	public PoshiElement clone(Element element) {
+		if (isElementType(getElementName(), element)) {
+			return new MacroDefinitionPoshiElement(element);
+		}
+
+		return null;
+	}
+
+	@Override
+	public PoshiElement clone(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		if (isElementType(readableSyntax)) {
+			return new MacroDefinitionPoshiElement(
+				parentPoshiElement, readableSyntax);
+		}
+
+		return null;
+	}
+
+	protected MacroDefinitionPoshiElement() {
+	}
+
+	protected MacroDefinitionPoshiElement(Element element) {
+		super(element);
+	}
+
+	protected MacroDefinitionPoshiElement(
+	List<Attribute> attributes, List<Node> nodes) {
+
+		super(attributes, nodes);
+	}
+
+	protected MacroDefinitionPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(parentPoshiElement, readableSyntax);
+	}
 
 	protected String getFileType() {
 		return _FILE_TYPE;

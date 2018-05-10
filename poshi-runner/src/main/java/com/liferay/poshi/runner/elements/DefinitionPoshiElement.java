@@ -26,28 +26,7 @@ import org.dom4j.Node;
 /**
  * @author Kenji Heigel
  */
-public class DefinitionPoshiElement extends PoshiElement {
-
-	@Override
-	public PoshiElement clone(Element element) {
-		if (isElementType(_ELEMENT_NAME, element)) {
-			return new DefinitionPoshiElement(element);
-		}
-
-		return null;
-	}
-
-	@Override
-	public PoshiElement clone(
-		PoshiElement parentPoshiElement, String readableSyntax) {
-
-		if (_isElementType(readableSyntax)) {
-			return new DefinitionPoshiElement(
-				parentPoshiElement, readableSyntax);
-		}
-
-		return null;
-	}
+public abstract class DefinitionPoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
