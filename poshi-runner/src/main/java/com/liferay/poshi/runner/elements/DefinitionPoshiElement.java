@@ -198,7 +198,7 @@ public abstract class DefinitionPoshiElement extends PoshiElement {
 		if ((readableSyntax.startsWith("@") && readableSyntax.contains("{")) ||
 			readableSyntax.startsWith("setUp") ||
 			readableSyntax.startsWith("tearDown") ||
-			readableSyntax.startsWith("test")) {
+			readableSyntax.startsWith(getReadableCommandKeyword())) {
 
 			return true;
 		}

@@ -43,7 +43,7 @@ public class CommandPoshiElement extends PoshiElement {
 	public PoshiElement clone(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
-		if (_isElementType(readableSyntax)) {
+		if (_isElementType(parentPoshiElement, readableSyntax)) {
 			return new CommandPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
@@ -69,7 +69,8 @@ public class CommandPoshiElement extends PoshiElement {
 
 			if (readableBlock.endsWith("{")) {
 				String name = RegexUtil.getGroup(
-					readableBlock, "test ([\\w]*)", 1);
+					readableBlock, getReadableCommandKeyword() + " ([\\w]*)",
+					1);
 
 				addAttribute("name", name);
 
@@ -254,7 +255,7 @@ public class CommandPoshiElement extends PoshiElement {
 			}
 
 			if ((trimmedLine.endsWith(" {") &&
-				 trimmedLine.startsWith("test ")) ||
+				 trimmedLine.startsWith(getReadableCommandKeyword() + " ")) ||
 				trimmedLine.startsWith("@")) {
 
 				readableBlocks.add(trimmedLine);
@@ -284,7 +285,7 @@ public class CommandPoshiElement extends PoshiElement {
 	}
 
 	protected String getReadableCommandTitle() {
-		return "test " + attributeValue("name");
+		return getReadableCommandKeyword() + " " + attributeValue("name");
 	}
 
 	protected boolean isCDATAVar(String readableSyntax) {
@@ -295,7 +296,9 @@ public class CommandPoshiElement extends PoshiElement {
 		return false;
 	}
 
-	private boolean _isElementType(String readableSyntax) {
+	private boolean _isElementType(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
 		readableSyntax = readableSyntax.trim();
 
 		if (!isBalancedReadableSyntax(readableSyntax)) {
@@ -306,6 +309,10 @@ public class CommandPoshiElement extends PoshiElement {
 			return false;
 		}
 
+		if (!(parentPoshiElement instanceof DefinitionPoshiElement)) {
+			return false;
+		}
+
 		for (String line : readableSyntax.split("\n")) {
 			line = line.trim();
 
@@ -313,7 +320,10 @@ public class CommandPoshiElement extends PoshiElement {
 				continue;
 			}
 
-			if (!(line.endsWith("{") && line.startsWith("test"))) {
+			if (!(line.endsWith("{") &&
+				line.startsWith(
+					parentPoshiElement.getReadableCommandKeyword()))) {
+
 				return false;
 			}
 
