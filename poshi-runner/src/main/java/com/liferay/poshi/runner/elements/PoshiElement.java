@@ -140,7 +140,9 @@ public abstract class PoshiElement
 		}
 	}
 
-	protected PoshiElement(String name, String readableSyntax) {
+	protected PoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
 		super(name);
 
 		parseReadableSyntax(readableSyntax);

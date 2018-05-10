@@ -44,7 +44,7 @@ public class CommandPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new CommandPoshiElement(readableSyntax);
+			return new CommandPoshiElement(parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -143,8 +143,10 @@ public class CommandPoshiElement extends PoshiElement {
 		this(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected CommandPoshiElement(String readableSyntax) {
-		this(_ELEMENT_NAME, readableSyntax);
+	protected CommandPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		this(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	protected CommandPoshiElement(String name, Element element) {
@@ -157,8 +159,10 @@ public class CommandPoshiElement extends PoshiElement {
 		super(elementName, attributes, nodes);
 	}
 
-	protected CommandPoshiElement(String name, String readableSyntax) {
-		super(name, readableSyntax);
+	protected CommandPoshiElement(
+		String name, PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(name, parentPoshiElement, readableSyntax);
 	}
 
 	protected String createReadableBlock(List<String> items) {

@@ -42,7 +42,8 @@ public class DefinitionPoshiElement extends PoshiElement {
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
 		if (_isElementType(readableSyntax)) {
-			return new DefinitionPoshiElement(readableSyntax);
+			return new DefinitionPoshiElement(
+				parentPoshiElement, readableSyntax);
 		}
 
 		return null;
@@ -138,8 +139,10 @@ public class DefinitionPoshiElement extends PoshiElement {
 		super(_ELEMENT_NAME, attributes, nodes);
 	}
 
-	protected DefinitionPoshiElement(String readableSyntax) {
-		super(_ELEMENT_NAME, readableSyntax);
+	protected DefinitionPoshiElement(
+		PoshiElement parentPoshiElement, String readableSyntax) {
+
+		super(_ELEMENT_NAME, parentPoshiElement, readableSyntax);
 	}
 
 	@Override
