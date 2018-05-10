@@ -82,7 +82,8 @@ public abstract class PoshiNodeFactory {
 			return newPoshiNode;
 		}
 
-		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
+		throw new RuntimeException(
+			"Unknown readable syntax\n" + readableSyntax);
 	}
 
 	public static PoshiNode<?, ?> newPoshiNode(
