@@ -62,7 +62,7 @@ public class DefinitionPoshiElement extends PoshiElement {
 			}
 
 			if (isReadableSyntaxComment(readableBlock)) {
-				add(PoshiNodeFactory.newPoshiNode(null, readableBlock));
+				add(PoshiNodeFactory.newPoshiNode(this, readableBlock));
 
 				continue;
 			}
