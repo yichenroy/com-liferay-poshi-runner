@@ -145,7 +145,11 @@ public abstract class PoshiElement
 
 		super(name);
 
+		setParent(parentPoshiElement);
+
 		parseReadableSyntax(readableSyntax);
+
+		detach();
 	}
 
 	protected String createReadableBlock(String content) {
