@@ -149,11 +149,11 @@ public class PoshiElementFactoryTest {
 	}
 
 	private static final String _POSHI_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies" +
+		"src/test/resources/com/liferay/poshi/runner/dependencies/elements" +
 			"/PoshiSyntax.testcase";
 
 	private static final String _READABLE_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies" +
+		"src/test/resources/com/liferay/poshi/runner/dependencies/elements" +
 			"/ReadableSyntax.testcase";
 
 }
