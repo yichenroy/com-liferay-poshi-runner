@@ -85,17 +85,11 @@ public abstract class PoshiNodeFactory {
 		throw new RuntimeException("Unknown readble syntax\n" + readableSyntax);
 	}
 
-	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
+	public static PoshiNode<?, ?> newPoshiNode(
+		String content, String fileType) {
+
 		try {
 			DefinitionPoshiElement definitionPoshiElement = null;
-
-			File file = new File(filePath);
-
-			String content = FileUtil.read(file);
-
-			int index = filePath.lastIndexOf(".");
-
-			String fileType = filePath.substring(index + 1);
 
 			for (PoshiElement poshiElement : _poshiElements) {
 				if (poshiElement instanceof DefinitionPoshiElement &&
@@ -115,6 +109,27 @@ public abstract class PoshiNodeFactory {
 			}
 
 			return definitionPoshiElement.clone(content);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to generate the Poshi element");
+
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static PoshiNode<?, ?> newPoshiNodeFromFile(String filePath) {
+		try {
+			File file = new File(filePath);
+
+			String content = FileUtil.read(file);
+
+			int index = filePath.lastIndexOf(".");
+
+			String fileType = filePath.substring(index + 1);
+
+			return newPoshiNode(content, fileType);
 		}
 		catch (Exception e) {
 			System.out.println("Unable to generate the Poshi element");

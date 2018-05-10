@@ -63,7 +63,7 @@ public class PoshiElementFactoryTest {
 		String readableSyntax = poshiElement.toReadableSyntax();
 
 		PoshiNode<?, ?> elementFromReadableSyntax =
-			PoshiNodeFactory.newPoshiNode(null, readableSyntax);
+			PoshiNodeFactory.newPoshiNode(readableSyntax, "testcase");
 
 		Element baselineElement = _getBaselineElement();
 
