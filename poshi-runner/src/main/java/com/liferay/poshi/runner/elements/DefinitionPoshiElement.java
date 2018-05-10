@@ -154,6 +154,10 @@ public class DefinitionPoshiElement extends PoshiElement {
 		return null;
 	}
 
+	protected String getElementName() {
+		return _ELEMENT_NAME;
+	}
+
 	@Override
 	protected String getPad() {
 		return "";
