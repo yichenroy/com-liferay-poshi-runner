@@ -14,11 +14,11 @@
 
 package com.liferay.poshi.runner.elements;
 
+import java.util.List;
+
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.Node;
-
-import java.util.List;
 
 /**
  * @author Kenji Heigel
@@ -54,7 +54,7 @@ public class MacroDefinitionPoshiElement extends DefinitionPoshiElement {
 	}
 
 	protected MacroDefinitionPoshiElement(
-	List<Attribute> attributes, List<Node> nodes) {
+		List<Attribute> attributes, List<Node> nodes) {
 
 		super(attributes, nodes);
 	}

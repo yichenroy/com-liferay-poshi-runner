@@ -129,12 +129,12 @@ public abstract class DefinitionPoshiElement extends PoshiElement {
 		return "definition";
 	}
 
-	protected String getFileType() {
-		return null;
-	}
-
 	protected String getElementName() {
 		return _ELEMENT_NAME;
+	}
+
+	protected String getFileType() {
+		return null;
 	}
 
 	@Override
