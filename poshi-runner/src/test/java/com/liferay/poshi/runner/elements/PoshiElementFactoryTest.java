@@ -116,6 +116,39 @@ public class PoshiElementFactoryTest {
 		return false;
 	}
 
+	private static void _assertEqualElements(
+			Element actualElement, Element expectedElement, String errorMessage)
+		throws Exception {
+
+		NodeComparator nodeComparator = new NodeComparator();
+
+		int compare = nodeComparator.compare(actualElement, expectedElement);
+
+		if (compare == 0) {
+			String actual = Dom4JUtil.format(actualElement);
+			String expected = Dom4JUtil.format(expectedElement);
+
+			_assertEqualStrings(actual, expected, errorMessage);
+		}
+	}
+
+	private static void _assertEqualStrings(
+			String actual, String expected, String errorMessage)
+		throws Exception {
+
+		if (!actual.equals(expected)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(errorMessage);
+			sb.append("\n\nExpected:\n");
+			sb.append(expected);
+			sb.append("\n\nActual:\n");
+			sb.append(actual);
+
+			throw new Exception(sb.toString());
+		}
+	}
+
 	private static Element _getBaselineElement() throws Exception {
 		String fileContent = FileUtil.read(_POSHI_TEST_FILE_PATH);
 
@@ -126,6 +159,23 @@ public class PoshiElementFactoryTest {
 		_removeWhiteSpaceTextNodes(rootElement);
 
 		return rootElement;
+	}
+
+	private static Element _getDom4JElement(String fileName) throws Exception {
+		String fileContent = FileUtil.read(_BASE_DIR + fileName);
+
+		Document document = Dom4JUtil.parse(fileContent);
+
+		Element rootElement = document.getRootElement();
+
+		_removeWhiteSpaceTextNodes(rootElement);
+
+		return rootElement;
+	}
+
+	private static PoshiElement _getPoshiElement(String fileName) {
+		return (PoshiElement)PoshiNodeFactory.newPoshiNodeFromFile(
+			_BASE_DIR + fileName);
 	}
 
 	private static void _removeWhiteSpaceTextNodes(Element element) {
@@ -147,6 +197,9 @@ public class PoshiElementFactoryTest {
 			_removeWhiteSpaceTextNodes(childElement);
 		}
 	}
+
+	private static final String _BASE_DIR =
+		"src/test/resources/com/liferay/poshi/runner/dependencies/elements/";
 
 	private static final String _POSHI_TEST_FILE_PATH =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/elements" +
