@@ -70,20 +70,6 @@ public class PoshiElementFactoryTest {
 			"Poshi syntax does not translate to XML.");
 	}
 
-	private static boolean _areElementsEqual(Element element1, Element element2)
-		throws Exception {
-
-		NodeComparator nodeComparator = new NodeComparator();
-
-		int compare = nodeComparator.compare(element1, element2);
-
-		if (compare == 0) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private static void _assertEqualElements(
 			Element actualElement, Element expectedElement, String errorMessage)
 		throws Exception {
@@ -111,18 +97,6 @@ public class PoshiElementFactoryTest {
 
 			throw new Exception(errorMessage);
 		}
-	}
-
-	private static Element _getBaselineElement() throws Exception {
-		String fileContent = FileUtil.read(_POSHI_TEST_FILE_PATH);
-
-		Document document = Dom4JUtil.parse(fileContent);
-
-		Element rootElement = document.getRootElement();
-
-		_removeWhiteSpaceTextNodes(rootElement);
-
-		return rootElement;
 	}
 
 	private static Element _getDom4JElement(String fileName) throws Exception {
@@ -179,13 +153,5 @@ public class PoshiElementFactoryTest {
 
 	private static final String _BASE_DIR =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/elements/";
-
-	private static final String _POSHI_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies/elements" +
-			"/PoshiSyntax.testcase";
-
-	private static final String _READABLE_TEST_FILE_PATH =
-		"src/test/resources/com/liferay/poshi/runner/dependencies/elements" +
-			"/ReadableSyntax.testcase";
 
 }
