@@ -31,7 +31,7 @@ import org.junit.Test;
 public class PoshiElementFactoryTest {
 
 	@Test
-	public void testPoshiToReadable() throws Exception {
+	public void testPoshiTestToReadable() throws Exception {
 		String expected = FileUtil.read(_BASE_DIR + "ReadableSyntax.testcase");
 
 		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.testcase");
@@ -44,7 +44,7 @@ public class PoshiElementFactoryTest {
 	}
 
 	@Test
-	public void testPoshiToReadableToXML() throws Exception {
+	public void testPoshiTestToReadableToXML() throws Exception {
 		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.testcase");
 
 		String readableSyntax = poshiElement.toReadableSyntax();
@@ -61,7 +61,7 @@ public class PoshiElementFactoryTest {
 	}
 
 	@Test
-	public void testPoshiToXML() throws Exception {
+	public void testPoshiTestToXML() throws Exception {
 		PoshiElement actualElement = _getPoshiElement("PoshiSyntax.testcase");
 		Element expectedElement = _getDom4JElement("PoshiSyntax.testcase");
 
