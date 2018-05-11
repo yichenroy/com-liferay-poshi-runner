@@ -31,6 +31,19 @@ import org.junit.Test;
 public class PoshiElementFactoryTest {
 
 	@Test
+	public void testPoshiMacroToReadable() throws Exception {
+		String expected = FileUtil.read(_BASE_DIR + "ReadableSyntax.macro");
+
+		PoshiElement poshiElement = _getPoshiElement("PoshiSyntax.macro");
+
+		String actual = poshiElement.toReadableSyntax();
+
+		_assertEqualStrings(
+			actual, expected,
+			"Poshi syntax does not translate to readable syntax");
+	}
+
+	@Test
 	public void testPoshiTestToReadable() throws Exception {
 		String expected = FileUtil.read(_BASE_DIR + "ReadableSyntax.testcase");
 
@@ -68,6 +81,16 @@ public class PoshiElementFactoryTest {
 		_assertEqualElements(
 			actualElement, expectedElement,
 			"Poshi syntax does not translate to XML.");
+	}
+
+	@Test
+	public void testReadableMacroToXML() throws Exception {
+		PoshiElement actualElement = _getPoshiElement("ReadableSyntax.macro");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.macro");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Readable syntax does not translate to XML.");
 	}
 
 	@Test
