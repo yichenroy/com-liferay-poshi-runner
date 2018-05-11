@@ -57,7 +57,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualElements(
 			actualElement, expectedElement,
-			"Readable syntax does not translate to XML.");
+			"Poshi syntax is not preserved in full translation.");
 	}
 
 	@Test
@@ -68,6 +68,17 @@ public class PoshiElementFactoryTest {
 		_assertEqualElements(
 			actualElement, expectedElement,
 			"Poshi syntax does not translate to XML.");
+	}
+
+	@Test
+	public void testReadableTestToXML() throws Exception {
+		PoshiElement actualElement = _getPoshiElement(
+			"ReadableSyntax.testcase");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.testcase");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Readable syntax does not translate to XML.");
 	}
 
 	private static void _assertEqualElements(
