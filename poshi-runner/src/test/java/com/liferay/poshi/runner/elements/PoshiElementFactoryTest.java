@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.util.Dom4JUtil;
 import com.liferay.poshi.runner.util.FileUtil;
 
@@ -23,12 +24,24 @@ import org.dom4j.Node;
 import org.dom4j.Text;
 import org.dom4j.util.NodeComparator;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  * @author Kenji Heigel
  */
 public class PoshiElementFactoryTest {
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		String[] poshiFileNames = {"**/*.function"};
+
+		String poshiFileDir =
+			"../poshi-runner-resources/src/main/resources/default" +
+				"/testFunctional/functions";
+
+		PoshiRunnerContext.readFiles(poshiFileNames, poshiFileDir);
+	}
 
 	@Test
 	public void testPoshiMacroToReadable() throws Exception {
