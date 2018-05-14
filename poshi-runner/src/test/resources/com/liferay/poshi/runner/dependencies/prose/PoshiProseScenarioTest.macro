@@ -1,0 +1,16 @@
+<definition>
+	<command prose="I discover the URL ${url}" name="discoverURL">
+		<execute function="Open" locator1="${url}" />
+	</command>
+
+	<command prose="I make a search for ${input}" name="makeSearch">
+		<execute function="Type" locator1="//input[@title='Search']" value="${input}" />
+		<execute function="Click" locator1="//input[@title='Search']" value="${input}" />
+	</command>
+
+	<command prose="I should see ${result1} and ${result2}" name="confirmSearchResults">
+		<execute function="AssertTextPresent" locator1="//body1" value="${result1}" />
+		<execute function="AssertTextPresent" locator1="//body2" value="${result2}" />
+		<execute function="AssertTextPresent" locator1="//body3" value="${result3}" />
+	</command>
+</definition>

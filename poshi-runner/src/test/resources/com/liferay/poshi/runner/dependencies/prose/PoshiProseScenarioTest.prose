@@ -1,0 +1,4 @@
+Scenario: coolColorsSearch
+    When I discover the URL "https://www.google.com"
+    And I make a search for "cool colors"
+    Then I should see "Cyan blue" and "Emerald Green"
