@@ -91,7 +91,15 @@ public class VarPoshiElement extends PoshiElement {
 			return;
 		}
 
-		value = getQuotedContent(value);
+		if (value.endsWith("\"") && value.startsWith("\"")) {
+			value = getQuotedContent(value);
+
+			value = value.replace("&quot;", "\"");
+
+			addAttribute("value", value);
+
+			return;
+		}
 
 		int index = value.indexOf(".");
 
@@ -104,13 +112,7 @@ public class VarPoshiElement extends PoshiElement {
 			value = value.replaceFirst("\\.", "#");
 
 			addAttribute("method", value);
-
-			return;
 		}
-
-		value = value.replace("&quot;", "\"");
-
-		addAttribute("value", value);
 	}
 
 	@Override
@@ -159,9 +161,9 @@ public class VarPoshiElement extends PoshiElement {
 				if (parentElement instanceof ExecutePoshiElement) {
 					value = value.replace("\\", "\\\\");
 				}
-			}
 
-			value = quoteContent(value);
+				value = quoteContent(value);
+			}
 		}
 
 		sb.append(value);
