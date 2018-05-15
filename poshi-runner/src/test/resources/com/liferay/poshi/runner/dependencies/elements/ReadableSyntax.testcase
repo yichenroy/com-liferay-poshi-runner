@@ -21,7 +21,7 @@ definition {
 
 	tearDown {
 		PortalInstances.tearDownCP(
-			testPortalInstance = "TestPropsUtil.get('test.portal.instance')"
+			testPortalInstance = TestPropsUtil.get('test.portal.instance')
 		);
 	}
 
@@ -49,8 +49,8 @@ definition {
 
 		for (breadcrumbName : "${breadcrumbListVisible}") {
 			var key_breadcrumbName = "${breadcrumbName}";
-			var breadcrumbNameUppercase = "StringUtil.upperCase('${breadcrumbName}')";
-			var historyVersion = "selenium.getText('Staging#HISTORY_VERSION')";
+			var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
+			var historyVersion = selenium.getText('Staging#HISTORY_VERSION');
 
 			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
 
