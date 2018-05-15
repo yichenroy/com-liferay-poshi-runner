@@ -25,9 +25,9 @@ import org.dom4j.Element;
 /**
  * @author Yi-Chen Tsai
  */
-public class PoshiProseFile {
+public class PoshiProseDefinition {
 
-	public PoshiProseFile(String fileName, String fileContent)
+	public PoshiProseDefinition(String fileName, String fileContent)
 		throws Exception {
 
 		_fileName = fileName;
