@@ -47,19 +47,19 @@ public class PoshiProseStatement {
 		_poshiProseMatcher = PoshiProseMatcher.getPoshiProseMatcher(
 			_proseStatement.replaceAll(_varValuePattern.pattern(), "\"\""));
 
-		List<String> parameterNames = _poshiProseMatcher.getParameterNames();
+		List<String> varNames = _poshiProseMatcher.getVarNames();
 
-		List<String> parameterValues = new ArrayList<>();
+		List<String> varValues = new ArrayList<>();
 
 		Matcher matcher = _varValuePattern.matcher(_proseStatement);
 
 		while (matcher.find()) {
-			parameterValues.add(matcher.group(1));
+			varValues.add(matcher.group(1));
 		}
 
-		for (int i = 0; i < parameterNames.size(); i++) {
-			String parameterName = parameterNames.get(i);
-			String parameterValue = parameterValues.get(i);
+		for (int i = 0; i < varNames.size(); i++) {
+			String parameterName = varNames.get(i);
+			String parameterValue = varValues.get(i);
 
 			if (!_varValueMap.containsKey(parameterName)) {
 				_varValueMap.put(parameterName, parameterValue);
