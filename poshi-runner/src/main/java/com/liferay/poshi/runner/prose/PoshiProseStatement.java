@@ -60,21 +60,13 @@ public class PoshiProseStatement {
 		for (int i = 0; i < varNames.size(); i++) {
 			String varName = varNames.get(i);
 
-			if (!_varValueMap.containsKey(varName)) {
-				_varValueMap.put(varName, varValues.get(i));
-
-				continue;
-			}
-
-			String varValue = _varValueMap.get(varName);
-
-			if (varValue.equals(varValues.get(i))) {
+			if (_varMap.containsKey(varName)) {
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("Duplicate variable value assignment: ${");
 				sb.append(varName);
 				sb.append("} already has a value of ");
-				sb.append(varValue);
+				sb.append(_varMap.get(varName));
 				sb.append("\nProse statement: ");
 				sb.append(_proseStatement);
 				sb.append("\nMatching macro prose statement: ");
@@ -82,6 +74,8 @@ public class PoshiProseStatement {
 
 				throw new RuntimeException(sb.toString());
 			}
+
+			_varMap.put(varName, varValues.get(i));
 		}
 	}
 
@@ -111,7 +105,7 @@ public class PoshiProseStatement {
 
 			Dom4JUtil.addToElement(
 				varElement, new DefaultAttribute("name", varName),
-				new DefaultAttribute("value", _varValueMap.get(varName)));
+				new DefaultAttribute("value", _varMap.get(varName)));
 
 			varElements.add(varElement);
 		}
@@ -126,6 +120,6 @@ public class PoshiProseStatement {
 
 	private final PoshiProseMatcher _poshiProseMatcher;
 	private final String _proseStatement;
-	private final Map<String, String> _varValueMap = new HashMap<>();
+	private final Map<String, String> _varMap = new HashMap<>();
 
 }
