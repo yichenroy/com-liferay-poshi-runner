@@ -438,11 +438,11 @@ public abstract class PoshiElement
 			throw new RuntimeException(ioe);
 		}
 
-		for (String namespacedFunctionFile :
+		for (String namespacedFunctionFileName :
 				PoshiRunnerContext.getFilePathKeys()) {
 
 			Matcher matcher = _namespacedfunctionFileNamePattern.matcher(
-				namespacedFunctionFile);
+				namespacedFunctionFileName);
 
 			if (matcher.find()) {
 				functionFileNames.add(matcher.group(1));
