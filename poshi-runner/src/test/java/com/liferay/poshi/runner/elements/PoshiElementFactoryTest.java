@@ -97,6 +97,17 @@ public class PoshiElementFactoryTest {
 	}
 
 	@Test
+	public void testReadableMacroFormat() throws Exception {
+		PoshiElement actualElement = _getPoshiElement(
+			"FormattedReadableSyntax.macro");
+		Element expectedElement = _getDom4JElement("PoshiSyntax.macro");
+
+		_assertEqualElements(
+			actualElement, expectedElement,
+			"Readable syntax does not translate to XML.");
+	}
+
+	@Test
 	public void testReadableMacroToXML() throws Exception {
 		PoshiElement actualElement = _getPoshiElement("ReadableSyntax.macro");
 		Element expectedElement = _getDom4JElement("PoshiSyntax.macro");
