@@ -102,10 +102,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			boolean functionAttributeAdded = false;
 
-			String[] functionAttributeNames =
-				{"locator1", "locator2", "value1", "value2"};
-
-			for (String functionAttributeName : functionAttributeNames) {
+			for (String functionAttributeName : _FUNCTION_ATTRIBUTE_NAMES) {
 				if (assignment.startsWith(functionAttributeName)) {
 					String name = getNameFromAssignment(assignment);
 					String value = getQuotedContent(assignment);
@@ -343,5 +340,8 @@ public class ExecutePoshiElement extends PoshiElement {
 	}
 
 	private static final String _ELEMENT_NAME = "execute";
+
+	private static final String[] _FUNCTION_ATTRIBUTE_NAMES =
+		{"locator1", "locator2", "value1", "value2"};
 
 }
