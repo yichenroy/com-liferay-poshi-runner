@@ -69,12 +69,12 @@ public class PoshiProseMatcher {
 		return _macroNamespacedClassCommandName;
 	}
 
-	public List<String> getParameterNames() {
-		return _parameterNames;
-	}
-
 	public String getPoshiProse() {
 		return _poshiProse;
+	}
+
+	public List<String> getVarNames() {
+		return _varNames;
 	}
 
 	@Override
@@ -95,18 +95,18 @@ public class PoshiProseMatcher {
 		_poshiProse = poshiProse;
 		_macroNamespacedClassCommandName = macroNamespacedClassCommandName;
 
-		Matcher matcher = _poshiProseParameterPattern.matcher(_poshiProse);
+		Matcher matcher = _poshiProseVarPattern.matcher(_poshiProse);
 
 		while (matcher.find()) {
-			_parameterNames.add(matcher.group(1));
+			_varNames.add(matcher.group(1));
 		}
 	}
 
-	private static final Pattern _poshiProseParameterPattern = Pattern.compile(
+	private static final Pattern _poshiProseVarPattern = Pattern.compile(
 		"\\$\\{(.+?)\\}");
 
 	private final String _macroNamespacedClassCommandName;
-	private final List<String> _parameterNames = new ArrayList<>();
 	private final String _poshiProse;
+	private final List<String> _varNames = new ArrayList<>();
 
 }
