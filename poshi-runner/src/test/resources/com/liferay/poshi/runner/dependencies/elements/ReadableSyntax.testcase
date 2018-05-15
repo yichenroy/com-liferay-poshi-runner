@@ -212,6 +212,8 @@ definition {
 		Type(value1 = "Welcome");
 
 		AssertElementPresent.assertElementPresent(locator1 = "Home#PAGE", value1 = "Welcome");
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.delete('${curl}');
 	}
 
 	@description = "Ensure that a user can add multiple Blogs Entries."
