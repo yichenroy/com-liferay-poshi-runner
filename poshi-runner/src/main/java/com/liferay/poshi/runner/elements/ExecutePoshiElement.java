@@ -52,15 +52,12 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
-		String executeClassName = RegexUtil.getGroup(
-			readableSyntax, "(.*?)(\\(|\\.)", 1);
-
 		String executeType = "macro";
 
-		if (PoshiElement.utilClassNames.contains(executeClassName)) {
+		if (isValidUtilClassName(readableSyntax)) {
 			executeType = "class";
 		}
-		else if (PoshiElement.functionFileNames.contains(executeClassName)) {
+		else if (isValidFunctionName(readableSyntax)) {
 			executeType = "function";
 		}
 

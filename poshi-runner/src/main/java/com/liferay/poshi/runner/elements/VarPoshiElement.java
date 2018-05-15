@@ -101,12 +101,7 @@ public class VarPoshiElement extends PoshiElement {
 			return;
 		}
 
-		int index = value.indexOf(".");
-
-		String className = value.substring(0, index);
-
-		if (PoshiElement.utilClassNames.contains(className) ||
-			value.startsWith("selenium.") ||
+		if (isValidUtilClassName(value) || value.startsWith("selenium.") ||
 			value.startsWith("TestPropsUtil.")) {
 
 			value = value.replaceFirst("\\.", "#");
@@ -144,11 +139,7 @@ public class VarPoshiElement extends PoshiElement {
 
 		if (Validator.isNotNull(valueAttributeName)) {
 			if (valueAttributeName.equals("method")) {
-				int index = value.indexOf("#");
-
-				String className = value.substring(0, index);
-
-				if (PoshiElement.utilClassNames.contains(className) ||
+				if (isValidUtilClassName(value) ||
 					value.startsWith("selenium#") ||
 					value.startsWith("TestPropsUtil#")) {
 
