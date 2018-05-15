@@ -30,7 +30,7 @@ import org.dom4j.tree.DefaultAttribute;
  */
 public class PoshiProseScenario {
 
-	public PoshiProseScenario(String proseScenario) throws Exception {
+	public PoshiProseScenario(String proseScenario) {
 		Matcher matcher = _scenarioPattern.matcher(proseScenario);
 
 		if (!matcher.find()) {
