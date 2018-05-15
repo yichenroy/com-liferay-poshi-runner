@@ -413,8 +413,8 @@ public abstract class PoshiElement
 
 	private static final Map<Character, Character> _codeBoundariesMap =
 		new HashMap<>();
-	private static final Pattern _namespacedfunctionFile = Pattern.compile(
-		".*?\\.(.*?)\\.function");
+	private static final Pattern _namespacedfunctionFileNamePattern =
+		Pattern.compile(".*?\\.(.*?)\\.function");
 
 	static {
 		_codeBoundariesMap.put('\"', '\"');
@@ -441,7 +441,7 @@ public abstract class PoshiElement
 		for (String namespacedFunctionFile :
 				PoshiRunnerContext.getFilePathKeys()) {
 
-			Matcher matcher = _namespacedfunctionFile.matcher(
+			Matcher matcher = _namespacedfunctionFileNamePattern.matcher(
 				namespacedFunctionFile);
 
 			if (matcher.find()) {
