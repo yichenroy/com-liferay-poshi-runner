@@ -33,9 +33,7 @@ import org.dom4j.tree.DefaultAttribute;
 public class PoshiProseStatement {
 
 	public PoshiProseStatement(String proseStatement) {
-		for (String proseKeyword :
-				PoshiProseStatement.PROSE_STATEMENT_KEYWORDS) {
-
+		for (String proseKeyword : PoshiProseStatement.KEYWORDS) {
 			if (proseStatement.startsWith(proseKeyword)) {
 				proseStatement = StringUtil.replaceFirst(
 					proseStatement, proseKeyword, "");
@@ -122,8 +120,7 @@ public class PoshiProseStatement {
 		return varElements;
 	}
 
-	protected static final String[] PROSE_STATEMENT_KEYWORDS =
-		{"And", "Given", "Then", "When"};
+	protected static final String[] KEYWORDS = {"And", "Given", "Then", "When"};
 
 	private static final Pattern _varValuePattern = Pattern.compile(
 		"\"(.*?)\"");
