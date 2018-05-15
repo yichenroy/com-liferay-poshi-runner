@@ -40,18 +40,18 @@ public class PoshiProseDefinition {
 		}
 	}
 
-	public Element getDefinitionElement() {
+	public String getFileName() {
+		return _fileName;
+	}
+
+	public Element toElement() {
 		Element definitionElement = Dom4JUtil.getNewElement("definition");
 
 		for (PoshiProseScenario poshiProseScenario : _poshiProseScenarios) {
-			definitionElement.add(poshiProseScenario.getCommandElement());
+			definitionElement.add(poshiProseScenario.toElement());
 		}
 
 		return definitionElement;
-	}
-
-	public String getFileName() {
-		return _fileName;
 	}
 
 	private final String _fileContent;

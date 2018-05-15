@@ -61,7 +61,7 @@ public class PoshiProseDefinitionTest extends TestCase {
 
 	@Test
 	public void testProseToXMLTranslation() throws Exception {
-		Element actual = _poshiProseDefinition.getDefinitionElement();
+		Element actual = _poshiProseDefinition.toElement();
 
 		Element expected = _getPoshiElement(_POSHI_TESTCASE_FILE_NAME);
 
