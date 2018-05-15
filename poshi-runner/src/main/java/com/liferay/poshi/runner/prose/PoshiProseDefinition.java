@@ -29,10 +29,9 @@ public class PoshiProseDefinition {
 
 	public PoshiProseDefinition(String fileName, String fileContent) {
 		_fileName = fileName;
-		_fileContent = fileContent;
 
 		List<String> poshiProseScenarioStrings = StringUtil.splitByKeys(
-			_fileContent, PoshiProseScenario.PROSE_SCENARIO_KEYWORDS);
+			fileContent, PoshiProseScenario.PROSE_SCENARIO_KEYWORDS);
 
 		for (String poshiProseScenarioString : poshiProseScenarioStrings) {
 			_poshiProseScenarios.add(
@@ -54,7 +53,6 @@ public class PoshiProseDefinition {
 		return definitionElement;
 	}
 
-	private final String _fileContent;
 	private final String _fileName;
 	private final List<PoshiProseScenario> _poshiProseScenarios =
 		new ArrayList<>();
