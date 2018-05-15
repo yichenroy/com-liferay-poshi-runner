@@ -30,13 +30,13 @@ import org.dom4j.tree.DefaultAttribute;
  */
 public class PoshiProseScenario {
 
-	public PoshiProseScenario(String proseScenario) {
-		Matcher matcher = _scenarioPattern.matcher(proseScenario);
+	public PoshiProseScenario(String poshiProseScenarioString) {
+		Matcher matcher = _scenarioPattern.matcher(poshiProseScenarioString);
 
 		if (!matcher.find()) {
 			throw new RuntimeException(
 				"Prose scenario does not match pattern " +
-					_scenarioPattern.pattern() + "\n" + proseScenario);
+					_scenarioPattern.pattern() + "\n" + poshiProseScenarioString);
 		}
 
 		_scenarioName = matcher.group("name");
