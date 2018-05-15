@@ -76,17 +76,14 @@ public class ExecutePoshiElement extends PoshiElement {
 			}
 		}
 
-		String content = getParentheticalContent(readableSyntax);
-
-		String[] functionAttributeNames =
-			{"locator1", "locator2", "value1", "value2"};
-
 		String executeCommandName = RegexUtil.getGroup(
 			readableSyntax, "([^\\s]*)\\(", 1);
 
 		executeCommandName = executeCommandName.replace(".", "#");
 
 		addAttribute(executeType, executeCommandName);
+
+		String content = getParentheticalContent(readableSyntax);
 
 		if (content.length() == 0) {
 			return;
@@ -104,6 +101,9 @@ public class ExecutePoshiElement extends PoshiElement {
 			assignment = assignment.trim();
 
 			boolean functionAttributeAdded = false;
+
+			String[] functionAttributeNames =
+				{"locator1", "locator2", "value1", "value2"};
 
 			for (String functionAttributeName : functionAttributeNames) {
 				if (assignment.startsWith(functionAttributeName)) {
