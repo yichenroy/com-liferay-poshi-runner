@@ -232,6 +232,10 @@ public abstract class PoshiElement
 		return readableSyntax.substring(3, readableSyntax.length() - 3);
 	}
 
+	protected String getSingleQuotedContent(String readableSyntax) {
+		return RegexUtil.getGroup(readableSyntax, ".*?\'(.*)\'", 1);
+	}
+
 	protected String getValueFromAssignment(String assignment) {
 		assignment = assignment.trim();
 
