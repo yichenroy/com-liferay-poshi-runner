@@ -61,6 +61,33 @@ public class ExecutePoshiElement extends PoshiElement {
 			executeType = "function";
 		}
 
+		if (executeType.equals("class")) {
+			int index = readableSyntax.indexOf("(");
+
+			String methodName = readableSyntax.substring(0, index);
+
+			for (String utilClassName : utilClassNames) {
+				if (readableSyntax.startsWith(utilClassName)) {
+					addAttribute("class", utilClassName);
+
+					System.out.println(utilClassName);
+
+					methodName = methodName.replace(utilClassName + ".", "");
+
+					addAttribute("method", methodName);
+
+					break;
+				}
+			}
+
+			String parentheticalContent = getParentheticalContent(
+				readableSyntax);
+
+			add(PoshiNodeFactory.newPoshiNode(this, parentheticalContent));
+
+			return;
+		}
+
 		if (readableSyntax.contains("return(\n")) {
 			PoshiNode returnPoshiNode = PoshiNodeFactory.newPoshiNode(
 				this, readableSyntax);
