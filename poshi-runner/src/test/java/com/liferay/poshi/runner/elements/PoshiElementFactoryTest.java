@@ -129,7 +129,7 @@ public class PoshiElementFactoryTest {
 			String actual = Dom4JUtil.format(actualElement);
 			String expected = Dom4JUtil.format(expectedElement);
 
-			_getErrorMessage(actual, expected, errorMessage);
+			errorMessage = _getErrorMessage(actual, expected, errorMessage);
 
 			throw new Exception(errorMessage);
 		}
