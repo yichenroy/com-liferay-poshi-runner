@@ -43,7 +43,7 @@ public class PoshiProseScenario {
 		_scenarioContent = matcher.group("content");
 
 		List<String> poshiProseStatementStrings = StringUtil.splitByKeys(
-			_scenarioContent, PoshiProseStatement.PROSE_STATEMENT_KEYWORDS);
+			_scenarioContent, PoshiProseStatement.KEYWORDS);
 
 		for (String poshiProseStatementString : poshiProseStatementStrings) {
 			_poshiProseStatements.add(
@@ -65,7 +65,7 @@ public class PoshiProseScenario {
 		return commandElement;
 	}
 
-	protected static final String[] PROSE_SCENARIO_KEYWORDS = {"Scenario"};
+	protected static final String[] KEYWORDS = {"Scenario"};
 
 	private final List<PoshiProseStatement> _poshiProseStatements =
 		new ArrayList<>();
