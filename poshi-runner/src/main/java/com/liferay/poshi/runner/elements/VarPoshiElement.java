@@ -93,13 +93,15 @@ public class VarPoshiElement extends PoshiElement {
 
 		value = getQuotedContent(value);
 
-		if (value.contains("Util.") || value.startsWith("selenium.")) {
-			if (value.startsWith("selenium.")) {
-				value = value.replace("selenium.", "selenium#");
-			}
-			else {
-				value = value.replace("Util.", "Util#");
-			}
+		int index = value.indexOf(".");
+
+		String className = value.substring(0, index);
+
+		if (PoshiElement.utilClassNames.contains(className) ||
+			value.startsWith("selenium.") ||
+			value.startsWith("TestPropsUtil.")) {
+
+			value = value.replaceFirst("\\.", "#");
 
 			addAttribute("method", value);
 
@@ -140,11 +142,15 @@ public class VarPoshiElement extends PoshiElement {
 
 		if (Validator.isNotNull(valueAttributeName)) {
 			if (valueAttributeName.equals("method")) {
-				if (value.startsWith("selenium#")) {
-					value = value.replace("selenium#", "selenium.");
-				}
-				else {
-					value = value.replace("Util#", "Util.");
+				int index = value.indexOf("#");
+
+				String className = value.substring(0, index);
+
+				if (PoshiElement.utilClassNames.contains(className) ||
+					value.startsWith("selenium#") ||
+					value.startsWith("TestPropsUtil#")) {
+
+					value = value.replaceFirst("#", ".");
 				}
 			}
 			else {
