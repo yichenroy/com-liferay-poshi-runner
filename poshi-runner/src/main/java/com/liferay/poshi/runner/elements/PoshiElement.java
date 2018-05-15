@@ -327,6 +327,18 @@ public abstract class PoshiElement
 		return false;
 	}
 
+	protected boolean isValidFunctionName(String classCommandName) {
+		classCommandName = classCommandName.trim();
+
+		for (String functionFileName : functionFileNames) {
+			if (classCommandName.startsWith(functionFileName)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	protected boolean isValidReadableBlock(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 
@@ -350,6 +362,18 @@ public abstract class PoshiElement
 
 		if (isBalanceValidationRequired(readableSyntax)) {
 			return isBalancedReadableSyntax(readableSyntax);
+		}
+
+		return false;
+	}
+
+	protected boolean isValidUtilClassName(String classCommandName) {
+		classCommandName = classCommandName.trim();
+
+		for (String utilClassName : utilClassNames) {
+			if (classCommandName.startsWith(utilClassName)) {
+				return true;
+			}
 		}
 
 		return false;
