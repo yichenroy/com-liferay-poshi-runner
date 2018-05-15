@@ -32,7 +32,7 @@ import org.dom4j.tree.DefaultAttribute;
  */
 public class PoshiProseStatement {
 
-	public PoshiProseStatement(String proseStatement) throws Exception {
+	public PoshiProseStatement(String proseStatement) {
 		for (String proseKeyword :
 				PoshiProseStatement.PROSE_STATEMENT_KEYWORDS) {
 
