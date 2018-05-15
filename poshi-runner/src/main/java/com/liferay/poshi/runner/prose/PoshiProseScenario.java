@@ -65,14 +65,6 @@ public class PoshiProseScenario {
 		return commandElement;
 	}
 
-	public String getScenarioContent() {
-		return _scenarioContent;
-	}
-
-	public String getScenarioName() {
-		return _scenarioName;
-	}
-
 	protected static final String[] PROSE_SCENARIO_KEYWORDS = {"Scenario"};
 
 	private final List<PoshiProseStatement> _poshiProseStatements =
