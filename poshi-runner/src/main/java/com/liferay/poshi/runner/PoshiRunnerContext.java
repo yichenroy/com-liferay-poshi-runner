@@ -766,26 +766,29 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _readPoshiFiles() throws Exception {
-		String[] poshiFileNames = {
-			"**/*.action", "**/*.function", "**/*.macro", "**/*.path",
-			"**/*.testcase"
-		};
-
-		_readPoshiFilesFromClassPath(poshiFileNames, "testFunctional");
+		String[] nonTestFileNames =
+			{"**/*.action", "**/*.function", "**/*.macro", "**/*.path"};
 
 		if (Validator.isNotNull(PropsValues.TEST_INCLUDE_DIR_NAMES)) {
 			_readPoshiFiles(
-				new String[] {
-					"**/*.action", "**/*.function", "**/*.macro", "**/*.path"
-				},
-				PropsValues.TEST_INCLUDE_DIR_NAMES);
+				nonTestFileNames, PropsValues.TEST_INCLUDE_DIR_NAMES);
 		}
 
-		if (Validator.isNotNull(PropsValues.TEST_SUBREPO_DIRS)) {
-			_readPoshiFiles(poshiFileNames, PropsValues.TEST_SUBREPO_DIRS);
-		}
+		List<String[]> poshiFileNamesList = new ArrayList<>();
 
-		_readPoshiFiles(poshiFileNames, _TEST_BASE_DIR_NAME);
+		poshiFileNamesList.add(nonTestFileNames);
+
+		poshiFileNamesList.add(new String[] {"**/*.testcase", "**/*.prose"});
+
+		for (String[] poshiFileNames : poshiFileNamesList) {
+			_readPoshiFilesFromClassPath(poshiFileNames, "testFunctional");
+
+			if (Validator.isNotNull(PropsValues.TEST_SUBREPO_DIRS)) {
+				_readPoshiFiles(poshiFileNames, PropsValues.TEST_SUBREPO_DIRS);
+			}
+
+			_readPoshiFiles(poshiFileNames, _TEST_BASE_DIR_NAME);
+		}
 
 		_initComponentCommandNamesMap();
 
