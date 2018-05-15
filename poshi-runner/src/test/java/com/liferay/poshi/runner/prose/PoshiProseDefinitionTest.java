@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * @author Yi-Chen Tsai
  */
-public class PoshiProseFileTest extends TestCase {
+public class PoshiProseDefinitionTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,7 +50,7 @@ public class PoshiProseFileTest extends TestCase {
 
 		PoshiRunnerContext.readFiles();
 
-		_poshiProseFile = new PoshiProseFile(
+		_poshiProseDefinition = new PoshiProseDefinition(
 			_POSHI_PROSE_FILE_NAME, read(_testBaseDir, _POSHI_PROSE_FILE_NAME));
 	}
 
@@ -61,7 +61,7 @@ public class PoshiProseFileTest extends TestCase {
 
 	@Test
 	public void testProseToXMLTranslation() throws Exception {
-		Element actual = _poshiProseFile.getDefinitionElement();
+		Element actual = _poshiProseDefinition.getDefinitionElement();
 
 		Element expected = _getPoshiElement(_POSHI_TESTCASE_FILE_NAME);
 
@@ -124,7 +124,7 @@ public class PoshiProseFileTest extends TestCase {
 	private static final String _TEST_BASE_DIR_NAME =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/prose/";
 
-	private PoshiProseFile _poshiProseFile;
+	private PoshiProseDefinition _poshiProseDefinition;
 	private File _testBaseDir;
 
 }
