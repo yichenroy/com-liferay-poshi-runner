@@ -88,7 +88,7 @@ public class PoshiProseStatement {
 		}
 	}
 
-	public Element getExecuteElement() {
+	public Element toElement() {
 		Element executeElement = Dom4JUtil.getNewElement("execute");
 
 		Dom4JUtil.addToElement(
