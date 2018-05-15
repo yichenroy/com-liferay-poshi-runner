@@ -128,9 +128,39 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	public String toReadableSyntax() {
-		if (attributeValue("function") != null) {
-			StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
+		if (attributeValue("class") != null) {
+			String pad = getPad();
+
+			sb.append("\n\n");
+			sb.append(pad);
+			sb.append(attributeValue("class"));
+			sb.append(".");
+			sb.append(attributeValue("method"));
+			sb.append("(");
+
+			for (PoshiElement poshiElement : toPoshiElements(elements())) {
+				String readableSyntax = poshiElement.toReadableSyntax();
+
+				if (poshiElement instanceof ArgPoshiElement) {
+					sb.append(readableSyntax.trim());
+					sb.append(", ");
+
+					continue;
+				}
+			}
+
+			if (sb.length() > 2) {
+				sb.setLength(sb.length() - 2);
+			}
+
+			sb.append(");");
+
+			return sb.toString();
+		}
+
+		if (attributeValue("function") != null) {
 			for (PoshiElementAttribute poshiElementAttribute :
 					toPoshiElementAttributes(attributeList())) {
 
@@ -161,8 +191,6 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			return createFunctionReadableBlock(sb.toString());
 		}
-
-		StringBuilder sb = new StringBuilder();
 
 		ReturnPoshiElement returnPoshiElement = null;
 
