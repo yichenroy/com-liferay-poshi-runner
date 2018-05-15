@@ -52,14 +52,11 @@ public class PoshiProseScenario {
 	}
 
 	public Element toElement() {
-		Element commandElement = Dom4JUtil.getNewElement("command");
-
-		Dom4JUtil.addToElement(
-			commandElement, new DefaultAttribute("name", _scenarioName));
+		Element commandElement = Dom4JUtil.getNewElement(
+			"command", null, new DefaultAttribute("name", _scenarioName));
 
 		for (PoshiProseStatement poshiProseStatement : _poshiProseStatements) {
-			Dom4JUtil.addToElement(
-				commandElement, poshiProseStatement.toElement());
+				commandElement.add(poshiProseStatement.toElement());
 		}
 
 		return commandElement;
