@@ -107,14 +107,14 @@ public class PoshiProseStatement {
 	protected List<Element> getVarElements() {
 		List<Element> varElements = new ArrayList<>();
 
-		List<String> parameterNames = _poshiProseMatcher.getParameterNames();
+		List<String> varNames = _poshiProseMatcher.getVarNames();
 
-		for (String parameterName : parameterNames) {
+		for (String varName : varNames) {
 			Element varElement = Dom4JUtil.getNewElement("var");
 
 			Dom4JUtil.addToElement(
-				varElement, new DefaultAttribute("name", parameterName),
-				new DefaultAttribute("value", _varValueMap.get(parameterName)));
+				varElement, new DefaultAttribute("name", varName),
+				new DefaultAttribute("value", _varValueMap.get(varName)));
 
 			varElements.add(varElement);
 		}
