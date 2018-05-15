@@ -58,22 +58,21 @@ public class PoshiProseStatement {
 		}
 
 		for (int i = 0; i < varNames.size(); i++) {
-			String parameterName = varNames.get(i);
-			String parameterValue = varValues.get(i);
+			String varName = varNames.get(i);
 
-			if (!_varValueMap.containsKey(parameterName)) {
-				_varValueMap.put(parameterName, parameterValue);
+			if (!_varValueMap.containsKey(varName)) {
+				_varValueMap.put(varName, varValues.get(i));
 
 				continue;
 			}
 
-			String varValue = _varValueMap.get(parameterName);
+			String varValue = _varValueMap.get(varName);
 
-			if (varValue.equals(parameterValue)) {
+			if (varValue.equals(varValues.get(i))) {
 				StringBuilder sb = new StringBuilder();
 
 				sb.append("Duplicate variable value assignment: ${");
-				sb.append(parameterName);
+				sb.append(varName);
 				sb.append("} already has a value of ");
 				sb.append(varValue);
 				sb.append("\nProse statement: ");
