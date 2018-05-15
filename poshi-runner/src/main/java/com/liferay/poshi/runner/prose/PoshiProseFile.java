@@ -52,10 +52,6 @@ public class PoshiProseFile {
 		return definitionElement;
 	}
 
-	public String getFileContent() {
-		return _fileContent;
-	}
-
 	public String getFileName() {
 		return _fileName;
 	}

@@ -104,14 +104,6 @@ public class PoshiProseStatement {
 		return executeElement;
 	}
 
-	public String getProseStatement() {
-		return _proseStatement;
-	}
-
-	public Map<String, String> getVarValueMap() {
-		return _varValueMap;
-	}
-
 	protected List<Element> getVarElements() {
 		List<Element> varElements = new ArrayList<>();
 
