@@ -31,7 +31,7 @@ public class PoshiProseDefinition {
 		_fileName = fileName;
 
 		List<String> poshiProseScenarioStrings = StringUtil.splitByKeys(
-			fileContent, PoshiProseScenario.PROSE_SCENARIO_KEYWORDS);
+			fileContent, PoshiProseScenario.KEYWORDS);
 
 		for (String poshiProseScenarioString : poshiProseScenarioStrings) {
 			_poshiProseScenarios.add(
