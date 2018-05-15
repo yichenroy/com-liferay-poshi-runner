@@ -157,8 +157,8 @@ public class PoshiRunnerGetterUtil {
 	public static String getClassTypeFromFileExtension(String fileExtension) {
 		String classType = fileExtension;
 
-		if (fileExtension.equals("testcase") || fileExtension.equals("prose")) {
-			classType = "test-case";
+		if (fileExtension.equals("prose")) {
+			classType = "testcase";
 		}
 
 		return classType;
@@ -215,7 +215,7 @@ public class PoshiRunnerGetterUtil {
 	public static String getFileExtensionFromClassType(String classType) {
 		String fileExtension = classType;
 
-		if (fileExtension.equals("test-case")) {
+		if (fileExtension.equals("testcase")) {
 			fileExtension = "testcase";
 		}
 

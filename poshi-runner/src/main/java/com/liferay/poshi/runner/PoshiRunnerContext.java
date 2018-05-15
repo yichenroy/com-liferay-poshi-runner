@@ -223,7 +223,7 @@ public class PoshiRunnerContext {
 		String classCommandName, String namespace) {
 
 		return _commandElements.get(
-			"test-case#" + namespace + "." + classCommandName);
+			"testcase#" + namespace + "." + classCommandName);
 	}
 
 	public static String getTestCaseDescription(String classCommandName) {
@@ -241,7 +241,7 @@ public class PoshiRunnerContext {
 	public static Element getTestCaseRootElement(
 		String className, String namespace) {
 
-		return _rootElements.get("test-case#" + namespace + "." + className);
+		return _rootElements.get("testcase#" + namespace + "." + className);
 	}
 
 	public static boolean isCommandElement(
@@ -711,7 +711,7 @@ public class PoshiRunnerContext {
 					}
 
 					_commandElements.put(
-						"test-case#" + testCaseNamespacedClassName + "#" +
+						"testcase#" + testCaseNamespacedClassName + "#" +
 							extendsCommandName,
 						extendsCommandElement);
 				}
@@ -1034,7 +1034,7 @@ public class PoshiRunnerContext {
 		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
 			filePath);
 
-		if (classType.equals("test-case")) {
+		if (classType.equals("testcase")) {
 			_testCaseNamespacedClassNames.add(namespace + "." + className);
 
 			if (rootElement.element("set-up") != null) {
@@ -1059,7 +1059,7 @@ public class PoshiRunnerContext {
 		}
 
 		if (classType.equals("action") || classType.equals("function") ||
-			classType.equals("macro") || classType.equals("test-case")) {
+			classType.equals("macro") || classType.equals("testcase")) {
 
 			_rootElements.put(
 				classType + "#" + namespace + "." + className, rootElement);
@@ -1132,7 +1132,7 @@ public class PoshiRunnerContext {
 						namespacedClassCommandName);
 				}
 
-				if (classType.equals("test-case")) {
+				if (classType.equals("testcase")) {
 					Properties properties = _getClassCommandNameProperties(
 						rootElement, commandElement);
 
