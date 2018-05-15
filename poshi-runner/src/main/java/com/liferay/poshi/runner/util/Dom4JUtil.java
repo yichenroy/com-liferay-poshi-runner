@@ -46,8 +46,7 @@ public class Dom4JUtil {
 			}
 
 			if (item instanceof Attribute) {
-				element.addAttribute(
-					((Attribute)item).getName(), ((Attribute)item).getValue());
+				element.add((Attribute)item);
 
 				continue;
 			}
