@@ -80,37 +80,21 @@ public class PoshiProseStatement {
 	}
 
 	public Element toElement() {
-		Element executeElement = Dom4JUtil.getNewElement("execute");
-
-		Dom4JUtil.addToElement(
-			executeElement,
+		Element element = Dom4JUtil.getNewElement(
+			"execute", null,
 			new DefaultAttribute(
 				"macro",
 				_poshiProseMatcher.getMacroNamespacedClassCommandName()));
 
-		for (Element varElement : getVarElements()) {
-			Dom4JUtil.addToElement(executeElement, varElement);
+		for (Map.Entry<String, String> varMapEntry : _varMap.entrySet()) {
+			element.add(
+				Dom4JUtil.getNewElement(
+					"var", null,
+					new DefaultAttribute("name", varMapEntry.getKey()),
+					new DefaultAttribute("value", varMapEntry.getValue())));
 		}
 
-		return executeElement;
-	}
-
-	protected List<Element> getVarElements() {
-		List<Element> varElements = new ArrayList<>();
-
-		List<String> varNames = _poshiProseMatcher.getVarNames();
-
-		for (String varName : varNames) {
-			Element varElement = Dom4JUtil.getNewElement("var");
-
-			Dom4JUtil.addToElement(
-				varElement, new DefaultAttribute("name", varName),
-				new DefaultAttribute("value", _varMap.get(varName)));
-
-			varElements.add(varElement);
-		}
-
-		return varElements;
+		return element;
 	}
 
 	protected static final String[] KEYWORDS = {"And", "Given", "Then", "When"};
