@@ -36,13 +36,14 @@ public class PoshiProseScenario {
 		if (!matcher.find()) {
 			throw new RuntimeException(
 				"Prose scenario does not match pattern " +
-					_scenarioPattern.pattern() + "\n" + poshiProseScenarioString);
+					_scenarioPattern.pattern() + "\n" +
+						poshiProseScenarioString);
 		}
 
 		_scenarioName = matcher.group("name");
 		_scenarioContent = matcher.group("content");
 
-		List<String> poshiProseStatementStrings = StringUtil.splitByKeys(
+		List<String> poshiProseStatementStrings = StringUtil.split(
 			_scenarioContent, PoshiProseStatement.KEYWORDS);
 
 		for (String poshiProseStatementString : poshiProseStatementStrings) {
@@ -56,7 +57,7 @@ public class PoshiProseScenario {
 			"command", null, new DefaultAttribute("name", _scenarioName));
 
 		for (PoshiProseStatement poshiProseStatement : _poshiProseStatements) {
-				commandElement.add(poshiProseStatement.toElement());
+			commandElement.add(poshiProseStatement.toElement());
 		}
 
 		return commandElement;
