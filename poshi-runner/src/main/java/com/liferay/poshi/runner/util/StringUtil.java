@@ -566,9 +566,9 @@ public class StringUtil {
 	}
 
 	public static List<String> split(String s, String[] delimiters) {
-		List splitIndexes = new ArrayList<>();
+		List<Integer> splitIndexes = new ArrayList<>();
 
-		for (String delimiter : delimiters) {
+		for (String delimiter : _removeDuplicates(delimiters)) {
 			int index = s.indexOf(delimiter);
 
 			while (index >= 0) {
@@ -596,7 +596,7 @@ public class StringUtil {
 			}
 
 			String substring = s.substring(
-				(int)splitIndexes.get(i), (int)splitIndexes.get(i + 1));
+				splitIndexes.get(i), splitIndexes.get(i + 1));
 
 			substrings.add(substring);
 		}
@@ -818,6 +818,20 @@ public class StringUtil {
 
 	public static String valueOf(Object obj) {
 		return String.valueOf(obj);
+	}
+
+	private static String[] _removeDuplicates(String[] stringArray) {
+		List<String> stringList = new ArrayList<>();
+
+		for (String string : stringArray) {
+			if (stringList.contains(string)) {
+				continue;
+			}
+
+			stringList.add(string);
+		}
+
+		return stringList.toArray(new String[stringList.size()]);
 	}
 
 }
