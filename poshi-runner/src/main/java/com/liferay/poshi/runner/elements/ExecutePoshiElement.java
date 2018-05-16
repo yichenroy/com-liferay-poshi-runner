@@ -57,7 +57,7 @@ public class ExecutePoshiElement extends PoshiElement {
 		if (isValidUtilClassName(readableSyntax)) {
 			executeType = "class";
 		}
-		else if (isValidFunctionName(readableSyntax)) {
+		else if (isValidFunctionFileName(readableSyntax)) {
 			executeType = "function";
 		}
 

@@ -331,7 +331,7 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isValidFunctionName(String classCommandName) {
+	protected boolean isValidFunctionFileName(String classCommandName) {
 		classCommandName = classCommandName.trim();
 
 		for (String functionFileName : functionFileNames) {
