@@ -18,7 +18,7 @@ import com.liferay.poshi.runner.util.Dom4JUtil;
 import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -104,6 +104,6 @@ public class PoshiProseStatement {
 
 	private final PoshiProseMatcher _poshiProseMatcher;
 	private final String _proseStatement;
-	private final Map<String, String> _varMap = new HashMap<>();
+	private final Map<String, String> _varMap = new LinkedHashMap<>();
 
 }
