@@ -574,7 +574,10 @@ public class StringUtil {
 		splitIndexSet.add(0);
 		splitIndexSet.add(s.length());
 
-		for (String delimiter : _removeDuplicates(delimiters)) {
+		List<String> delimiterList = Arrays.asList(
+			_removeDuplicates(delimiters));
+
+		for (String delimiter : delimiterList) {
 			int index = s.indexOf(delimiter);
 
 			while (index >= 0) {
@@ -598,6 +601,12 @@ public class StringUtil {
 
 			String substring = s.substring(
 				splitIndexArray[i], splitIndexArray[i + 1]);
+
+			substring = substring.trim();
+
+			if (delimiterList.contains(substring)) {
+				continue;
+			}
 
 			substrings.add(substring);
 		}
