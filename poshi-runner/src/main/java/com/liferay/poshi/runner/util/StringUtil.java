@@ -565,38 +565,38 @@ public class StringUtil {
 		return s.split(delimiter);
 	}
 
-	public static List<String> splitByKeys(String s, String[] keys) {
-		List keyIndexes = new ArrayList<>();
+	public static List<String> split(String s, String[] delimiters) {
+		List splitIndexes = new ArrayList<>();
 
-		for (String key : keys) {
-			int index = s.indexOf(key);
+		for (String delimiter : delimiters) {
+			int index = s.indexOf(delimiter);
 
 			while (index >= 0) {
-				keyIndexes.add(index);
+				splitIndexes.add(index);
 
-				index = s.indexOf(key, index + 1);
+				index = s.indexOf(delimiter, index + 1);
 			}
 		}
 
-		if (!keyIndexes.contains(0)) {
-			keyIndexes.add(0);
+		if (!splitIndexes.contains(0)) {
+			splitIndexes.add(0);
 		}
 
-		if (!keyIndexes.contains(s.length())) {
-			keyIndexes.add(s.length());
+		if (!splitIndexes.contains(s.length())) {
+			splitIndexes.add(s.length());
 		}
 
-		Collections.sort(keyIndexes);
+		Collections.sort(splitIndexes);
 
 		List<String> substrings = new ArrayList<>();
 
-		for (int i = 0; i < keyIndexes.size(); i++) {
-			if ((i + 1) == keyIndexes.size()) {
+		for (int i = 0; i < splitIndexes.size(); i++) {
+			if ((i + 1) == splitIndexes.size()) {
 				continue;
 			}
 
 			String substring = s.substring(
-				(int)keyIndexes.get(i), (int)keyIndexes.get(i + 1));
+				(int)splitIndexes.get(i), (int)splitIndexes.get(i + 1));
 
 			substrings.add(substring);
 		}
