@@ -30,7 +30,7 @@ public class PoshiProseDefinition {
 	public PoshiProseDefinition(String fileName, String fileContent) {
 		_fileName = fileName;
 
-		List<String> poshiProseScenarioStrings = StringUtil.splitByKeys(
+		List<String> poshiProseScenarioStrings = StringUtil.split(
 			fileContent, PoshiProseScenario.KEYWORDS);
 
 		for (String poshiProseScenarioString : poshiProseScenarioStrings) {
