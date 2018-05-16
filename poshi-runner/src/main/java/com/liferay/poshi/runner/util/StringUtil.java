@@ -15,8 +15,11 @@
 package com.liferay.poshi.runner.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -566,37 +569,35 @@ public class StringUtil {
 	}
 
 	public static List<String> split(String s, String[] delimiters) {
-		List<Integer> splitIndexes = new ArrayList<>();
+		Set<Integer> splitIndexSet = new HashSet<>();
+
+		splitIndexSet.add(0);
+		splitIndexSet.add(s.length());
 
 		for (String delimiter : _removeDuplicates(delimiters)) {
 			int index = s.indexOf(delimiter);
 
 			while (index >= 0) {
-				splitIndexes.add(index);
+				splitIndexSet.add(index);
 
 				index = s.indexOf(delimiter, index + 1);
 			}
 		}
 
-		if (!splitIndexes.contains(0)) {
-			splitIndexes.add(0);
-		}
+		Integer[] splitIndexArray = splitIndexSet.toArray(
+			new Integer[splitIndexSet.size()]);
 
-		if (!splitIndexes.contains(s.length())) {
-			splitIndexes.add(s.length());
-		}
-
-		Collections.sort(splitIndexes);
+		Arrays.sort(splitIndexArray);
 
 		List<String> substrings = new ArrayList<>();
 
-		for (int i = 0; i < splitIndexes.size(); i++) {
-			if ((i + 1) == splitIndexes.size()) {
+		for (int i = 0; i < splitIndexArray.length; i++) {
+			if ((i + 1) == splitIndexArray.length) {
 				continue;
 			}
 
 			String substring = s.substring(
-				splitIndexes.get(i), splitIndexes.get(i + 1));
+				splitIndexArray[i], splitIndexArray[i + 1]);
 
 			substrings.add(substring);
 		}
