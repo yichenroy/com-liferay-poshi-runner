@@ -1284,7 +1284,7 @@ public class PoshiRunnerContext {
 		{"**/*.action", "**/*.function", "**/*.macro", "**/*.path"};
 
 	private static final String[] _POSHI_TEST_FILE_INCLUDES =
-		{"**/*.testcase", "**/*.prose"};
+		{"**/*.prose", "**/*.testcase"};
 
 	private static final String _TEST_BASE_DIR_NAME =
 		PoshiRunnerGetterUtil.getCanonicalPath(PropsValues.TEST_BASE_DIR_NAME);
