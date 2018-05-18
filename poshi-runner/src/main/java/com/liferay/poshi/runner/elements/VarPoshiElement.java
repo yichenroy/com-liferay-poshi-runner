@@ -257,7 +257,12 @@ public class VarPoshiElement extends PoshiElement {
 			return false;
 		}
 
-		if (readableSyntax.contains(" = return(")) {
+		String value = getValueFromAssignment(readableSyntax);
+
+		if (!value.endsWith("\"") && !value.startsWith("\"") &&
+			!value.endsWith("\'") && !value.startsWith("\'") &&
+			!isValidFunctionName(value) && !isValidUtilClassName(value)) {
+
 			return false;
 		}
 

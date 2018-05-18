@@ -49,10 +49,6 @@ public class ReturnPoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
-		String returnFrom = RegexUtil.getGroup(readableSyntax, ".*,(.*)\\)", 1);
-
-		addAttribute("from", returnFrom.trim());
-
 		String returnName = RegexUtil.getGroup(readableSyntax, "var(.*?)=", 1);
 
 		addAttribute("name", returnName.trim());
@@ -90,35 +86,7 @@ public class ReturnPoshiElement extends PoshiElement {
 		sb.append("\n\n");
 		sb.append(pad);
 		sb.append(blockName);
-		sb.append("(");
-
-		String trimmedContent = content.trim();
-
-		if (!trimmedContent.equals("")) {
-			if (content.contains("\n")) {
-				content = content.replace("\n\n", "\n");
-				content = content.replaceAll("\n", "\n" + pad);
-			}
-
-			if (trimmedContent.endsWith(";")) {
-				int index = content.lastIndexOf(";");
-
-				content = content.substring(0, index);
-			}
-
-			sb.append(content);
-			sb.append(",");
-
-			String contentPad = RegexUtil.getGroup(content, "([\\s]*).*", 1);
-
-			sb.append(contentPad);
-
-			sb.append(attributeValue("from"));
-			sb.append("\n");
-			sb.append(pad);
-		}
-
-		sb.append(");");
+		sb.append(content.trim());
 
 		return sb.toString();
 	}
@@ -129,7 +97,7 @@ public class ReturnPoshiElement extends PoshiElement {
 
 		sb.append("var ");
 		sb.append(attributeValue("name"));
-		sb.append(" = return");
+		sb.append(" = ");
 
 		return sb.toString();
 	}
@@ -137,9 +105,19 @@ public class ReturnPoshiElement extends PoshiElement {
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
-		if ((parentPoshiElement instanceof ExecutePoshiElement) &&
-			readableSyntax.contains("return(\n")) {
+		if (!(parentPoshiElement instanceof ExecutePoshiElement)) {
+			return false;
+		}
 
+		readableSyntax = readableSyntax.trim();
+
+		if (!readableSyntax.startsWith("var")) {
+			return false;
+		}
+
+		String value = getValueFromAssignment(readableSyntax);
+
+		if (!(isValidFunctionFileName(value) || isValidUtilClassName(value))) {
 			return true;
 		}
 
