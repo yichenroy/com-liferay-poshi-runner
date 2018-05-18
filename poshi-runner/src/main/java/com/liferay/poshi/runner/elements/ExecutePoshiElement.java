@@ -371,15 +371,10 @@ public class ExecutePoshiElement extends PoshiElement {
 			return false;
 		}
 
-		if (readableSyntax.startsWith("var ")) {
-			String value = getValueFromAssignment(readableSyntax);
+		if (isMacroReturnVar(readableSyntax) &&
+			readableSyntax.startsWith("var ")) {
 
-			if (!value.endsWith("\"") && !value.startsWith("\"") &&
-				!value.endsWith("\'") && !value.startsWith("\'") &&
-				!isValidFunctionName(value) && !isValidUtilClassName(value)) {
-
-				return true;
-			}
+			return true;
 		}
 
 		if (readableSyntax.startsWith("var ")) {

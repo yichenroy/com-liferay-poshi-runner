@@ -321,6 +321,21 @@ public abstract class PoshiElement
 		return false;
 	}
 
+	protected boolean isMacroReturnVar(String readableSyntax) {
+		readableSyntax = readableSyntax.trim();
+
+		String value = getValueFromAssignment(readableSyntax);
+
+		if (!value.endsWith("\"") && !value.startsWith("\"") &&
+			!value.endsWith("\'") && !value.startsWith("\'") &&
+			!isValidFunctionFileName(value) && !isValidUtilClassName(value)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	protected boolean isMultilineReadableSyntaxComment(String readableSyntax) {
 		readableSyntax = readableSyntax.trim();
 
