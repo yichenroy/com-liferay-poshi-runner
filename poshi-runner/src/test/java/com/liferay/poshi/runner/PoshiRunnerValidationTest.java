@@ -52,15 +52,15 @@ public class PoshiRunnerValidationTest extends TestCase {
 			PoshiRunnerContext.getPoshiSupportFileIncludes(),
 			PoshiRunnerContext.getPoshiTestFileIncludes());
 
-		String poshiTestDir =
+		String poshiTestDirName =
 			"src/test/resources/com/liferay/poshi/runner/dependencies/test";
 
-		String poshiValidationDir =
+		String poshiValidationDirName =
 			"src/test/resources/com/liferay/poshi/runner/dependencies" +
 				"/validation";
 
 		PoshiRunnerContext.readFiles(
-			poshiFileNames, poshiTestDir, poshiValidationDir);
+			poshiFileNames, poshiTestDirName, poshiValidationDirName);
 	}
 
 	@After
