@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.util.RegexUtil;
+import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.List;
 
@@ -49,14 +50,26 @@ public class ReturnPoshiElement extends PoshiElement {
 
 	@Override
 	public void parseReadableSyntax(String readableSyntax) {
-		String returnName = RegexUtil.getGroup(readableSyntax, "var(.*?)=", 1);
+		if (getParent() instanceof ExecutePoshiElement) {
+			String returnName = RegexUtil.getGroup(
+				readableSyntax, "var(.*?)=", 1);
 
-		addAttribute("name", returnName.trim());
+			addAttribute("name", returnName.trim());
+
+			return;
+		}
+
+		addAttribute("value", getQuotedContent(readableSyntax));
 	}
 
 	@Override
 	public String toReadableSyntax() {
-		return "";
+		if (getParent() instanceof ExecutePoshiElement) {
+			return "";
+		}
+
+		return StringUtil.combine(
+			"\n\n", getPad(), "return \"", attributeValue("value"), "\";");
 	}
 
 	protected ReturnPoshiElement() {
