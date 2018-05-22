@@ -105,19 +105,27 @@ public class ReturnPoshiElement extends PoshiElement {
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String readableSyntax) {
 
-		if (!(parentPoshiElement instanceof ExecutePoshiElement)) {
-			return false;
-		}
-
 		readableSyntax = readableSyntax.trim();
 
-		if (!readableSyntax.startsWith("var")) {
+		if (parentPoshiElement instanceof ExecutePoshiElement) {
+			if (!readableSyntax.startsWith("var")) {
+				return false;
+			}
+
+			String value = getValueFromAssignment(readableSyntax);
+
+			if (!isValidFunctionFileName(value) &&
+				!isValidUtilClassName(value)) {
+
+				return true;
+			}
+
 			return false;
 		}
 
-		String value = getValueFromAssignment(readableSyntax);
+		if (readableSyntax.startsWith("return ") &&
+			isBalancedReadableSyntax(readableSyntax)) {
 
-		if (!(isValidFunctionFileName(value) || isValidUtilClassName(value))) {
 			return true;
 		}
 
