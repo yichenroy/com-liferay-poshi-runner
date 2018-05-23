@@ -52,9 +52,9 @@ public class ReturnPoshiElement extends PoshiElement {
 	public void parseReadableSyntax(String readableSyntax) {
 		if (getParent() instanceof ExecutePoshiElement) {
 			String returnName = RegexUtil.getGroup(
-				readableSyntax, "var(.*?)=", 1);
+				readableSyntax, "var\\s*(.+?)\\s*=", 1);
 
-			addAttribute("name", returnName.trim());
+			addAttribute("name", returnName);
 
 			return;
 		}
