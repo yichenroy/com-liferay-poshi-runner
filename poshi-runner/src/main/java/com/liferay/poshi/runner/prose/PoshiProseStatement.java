@@ -42,10 +42,10 @@ public class PoshiProseStatement {
 			}
 		}
 
-		_proseStatement = proseStatement.trim();
+		_proseStatement = formatProseStatement(proseStatement);
 
 		_poshiProseMatcher = PoshiProseMatcher.getPoshiProseMatcher(
-			_proseStatement.replaceAll(_varValuePattern.pattern(), "\"\""));
+			getProseStatementMatchingString());
 
 		List<String> varNames = _poshiProseMatcher.getVarNames();
 
@@ -97,8 +97,29 @@ public class PoshiProseStatement {
 		return element;
 	}
 
+	protected String formatProseStatement(String proseStatement) {
+		String formattedProseStatement = proseStatement.trim();
+
+		formattedProseStatement = formattedProseStatement.replaceAll(
+			"\n\t\t", "\n");
+
+		return formattedProseStatement;
+	}
+
+	protected String getProseStatementMatchingString() {
+		String proseStatementMatchingString = _proseStatement.replaceAll(
+			_poshiProseMultiLineStringPattern.pattern(), " \"\"");
+
+		proseStatementMatchingString = proseStatementMatchingString.replaceAll(
+			_varValuePattern.pattern(), "\"\"");
+
+		return proseStatementMatchingString;
+	}
+
 	protected static final String[] KEYWORDS = {"And", "Given", "Then", "When"};
 
+	private static final Pattern _poshiProseMultiLineStringPattern =
+		Pattern.compile("\n\"\"\"\n([\\s\\S]*)\n\"\"\"");
 	private static final Pattern _varValuePattern = Pattern.compile(
 		"\"(.*?)\"");
 
