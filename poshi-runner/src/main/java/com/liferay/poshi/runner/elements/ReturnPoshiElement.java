@@ -125,11 +125,7 @@ public class ReturnPoshiElement extends PoshiElement {
 				return false;
 			}
 
-			String value = getValueFromAssignment(readableSyntax);
-
-			if (!isValidFunctionFileName(value) &&
-				!isValidUtilClassName(value)) {
-
+			if (isMacroReturnVar(readableSyntax)) {
 				return true;
 			}
 
