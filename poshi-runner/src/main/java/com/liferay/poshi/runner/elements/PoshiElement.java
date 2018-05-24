@@ -326,7 +326,7 @@ public abstract class PoshiElement
 
 		String value = getValueFromAssignment(readableSyntax);
 
-		if (!value.matches("\".*\"") && !value.matches("'.*'") &&
+		if (!value.matches("(?s)^\".*\"$") && !value.matches("(?s)^'.*'$") &&
 			!isValidFunctionFileName(value) && !isValidUtilClassName(value)) {
 
 			return true;
