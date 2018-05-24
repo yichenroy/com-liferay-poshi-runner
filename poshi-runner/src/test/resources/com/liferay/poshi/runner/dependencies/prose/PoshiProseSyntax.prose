@@ -1,3 +1,6 @@
+Feature:
+	This is a feature section
+
 Scenario: catSearch
 	When I visit the URL "https://www.yahoo.com"
 	And I issue a search for "cats"
