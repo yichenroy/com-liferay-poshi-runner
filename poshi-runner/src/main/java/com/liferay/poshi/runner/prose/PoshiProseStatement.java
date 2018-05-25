@@ -141,7 +141,7 @@ public class PoshiProseStatement {
 	private static final String _LINE_SEPARATOR = System.lineSeparator();
 
 	private static final Pattern _multiLineStringPattern = Pattern.compile(
-		"(?s)\\s*\"\"\"[\\w\\s]*(.*?)\\s*\"\"\"$");
+		"(?s)\\s*\"\"\"\\s*\\w*\\s*(.*?)\\s*\"\"\"$");
 	private static final Pattern _varValuePattern = Pattern.compile(
 		"\"(.*?)\"");
 
