@@ -87,15 +87,25 @@ public class PoshiProseStatement extends BasePoshiProse {
 				throw new RuntimeException(sb.toString());
 			}
 
-			String varValue = varValues.get(i);
+			String varValue;
 
 			if ((i + 1) == varNames.size()) {
 				Matcher multiLineStringMatcher =
 					_multiLineStringPattern.matcher(_proseStatement);
+				Matcher tableMatcher = _tablePattern.matcher(_proseStatement);
 
 				if (multiLineStringMatcher.find()) {
 					varValue = multiLineStringMatcher.group(1);
 				}
+				else if (tableMatcher.find()) {
+					varValue = tableMatcher.group(1);
+				}
+				else {
+					varValue = varValues.get(i);
+				}
+			}
+			else {
+				varValue = varValues.get(i);
 			}
 
 			_varMap.put(varName, varValue);
@@ -144,6 +154,9 @@ public class PoshiProseStatement extends BasePoshiProse {
 			_multiLineStringPattern.pattern(), " \"\"");
 
 		proseStatementMatchingString = proseStatementMatchingString.replaceAll(
+			_tablePattern.pattern(), " \"\"");
+
+		proseStatementMatchingString = proseStatementMatchingString.replaceAll(
 			_varValuePattern.pattern(), "\"\"");
 
 		return proseStatementMatchingString;
@@ -156,6 +169,8 @@ public class PoshiProseStatement extends BasePoshiProse {
 
 	private static final Pattern _multiLineStringPattern = Pattern.compile(
 		"(?s)\\s*\"\"\".*?\\R(.*?)\\s*\"\"\"");
+	private static final Pattern _tablePattern = Pattern.compile(
+		"(?s)\\s*(\\|.*\\|$)");
 	private static final Pattern _varValuePattern = Pattern.compile(
 		"\"(.*?)\"");
 
