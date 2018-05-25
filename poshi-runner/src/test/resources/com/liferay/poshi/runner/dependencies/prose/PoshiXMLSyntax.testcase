@@ -1,4 +1,12 @@
 <definition>
+	<set-up>
+		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
+			<var name="url" value="https://www.google.com"/>
+		</execute>
+	</set-up>
+	<tear-down>
+		<execute macro="LocalFile.PoshiXMLSyntax#closeWindow"/>
+	</tear-down>
 	<command name="catSearch">
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.yahoo.com"/>

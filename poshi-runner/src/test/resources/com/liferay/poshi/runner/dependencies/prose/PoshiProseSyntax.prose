@@ -1,5 +1,11 @@
-Feature:
+Feature: This is a feature
 	This is a feature section
+
+Setup:
+	* I visit the URL "https://www.google.com"
+
+Teardown:
+	* I should close the window
 
 Scenario: catSearch
 	When I visit the URL "https://www.yahoo.com"
