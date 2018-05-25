@@ -61,5 +61,15 @@
 		<execute macro="LocalFile.PoshiXMLSyntax#visitURL">
 			<var name="url" value="https://www.ask.com"/>
 		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#sayALot">
+			<var name="text"><![CDATA[One
+Two
+Three]]></var>
+		</execute>
+		<execute macro="LocalFile.PoshiXMLSyntax#sayALot">
+			<var name="text"><![CDATA[Four
+Five
+Six]]></var>
+		</execute>
 	</command>
 </definition>

@@ -44,3 +44,15 @@ Scenario: multiLineString
 		}
 		"""
 	Then I visit the URL "https://www.ask.com"
+	Then I have a lot to say:
+		"""
+		One
+		Two
+		Three
+		"""
+	And I have a lot to say:
+		""" my type
+		Four
+		Five
+		Six
+		"""
