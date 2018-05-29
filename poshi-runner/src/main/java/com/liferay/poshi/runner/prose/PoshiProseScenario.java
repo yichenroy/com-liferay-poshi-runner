@@ -33,33 +33,35 @@ public class PoshiProseScenario {
 	public PoshiProseScenario(String poshiProseScenarioString) {
 		Matcher setupMatcher = _setupPattern.matcher(poshiProseScenarioString);
 
-		Matcher teardownMatcher = _teardownPattern.matcher(
-			poshiProseScenarioString);
-
 		if (setupMatcher.find()) {
 			_scenarioContent = setupMatcher.group("content");
 			_scenarioName = null;
 			_type = Type.Setup;
 		}
-		else if (teardownMatcher.find()) {
-			_scenarioContent = teardownMatcher.group("content");
-			_scenarioName = null;
-			_type = Type.Teardown;
-		}
 		else {
-			Matcher scenarioMatcher = _scenarioPattern.matcher(
+			Matcher teardownMatcher = _teardownPattern.matcher(
 				poshiProseScenarioString);
 
-			if (!scenarioMatcher.find()) {
-				throw new RuntimeException(
-					"Prose scenario does not match pattern " +
-						_scenarioPattern.pattern() + "\n" +
-							poshiProseScenarioString);
+			if (teardownMatcher.find()) {
+				_scenarioContent = teardownMatcher.group("content");
+				_scenarioName = null;
+				_type = Type.Teardown;
 			}
+			else {
+				Matcher scenarioMatcher = _scenarioPattern.matcher(
+					poshiProseScenarioString);
 
-			_scenarioContent = scenarioMatcher.group("content");
-			_scenarioName = scenarioMatcher.group("name");
-			_type = Type.Scenario;
+				if (!scenarioMatcher.find()) {
+					throw new RuntimeException(
+						"Prose scenario does not match pattern " +
+							_scenarioPattern.pattern() + "\n" +
+								poshiProseScenarioString);
+				}
+
+				_scenarioContent = scenarioMatcher.group("content");
+				_scenarioName = scenarioMatcher.group("name");
+				_type = Type.Scenario;
+			}
 		}
 
 		List<String> poshiProseStatementStrings = StringUtil.split(
