@@ -541,9 +541,8 @@ public class PoshiRunnerContext {
 			List<List<String>> partitions = Lists.partition(
 				classCommandNameGroup, groupSize);
 
-			for (int j = 0; j < partitions.size(); j++) {
-				classCommandNameGroups.put(
-					classCommandNameIndex, partitions.get(j));
+			for (List<String> partition : partitions) {
+				classCommandNameGroups.put(classCommandNameIndex, partition);
 
 				classCommandNameIndex++;
 			}
