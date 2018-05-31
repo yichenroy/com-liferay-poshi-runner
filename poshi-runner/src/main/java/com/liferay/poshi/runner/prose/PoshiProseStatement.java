@@ -44,8 +44,20 @@ public class PoshiProseStatement {
 
 		_proseStatement = formatProseStatement(proseStatement);
 
+		String proseStatementMatchingString = getProseStatementMatchingString();
+
 		_poshiProseMatcher = PoshiProseMatcher.getPoshiProseMatcher(
-			getProseStatementMatchingString());
+			proseStatementMatchingString);
+
+		if (_poshiProseMatcher == null) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Unable to find matching prose for '");
+			sb.append(proseStatementMatchingString);
+			sb.append("'");
+
+			throw new RuntimeException(sb.toString());
+		}
 
 		List<String> varNames = _poshiProseMatcher.getVarNames();
 
