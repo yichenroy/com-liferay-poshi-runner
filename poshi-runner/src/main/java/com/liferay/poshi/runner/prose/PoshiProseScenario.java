@@ -86,10 +86,6 @@ public class PoshiProseScenario extends BasePoshiProse {
 			_scenarioContent, PoshiProseStatement.KEYWORDS);
 
 		for (String poshiProseStatementString : poshiProseStatementStrings) {
-			if (poshiProseStatementString.startsWith("#")) {
-				continue;
-			}
-
 			_poshiProseStatements.add(
 				new PoshiProseStatement(poshiProseStatementString));
 		}
