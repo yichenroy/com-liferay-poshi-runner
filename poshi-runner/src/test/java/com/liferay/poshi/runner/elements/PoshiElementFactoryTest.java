@@ -50,7 +50,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualElements(
 			actualElement, expectedElement,
-			"Poshi Script syntax does not translate to Poshi XML.");
+			"Poshi script syntax does not translate to Poshi XML.");
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualElements(
 			actualElement, expectedElement,
-			"Poshi Script syntax does not translate to Poshi XML.");
+			"Poshi script syntax does not translate to Poshi XML.");
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualStrings(
 			actual, expected,
-			"Poshi XML syntax does not translate to Poshi Script syntax");
+			"Poshi XML syntax does not translate to Poshi script syntax");
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualElements(
 			actualElement, expectedElement,
-			"Poshi Script syntax does not translate to Poshi XML.");
+			"Poshi script syntax does not translate to Poshi XML.");
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualStrings(
 			actual, expected,
-			"Poshi XML syntax does not translate to Poshi Script syntax");
+			"Poshi XML syntax does not translate to Poshi script syntax");
 	}
 
 	@Test
