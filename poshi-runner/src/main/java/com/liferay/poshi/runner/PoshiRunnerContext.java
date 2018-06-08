@@ -1048,6 +1048,10 @@ public class PoshiRunnerContext {
 			_rootElements.put(
 				classType + "#" + namespace + "." + className, rootElement);
 
+			_rootVarElements.put(
+				classType + "#" + namespace + "." + className,
+				rootElement.elements("var"));
+
 			List<Element> commandElements = rootElement.elements("command");
 
 			for (Element commandElement : commandElements) {
@@ -1325,6 +1329,8 @@ public class PoshiRunnerContext {
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
 			"([\\-\\.]\\w+)*)\\-(?<timestamp>\\d+)\\-(?<sha>\\w+)\\.jar.*");
 	private static final Map<String, Element> _rootElements = new HashMap<>();
+	private static final Map<String, List<Element>> _rootVarElements =
+		new HashMap<>();
 	private static final Map<String, Integer> _seleniumParameterCounts =
 		new HashMap<>();
 	private static final List<String> _testCaseAvailablePropertyNames =
