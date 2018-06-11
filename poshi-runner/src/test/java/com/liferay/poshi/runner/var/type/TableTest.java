@@ -19,6 +19,7 @@ import com.liferay.poshi.runner.util.TableUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -41,9 +42,9 @@ public class TableTest extends TestCase {
 		HashesTable hashesTable = (HashesTable)TableFactory.newTable(
 			_rawDataList, "HashesTable");
 
-		List<LinkedHashMap<String, String>> actual = hashesTable.getTable();
+		List<Map<String, String>> actual = hashesTable.getTable();
 
-		List<LinkedHashMap<String, String>> expected = new ArrayList<>();
+		List<Map<String, String>> expected = new ArrayList<>();
 
 		if (_rawDataList.size() < 2) {
 			return;
@@ -71,7 +72,7 @@ public class TableTest extends TestCase {
 		RawTable rawTable = (RawTable)TableFactory.newTable(
 			_rawDataList, "RawTable");
 
-		List<List<String>> actual = rawTable.getTable();
+		Iterable<List<String>> actual = rawTable.getTable();
 
 		List<List<String>> expected = _rawDataList;
 
@@ -83,11 +84,11 @@ public class TableTest extends TestCase {
 		RowsHashTable rowsHashTable = (RowsHashTable)TableFactory.newTable(
 			_rawDataList, "RowsHashTable");
 
-		List<LinkedHashMap<String, String>> actual = rowsHashTable.getTable();
+		List<Map<String, String>> actual = rowsHashTable.getTable();
 
-		List<LinkedHashMap<String, String>> expected = new ArrayList<>();
+		List<Map<String, String>> expected = new ArrayList<>();
 
-		LinkedHashMap row = new LinkedHashMap<>();
+		Map<String, String> row = new LinkedHashMap<>();
 
 		for (List<String> rawDataRow : _rawDataList) {
 			row.put(rawDataRow.get(0), rawDataRow.get(1));
@@ -106,7 +107,7 @@ public class TableTest extends TestCase {
 		RawTable transposedTable = (RawTable)TableFactory.newTable(
 			transposedRawDataList, "RawTable");
 
-		List<List<String>> actual = transposedTable.getTable();
+		Iterable<List<String>> actual = transposedTable.getTable();
 
 		List<List<String>> expected = new ArrayList<>();
 
