@@ -270,7 +270,7 @@ public abstract class PoshiElement
 	}
 
 	protected boolean isBalancedPoshiScript(String poshiScript) {
-		poshiScript = _processedPoshiScript(poshiScript);
+		poshiScript = _fixPoshiScript(poshiScript);
 
 		Stack<Character> stack = new Stack<>();
 
@@ -361,7 +361,7 @@ public abstract class PoshiElement
 	protected boolean isValidPoshiScriptBlock(
 		Pattern poshiScriptBlockNamePattern, String poshiScript) {
 
-		poshiScript = _processedPoshiScript(poshiScript);
+		poshiScript = _fixPoshiScript(poshiScript);
 
 		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
@@ -383,7 +383,7 @@ public abstract class PoshiElement
 	}
 
 	protected boolean isValidPoshiScriptSnippet(String poshiScript) {
-		poshiScript = _processedPoshiScript(poshiScript);
+		poshiScript = _fixPoshiScript(poshiScript);
 
 		if (poshiScript.startsWith("property") ||
 			poshiScript.startsWith("static var") ||
@@ -412,7 +412,7 @@ public abstract class PoshiElement
 	protected boolean isValidPoshiScriptStatement(
 		Pattern poshiScriptStatementPattern, String poshiScript) {
 
-		poshiScript = _processedPoshiScript(poshiScript);
+		poshiScript = _fixPoshiScript(poshiScript);
 
 		if (!isBalancedPoshiScript(poshiScript)) {
 			return false;
@@ -529,7 +529,7 @@ public abstract class PoshiElement
 		}
 	}
 
-	private String _processedPoshiScript(String poshiScript) {
+	private String _fixPoshiScript(String poshiScript) {
 		poshiScript = poshiScript.replaceAll("(?s)/\\*.*?\\*/", "/\\*\\*/");
 
 		poshiScript = poshiScript.replaceAll(
