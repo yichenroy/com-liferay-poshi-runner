@@ -20,23 +20,20 @@ import java.util.List;
 /**
  * @author Yi-Chen Tsai
  */
-public class RawTable extends BaseTable {
+public class RawTable extends BaseTable<List<String>> {
 
 	public RawTable(List<List<String>> rawData) {
 		super(rawData);
-
-		_rawTable = rawData;
 	}
 
 	@Override
-	public Iterator getIterator() {
-		return _rawTable.iterator();
+	public Iterable<List<String>> getTable() {
+		return rawData;
 	}
 
-	public List<List<String>> getTable() {
-		return _rawTable;
+	@Override
+	public Iterator<List<String>> iterator() {
+		return rawData.iterator();
 	}
-
-	private final List<List<String>> _rawTable;
 
 }

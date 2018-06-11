@@ -20,33 +20,15 @@ import java.util.List;
 /**
  * @author Yi-Chen Tsai
  */
-public class BaseTable implements Table {
+public abstract class BaseTable<T> implements Iterable<T> {
 
 	public BaseTable(List<List<String>> rawData) {
 		this.rawData = rawData;
 	}
 
-	@Override
-	public Iterator getIterator() {
-		return rawData.iterator();
-	}
+	public abstract Iterable<T> getTable();
 
-	public int getRawDataWidth() {
-		if (rawData.isEmpty()) {
-			return 0;
-		}
-
-		List<String> firstRow = rawData.get(0);
-
-		return firstRow.size();
-	}
-
-	public void verifyRawDataWidth(int width) {
-		if (getRawDataWidth() != width) {
-			throw new RuntimeException(
-				"The raw data must have exactly " + width + " columns");
-		}
-	}
+	public abstract Iterator<T> iterator();
 
 	protected List<List<String>> rawData;
 

@@ -29,7 +29,7 @@ import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.RegexUtil;
 import com.liferay.poshi.runner.util.TableUtil;
 import com.liferay.poshi.runner.util.Validator;
-import com.liferay.poshi.runner.var.type.Table;
+import com.liferay.poshi.runner.var.type.BaseTable;
 import com.liferay.poshi.runner.var.type.TableFactory;
 
 import groovy.lang.Binding;
@@ -278,11 +278,11 @@ public class PoshiRunnerExecutor {
 			}
 		}
 		else if (element.attributeValue("table") != null) {
-			Table table =
-				(Table)PoshiRunnerVariablesUtil.getValueFromCommandMap(
+			BaseTable<?> table =
+				(BaseTable<?>)PoshiRunnerVariablesUtil.getValueFromCommandMap(
 					element.attributeValue("table"));
 
-			Iterator iter = table.getIterator();
+			Iterator<?> iter = table.iterator();
 
 			while (iter.hasNext()) {
 				PoshiRunnerVariablesUtil.putIntoCommandMap(

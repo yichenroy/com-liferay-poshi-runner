@@ -21,7 +21,9 @@ import java.util.List;
  */
 public class TableFactory {
 
-	public static Table newTable(List<List<String>> rawData, String tableType) {
+	public static BaseTable<?> newTable(
+		List<List<String>> rawData, String tableType) {
+
 		if (tableType.equals("HashesTable")) {
 			return new HashesTable(rawData);
 		}

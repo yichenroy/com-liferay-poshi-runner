@@ -18,11 +18,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yi-Chen Tsai
  */
-public class HashesTable extends BaseTable {
+public class HashesTable extends BaseTable<Map<String, String>> {
 
 	public HashesTable(List<List<String>> rawData) {
 		super(rawData);
@@ -47,15 +48,15 @@ public class HashesTable extends BaseTable {
 	}
 
 	@Override
-	public Iterator getIterator() {
-		return _hashesTable.iterator();
-	}
-
-	public List<LinkedHashMap<String, String>> getTable() {
+	public List<Map<String, String>> getTable() {
 		return _hashesTable;
 	}
 
-	private final List<LinkedHashMap<String, String>> _hashesTable =
-		new ArrayList<>();
+	@Override
+	public Iterator<Map<String, String>> iterator() {
+		return _hashesTable.iterator();
+	}
+
+	private final List<Map<String, String>> _hashesTable = new ArrayList<>();
 
 }
