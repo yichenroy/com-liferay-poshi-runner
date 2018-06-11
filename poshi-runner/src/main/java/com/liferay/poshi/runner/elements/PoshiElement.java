@@ -490,7 +490,7 @@ public abstract class PoshiElement
 		return poshiElements;
 	}
 
-	protected static final String ASSIGN_TO_REGEX = "[\\s]*=[\\s]*";
+	protected static final String ASSIGNMENT_REGEX = "[\\s]*=[\\s]*";
 
 	protected static final String BLOCK_NAME_ANNOTATION_REGEX = "(@.*=.*|)";
 
@@ -555,7 +555,7 @@ public abstract class PoshiElement
 		INVOCATION_REGEX = "[\\s]*[\\w\\.]*" + PARAMETER_REGEX;
 
 		_varInvocationAssignmentStatementPattern = Pattern.compile(
-			"^" + VAR_NAME_REGEX + ASSIGN_TO_REGEX + INVOCATION_REGEX +
+			"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + INVOCATION_REGEX +
 				STATEMENT_END_REGEX,
 			Pattern.DOTALL);
 
