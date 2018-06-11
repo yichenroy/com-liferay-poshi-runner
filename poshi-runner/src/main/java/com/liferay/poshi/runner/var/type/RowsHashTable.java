@@ -25,7 +25,17 @@ import java.util.Map;
  */
 public class RowsHashTable extends BaseTable<Map<String, String>> {
 
-	public RowsHashTable(List<List<String>> rawData) {
+	@Override
+	public List<Map<String, String>> getTable() {
+		return _rowsHashTable;
+	}
+
+	@Override
+	public Iterator<Map<String, String>> iterator() {
+		return _rowsHashTable.iterator();
+	}
+
+	protected RowsHashTable(List<List<String>> rawData) {
 		super(rawData);
 
 		_verifyRawDataWidth(2);
@@ -37,15 +47,6 @@ public class RowsHashTable extends BaseTable<Map<String, String>> {
 		}
 
 		_rowsHashTable.add(row);
-	}
-
-	public List<Map<String, String>> getTable() {
-		return _rowsHashTable;
-	}
-
-	@Override
-	public Iterator<Map<String, String>> iterator() {
-		return _rowsHashTable.iterator();
 	}
 
 	private int _getRawDataWidth() {

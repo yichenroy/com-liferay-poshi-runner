@@ -25,7 +25,17 @@ import java.util.Map;
  */
 public class HashesTable extends BaseTable<Map<String, String>> {
 
-	public HashesTable(List<List<String>> rawData) {
+	@Override
+	public List<Map<String, String>> getTable() {
+		return _hashesTable;
+	}
+
+	@Override
+	public Iterator<Map<String, String>> iterator() {
+		return _hashesTable.iterator();
+	}
+
+	protected HashesTable(List<List<String>> rawData) {
 		super(rawData);
 
 		if (rawData.size() < 2) {
@@ -45,16 +55,6 @@ public class HashesTable extends BaseTable<Map<String, String>> {
 
 			_hashesTable.add(hashesRow);
 		}
-	}
-
-	@Override
-	public List<Map<String, String>> getTable() {
-		return _hashesTable;
-	}
-
-	@Override
-	public Iterator<Map<String, String>> iterator() {
-		return _hashesTable.iterator();
 	}
 
 	private final List<Map<String, String>> _hashesTable = new ArrayList<>();

@@ -22,10 +22,6 @@ import java.util.List;
  */
 public class RawTable extends BaseTable<List<String>> {
 
-	public RawTable(List<List<String>> rawData) {
-		super(rawData);
-	}
-
 	@Override
 	public Iterable<List<String>> getTable() {
 		return rawData;
@@ -34,6 +30,10 @@ public class RawTable extends BaseTable<List<String>> {
 	@Override
 	public Iterator<List<String>> iterator() {
 		return rawData.iterator();
+	}
+
+	protected RawTable(List<List<String>> rawData) {
+		super(rawData);
 	}
 
 }

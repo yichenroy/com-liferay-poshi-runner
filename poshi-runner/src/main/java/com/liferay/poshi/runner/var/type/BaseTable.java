@@ -22,13 +22,13 @@ import java.util.List;
  */
 public abstract class BaseTable<T> implements Iterable<T> {
 
-	public BaseTable(List<List<String>> rawData) {
-		this.rawData = rawData;
-	}
-
 	public abstract Iterable<T> getTable();
 
 	public abstract Iterator<T> iterator();
+
+	protected BaseTable(List<List<String>> rawData) {
+		this.rawData = rawData;
+	}
 
 	protected List<List<String>> rawData;
 
