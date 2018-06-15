@@ -304,7 +304,7 @@ public class PoshiRunnerExecutor {
 			}
 
 			throw new Exception(
-				"Cannot set var '" + varName +
+				"Unable to set var '" + varName +
 					"' as parameter of function. It is already set in the " +
 						"static context.");
 		}
