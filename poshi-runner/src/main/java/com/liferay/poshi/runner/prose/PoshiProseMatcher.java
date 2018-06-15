@@ -100,6 +100,8 @@ public class PoshiProseMatcher {
 		}
 	}
 
+	private static final Pattern _optionalTextPattern = Pattern.compile(
+		"\\(.*\\)");
 	private static final Pattern _poshiProseVarPattern = Pattern.compile(
 		"\\$\\{(.+?)\\}");
 
