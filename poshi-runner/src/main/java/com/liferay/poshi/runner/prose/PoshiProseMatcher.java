@@ -92,40 +92,38 @@ public class PoshiProseMatcher {
 	private static List<String> _getPossiblePoshiProseStrings(
 		String proseString) {
 
-		List possibleStrings = new ArrayList<>();
+		List<String> possiblePoshiProseStrings = new ArrayList<>();
 
 		if (proseString == null) {
-			return possibleStrings;
+			return possiblePoshiProseStrings;
 		}
 
 		Matcher optionalTextMatcher = _optionalTextPattern.matcher(proseString);
 
 		if (optionalTextMatcher.find()) {
-			List<String> possibleFirstPartStrings = new ArrayList<>();
+			List<String> possiblePrefixes = new ArrayList<>();
 
-			possibleFirstPartStrings.add(optionalTextMatcher.group(1));
+			possiblePrefixes.add(optionalTextMatcher.group(1));
 
-			possibleFirstPartStrings.add(
+			possiblePrefixes.add(
 				optionalTextMatcher.group(1) +
 					optionalTextMatcher.group("optionalText"));
 
-			List<String> possibleSecondPartStrings =
-				_getPossiblePoshiProseStrings(optionalTextMatcher.group(3));
+			List<String> possiblePostfixes = _getPossiblePoshiProseStrings(
+				optionalTextMatcher.group(3));
 
-			for (String possibleFirstPartString : possibleFirstPartStrings) {
-				for (String possibleSecondPartString :
-						possibleSecondPartStrings) {
-
-					possibleStrings.add(
-						possibleFirstPartString + possibleSecondPartString);
+			for (String possiblePrefix : possiblePrefixes) {
+				for (String possibleSecondPartString : possiblePostfixes) {
+					possiblePoshiProseStrings.add(
+						possiblePrefix + possibleSecondPartString);
 				}
 			}
 		}
 		else {
-			possibleStrings.add(proseString);
+			possiblePoshiProseStrings.add(proseString);
 		}
 
-		return possibleStrings;
+		return possiblePoshiProseStrings;
 	}
 
 	private static String _toString(String matchingString) {
