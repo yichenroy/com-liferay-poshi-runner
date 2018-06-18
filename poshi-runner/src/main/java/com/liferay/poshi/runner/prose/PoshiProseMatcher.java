@@ -175,6 +175,14 @@ public class PoshiProseMatcher {
 			return possiblePoshiProseStrings;
 		}
 
+		List<String> possibleAlternateStrings = _getPossibleAlternateStrings(
+			proseString);
+
+		for (String possibleAlternateString : possibleAlternateStrings) {
+			possiblePoshiProseStrings.addAll(
+				_getPossibleOptionalStrings(possibleAlternateString));
+		}
+
 		return possiblePoshiProseStrings;
 	}
 
