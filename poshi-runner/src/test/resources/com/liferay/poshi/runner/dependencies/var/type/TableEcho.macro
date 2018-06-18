@@ -1,15 +1,11 @@
  <definition>
-    <command name="echoFourVars">
-      <echo>${v0} ${v1} ${v2} ${v3}</echo>
-    </command>
-
     <command prose="I want to print hashes table: ${table}" name="echoHashesTable">
       <echo>echoing the hashes table contents:  </echo>
 
       <var name="hashesTable" type="HashesTable" from="${table}" />
 
       <for param="row" table="${hashesTable}" >
-        <execute macro="TableEcho#echoTwoVars" >
+        <execute macro="VarEcho#echoTwoVars" >
           <var name="v0" hash="project_id" from="${row}" />
           <var name="v1" hash="status"     from="${row}" />
         </execute>
@@ -22,7 +18,7 @@
 		<var name="rawTable" type="RawTable" from="${table}" />
 
    		<for param="row" table="${rawTable}" >
-   			<execute macro="TableEcho#echoTwoVars" >
+   			<execute macro="VarEcho#echoTwoVars" >
    				<var name="v0" index="0" from="${row}" />
    				<var name="v1" index="1" from="${row}" />
    			</execute>
@@ -35,16 +31,12 @@
       <var name="rowsHashTable" type="RowsHashTable" from="${table}" />
 
       <for param="row" table="${rowsHashTable}" >
-        <execute macro="TableEcho#echoThreeVars" >
+        <execute macro="VarEcho#echoThreeVars" >
           <var name="v0" hash="project_id"   from="${row}" />
           <var name="v1" hash="status"       from="${row}" />
           <var name="v2" hash="date_created" from="${row}" />
         </execute>
       </for>
-    </command>
-
-    <command name="echoThreeVars">
-      <echo>${v0} ${v1} ${v2}</echo>
     </command>
 
     <command prose="I want to print transposed table: ${table}" name="${echoTransposedTable}">
@@ -55,7 +47,7 @@
       <var name="rawTable" type="RawTable" from="${transposedRawData}" />
 
       <for param="row" table="${rawTable}" >
-        <execute macro="TableEcho#echoFourVars" >
+        <execute macro="VarEcho#echoFourVars" >
           <var name="v0" index="0" from="${row}" />
           <var name="v1" index="1" from="${row}" />
           <var name="v2" index="2" from="${row}" />
@@ -63,8 +55,4 @@
         </execute>
       </for>
     </command>
-
-    <command name="echoTwoVars">
-	  <echo>${v0} ${v1}</echo>
-	</command>
 </definition>
