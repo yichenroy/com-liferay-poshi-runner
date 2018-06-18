@@ -89,6 +89,48 @@ public class PoshiProseMatcher {
 	protected static final Map<String, PoshiProseMatcher> poshiProseMatcherMap =
 		new HashMap<>();
 
+	private static List<String> _getPossibleAlternateStrings(
+		String proseString) {
+
+		List possibleAlternateStrings = new ArrayList<>();
+
+		if (proseString == null) {
+			return possibleAlternateStrings;
+		}
+
+		Matcher alternateTextMatcher = _alternateTextPattern.matcher(
+			proseString);
+
+		if (alternateTextMatcher.find()) {
+			List<String> possiblePrefixes = new ArrayList<>();
+
+			possiblePrefixes.add(
+				alternateTextMatcher.group(1) +
+					alternateTextMatcher.group("alternateText1"));
+
+			possiblePrefixes.add(
+				alternateTextMatcher.group(1) +
+					alternateTextMatcher.group("alternateText2"));
+
+			List<String> possiblePostfixes =
+				_getPossibleAlternateStrings(alternateTextMatcher.group(4));
+
+			for (String possiblePrefix : possiblePrefixes) {
+				for (String possiblePostfix :
+						possiblePostfixes) {
+
+					possibleAlternateStrings.add(
+						possiblePrefix + possiblePostfix);
+				}
+			}
+		}
+		else {
+			possibleAlternateStrings.add(proseString);
+		}
+
+		return possibleAlternateStrings;
+	}
+
 	private static List<String> _getPossiblePoshiProseStrings(
 		String proseString) {
 
@@ -143,6 +185,8 @@ public class PoshiProseMatcher {
 		}
 	}
 
+	private static final Pattern _alternateTextPattern = Pattern.compile(
+		"(.*?)(?<alternateText1>\\w+)\\/(?<alternateText2>\\w+)(.*)");
 	private static final Pattern _optionalTextPattern = Pattern.compile(
 		"(.*?)\\((?<optionalText>.*?)\\)(.*)");
 	private static final Pattern _poshiProseVarPattern = Pattern.compile(
