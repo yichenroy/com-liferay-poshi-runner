@@ -112,13 +112,11 @@ public class PoshiProseMatcher {
 				alternateTextMatcher.group(1) +
 					alternateTextMatcher.group("alternateText2"));
 
-			List<String> possiblePostfixes =
-				_getPossibleAlternateStrings(alternateTextMatcher.group(4));
+			List<String> possiblePostfixes = _getPossibleAlternateStrings(
+				alternateTextMatcher.group(4));
 
 			for (String possiblePrefix : possiblePrefixes) {
-				for (String possiblePostfix :
-						possiblePostfixes) {
-
+				for (String possiblePostfix : possiblePostfixes) {
 					possibleAlternateStrings.add(
 						possiblePrefix + possiblePostfix);
 				}
@@ -131,13 +129,13 @@ public class PoshiProseMatcher {
 		return possibleAlternateStrings;
 	}
 
-	private static List<String> _getPossiblePoshiProseStrings(
+	private static List<String> _getPossibleOptionalStrings(
 		String proseString) {
 
-		List<String> possiblePoshiProseStrings = new ArrayList<>();
+		List<String> possibleOptionalStrings = new ArrayList<>();
 
 		if (proseString == null) {
-			return possiblePoshiProseStrings;
+			return possibleOptionalStrings;
 		}
 
 		Matcher optionalTextMatcher = _optionalTextPattern.matcher(proseString);
@@ -156,13 +154,25 @@ public class PoshiProseMatcher {
 
 			for (String possiblePrefix : possiblePrefixes) {
 				for (String possibleSecondPartString : possiblePostfixes) {
-					possiblePoshiProseStrings.add(
+					possibleOptionalStrings.add(
 						possiblePrefix + possibleSecondPartString);
 				}
 			}
 		}
 		else {
-			possiblePoshiProseStrings.add(proseString);
+			possibleOptionalStrings.add(proseString);
+		}
+
+		return possibleOptionalStrings;
+	}
+
+	private static List<String> _getPossiblePoshiProseStrings(
+		String proseString) {
+
+		List<String> possiblePoshiProseStrings = new ArrayList<>();
+
+		if (proseString == null) {
+			return possiblePoshiProseStrings;
 		}
 
 		return possiblePoshiProseStrings;
