@@ -14,31 +14,53 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.liferay.poshi.runner.util.StringUtil;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.dom4j.Element;
 
 /**
  * @author Kenji Heigel
  */
 public class ContainsPoshiElement extends PoshiElement {
+
 	@Override
 	public PoshiElement clone(Element element) {
+		if (isElementType(_ELEMENT_NAME, element)) {
+			return new ContainsPoshiElement(element);
+		}
+
 		return null;
 	}
 
 	@Override
 	public PoshiElement clone(
-	PoshiElement parentPoshiElement, String poshiScript) {
+		PoshiElement parentPoshiElement, String poshiScript) {
+
+		if (_isElementType(parentPoshiElement, poshiScript)) {
+			return new ContainsPoshiElement(parentPoshiElement, poshiScript);
+		}
+
 		return null;
 	}
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-	}
+		Matcher matcher = _conditionPattern.matcher(poshiScript);
 
+		matcher.find();
+
+		addAttribute("string", matcher.group(1));
+		addAttribute("substring", matcher.group(2));
+	}
 
 	@Override
 	public String toPoshiScript() {
-		return null;
+		return StringUtil.combine(
+			_ELEMENT_NAME, "(\"" + attributeValue("string") + "\", \"",
+			attributeValue("substring"), "\")");
 	}
 
 	protected ContainsPoshiElement() {
@@ -59,6 +81,21 @@ public class ContainsPoshiElement extends PoshiElement {
 		return _ELEMENT_NAME;
 	}
 
+	private boolean _isElementType(
+		PoshiElement parentPoshiElement, String poshiScript) {
+
+		if (!isConditionValidInParent(parentPoshiElement)) {
+			return false;
+		}
+
+		Matcher matcher = _conditionPattern.matcher(poshiScript);
+
+		return matcher.find();
+	}
+
 	private static final String _ELEMENT_NAME = "contains";
+
+	private static final Pattern _conditionPattern = Pattern.compile(
+		"^" + _ELEMENT_NAME + "\\(\"(.*)\"[\\s]*,[\\s]*\"(.*)\"\\)$");
 
 }
