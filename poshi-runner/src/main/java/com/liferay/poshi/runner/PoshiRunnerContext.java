@@ -1452,6 +1452,9 @@ public class PoshiRunnerContext {
 
 			filePaths.put(fileName, filePath);
 
+			Element rootElement = PoshiRunnerGetterUtil.getRootElementFromURL(
+				url);
+
 			_storeRootElement(
 				PoshiRunnerGetterUtil.getRootElementFromURL(url), filePath,
 				namespace);
@@ -1464,10 +1467,12 @@ public class PoshiRunnerContext {
 				filePath = filePath.replace("/", "\\");
 			}
 
-			_filePaths.put(
-				namespace + "." +
-					PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
-				filePath);
+			if (rootElement.attributeValue("override") == null) {
+				_filePaths.put(
+					namespace + "." +
+						PoshiRunnerGetterUtil.getFileNameFromFilePath(filePath),
+					filePath);
+			}
 		}
 	}
 
