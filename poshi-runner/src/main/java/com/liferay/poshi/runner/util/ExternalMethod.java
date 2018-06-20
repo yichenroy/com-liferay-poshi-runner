@@ -164,7 +164,7 @@ public class ExternalMethod {
 			sb.append(")");
 		}
 
-		sb.append("\nValid method(s) of the same name:\n");
+		sb.append("\nValid methods with the same name:\n");
 
 		if (filteredMethods.isEmpty()) {
 			sb.append("NONE\n");
