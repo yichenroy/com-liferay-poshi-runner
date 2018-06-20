@@ -874,6 +874,34 @@ public class PoshiRunnerContext {
 						overrideCommandElement.attributeValue("prose"),
 						baseNamespacedClassCommandName);
 				}
+
+				if (classType.equals("test-case")) {
+					Properties baseProperties =
+						_namespacedClassCommandNamePropertiesMap.get(
+							baseNamespacedClassCommandName);
+
+					Properties overrideProperties =
+						_getClassCommandNameProperties(
+							rootElement, overrideCommandElement);
+
+					Properties overriddenProperties = new Properties(
+						baseProperties);
+
+					overriddenProperties.putAll(overrideProperties);
+
+					_namespacedClassCommandNamePropertiesMap.put(
+						baseNamespacedClassCommandName, overriddenProperties);
+
+					if (Validator.isNotNull(
+							overrideCommandElement.attributeValue(
+								"description"))) {
+
+						_testCaseDescriptions.put(
+							baseNamespacedClassCommandName,
+							overrideCommandElement.attributeValue(
+								"description"));
+					}
+				}
 			}
 		}
 	}
