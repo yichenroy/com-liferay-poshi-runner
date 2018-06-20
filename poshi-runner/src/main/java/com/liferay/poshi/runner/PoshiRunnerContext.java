@@ -786,6 +786,35 @@ public class PoshiRunnerContext {
 
 			throw new RuntimeException(sb.toString());
 		}
+
+		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
+			filePath);
+
+		String baseNamespace =
+			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
+				baseNamespacedClassName);
+
+		if (classType.equals("test-case")) {
+			if (rootElement.element("set-up") != null) {
+				Element setUpElement = rootElement.element("set-up");
+
+				String classCommandName = className + "#set-up";
+
+				_commandElements.put(
+					classType + "#" + baseNamespace + "." + classCommandName,
+					setUpElement);
+			}
+
+			if (rootElement.element("tear-down") != null) {
+				Element tearDownElement = rootElement.element("tear-down");
+
+				String classCommandName = className + "#tear-down";
+
+				_commandElements.put(
+					classType + "#" + baseNamespace + "." + classCommandName,
+					tearDownElement);
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
