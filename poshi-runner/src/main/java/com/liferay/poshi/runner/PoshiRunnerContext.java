@@ -815,6 +815,34 @@ public class PoshiRunnerContext {
 					tearDownElement);
 			}
 		}
+
+		if (classType.equals("action") || classType.equals("function") ||
+			classType.equals("macro") || classType.equals("test-case")) {
+
+			List<Element> overrideVarElements = rootElement.elements("var");
+
+			if (!overrideVarElements.isEmpty()) {
+				List<Element> baseVarElements = getRootVarElements(
+					classType, className, baseNamespace);
+
+				Map<String, Element> overriddenVarElementMap = new HashMap();
+
+				for (Element baseVarElement : baseVarElements) {
+					overriddenVarElementMap.put(
+						baseVarElement.attributeValue("name"), baseVarElement);
+				}
+
+				for (Element overrideVarElement : overrideVarElements) {
+					overriddenVarElementMap.put(
+						overrideVarElement.attributeValue("name"),
+						overrideVarElement);
+				}
+
+				_rootVarElements.put(
+					classType + "#" + baseNamespace + "." + className,
+					new ArrayList(overriddenVarElementMap.values()));
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
