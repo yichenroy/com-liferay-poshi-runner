@@ -904,6 +904,61 @@ public class PoshiRunnerContext {
 				}
 			}
 		}
+
+		if (classType.equals("function")) {
+			String defaultClassCommandName =
+				className + "#" + rootElement.attributeValue("default");
+
+			Element defaultCommandElement = getFunctionCommandElement(
+				defaultClassCommandName, baseNamespace);
+
+			_commandElements.put(
+				classType + "#" + baseNamespace + "." + className,
+				defaultCommandElement);
+
+			_commandSummaries.put(
+				classType + "#" + baseNamespace + "." + className,
+				_getCommandSummary(
+					defaultClassCommandName, classType, defaultCommandElement,
+					rootElement));
+
+			String xml = rootElement.asXML();
+
+			for (int i = 1;; i++) {
+				if (xml.contains("${locator" + i + "}")) {
+					continue;
+				}
+
+				if (i > 1) {
+					i--;
+				}
+
+				int baseLocatorCount = _functionLocatorCounts.get(
+					baseNamespace + "." + className);
+
+				if (i > baseLocatorCount) {
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("Overriding function file cannot have a ");
+					sb.append("locator count higher than base function file\n");
+					sb.append(namespace);
+					sb.append(".");
+					sb.append(className);
+					sb.append(" locator count: ");
+					sb.append(i);
+					sb.append("\n");
+					sb.append(baseNamespace);
+					sb.append(".");
+					sb.append(className);
+					sb.append(" locator count: ");
+					sb.append(baseLocatorCount);
+
+					throw new RuntimeException(sb.toString());
+				}
+
+				break;
+			}
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
