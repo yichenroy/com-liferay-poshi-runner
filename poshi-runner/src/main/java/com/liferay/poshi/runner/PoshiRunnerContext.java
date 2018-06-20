@@ -842,6 +842,39 @@ public class PoshiRunnerContext {
 					classType + "#" + baseNamespace + "." + className,
 					new ArrayList(overriddenVarElementMap.values()));
 			}
+
+			List<Element> overrideCommandElements = rootElement.elements(
+				"command");
+
+			for (Element overrideCommandElement : overrideCommandElements) {
+				String commandName = overrideCommandElement.attributeValue(
+					"name");
+
+				String classCommandName = className + "#" + commandName;
+
+				String baseNamespacedClassCommandName =
+					baseNamespace + "." + className + "#" + commandName;
+
+				_commandElements.put(
+					classType + "#" + baseNamespacedClassCommandName,
+					overrideCommandElement);
+
+				_commandSummaries.put(
+					classType + "#" + baseNamespacedClassCommandName,
+					_getCommandSummary(
+						classCommandName, classType, overrideCommandElement,
+						rootElement));
+
+				String prose = overrideCommandElement.attributeValue("prose");
+
+				if (classType.equals("macro") && (prose != null) &&
+					!prose.isEmpty()) {
+
+					PoshiProseMatcher.storePoshiProseMatcher(
+						overrideCommandElement.attributeValue("prose"),
+						baseNamespacedClassCommandName);
+				}
+			}
 		}
 	}
 
