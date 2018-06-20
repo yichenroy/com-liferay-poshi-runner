@@ -96,16 +96,16 @@ public class ExternalMethod {
 	}
 
 	public static Method getMethod(
-		Class clazz, String methodName, Object[] parameters) {
+		Class<?> clazz, String methodName, Object[] parameters) {
 
-		List<Method> sameNameMethods = new ArrayList<>();
+		List<Method> filteredMethods = new ArrayList<>();
 
 		for (Method method : clazz.getMethods()) {
 			if (!methodName.equals(method.getName())) {
 				continue;
 			}
 
-			sameNameMethods.add(method);
+			filteredMethods.add(method);
 
 			Class<?>[] methodParameterTypes = method.getParameterTypes();
 
@@ -136,48 +136,50 @@ public class ExternalMethod {
 			}
 		}
 
-		if (sameNameMethods.isEmpty()) {
-			throw new IllegalArgumentException(
-				"Unable to find method with name '" + methodName +
-					"' in class '" + clazz.getCanonicalName() + "'");
-		}
-		else {
-			StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 
-			sb.append("Unable to find method '");
+		sb.append("Unable to find method '");
+		sb.append(methodName);
+		sb.append("' of class '");
+		sb.append(clazz.getCanonicalName());
+		sb.append("'");
+
+		if ((parameters != null) && (parameters.length != 0)) {
+			sb.append(" with parameter types: (");
+
+			String[] parameterClassNames = new String[parameters.length];
+
+			int i = 0;
+
+			for (Object parameter : parameters) {
+				Class<?> parameterClass = parameter.getClass();
+
+				parameterClassNames[i] = parameterClass.toString();
+
+				i++;
+			}
+
+			sb.append(StringUtils.join(parameterClassNames, ", "));
+
+			sb.append(")");
+		}
+
+		sb.append("\nValid method(s) of the same name:\n");
+
+		if (filteredMethods.isEmpty()) {
+			sb.append("NONE\n");
+		}
+
+		for (Method sameNameMethod : filteredMethods) {
+			sb.append("* ");
 			sb.append(methodName);
-			sb.append("' of class '");
-			sb.append(clazz.getCanonicalName());
-
-			if ((parameters != null) && (parameters.length != 0)) {
-				sb.append("' with parameters types: (");
-
-				for (Object parameter : parameters) {
-					Class<?> parameterType = parameter.getClass();
-
-					sb.append(parameterType.toString());
-
-					sb.append(", ");
-				}
-
-				sb.delete(sb.length() - 2, sb.length());
-
-				sb.append(")");
-			}
-
-			sb.append("\nValid method(s) of the same name:\n");
-
-			for (Method sameNameMethod : sameNameMethods) {
-				sb.append("* ");
-				sb.append(methodName);
-				sb.append("(");
-				sb.append(
-					StringUtils.join(sameNameMethod.getParameterTypes(), ", "));
-				sb.append(")\n");
-			}
-
-			throw new IllegalArgumentException(sb.toString());
+			sb.append("(");
+			sb.append(
+				StringUtils.join(sameNameMethod.getParameterTypes(), ", "));
+			sb.append(")\n");
 		}
+
+		throw new IllegalArgumentException(sb.toString());
 	}
 
 	private static Object[] _transformParameters(Object[] parameters) {
