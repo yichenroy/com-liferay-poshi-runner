@@ -959,6 +959,9 @@ public class PoshiRunnerContext {
 				break;
 			}
 		}
+		else if (classType.equals("path")) {
+			_storePathElement(rootElement, className, filePath, baseNamespace);
+		}
 	}
 
 	private static void _readPoshiFiles() throws Exception {
@@ -1161,7 +1164,10 @@ public class PoshiRunnerContext {
 			String namespace)
 		throws Exception {
 
-		_rootElements.put("path#" + namespace + "." + className, rootElement);
+		if (rootElement.attributeValue("override") == null) {
+			_rootElements.put(
+				"path#" + namespace + "." + className, rootElement);
+		}
 
 		List<String> locatorKeys = new ArrayList<>();
 
