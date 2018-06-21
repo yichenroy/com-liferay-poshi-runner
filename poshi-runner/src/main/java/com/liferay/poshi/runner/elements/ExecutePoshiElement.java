@@ -128,6 +128,7 @@ public class ExecutePoshiElement extends PoshiElement {
 			for (String functionAttributeName : _FUNCTION_ATTRIBUTE_NAMES) {
 				if (assignment.startsWith(functionAttributeName)) {
 					String name = getNameFromAssignment(assignment);
+
 					String value = getQuotedContent(assignment);
 
 					value = StringEscapeUtils.unescapeXml(value);
