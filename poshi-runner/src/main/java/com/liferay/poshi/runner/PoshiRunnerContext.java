@@ -179,6 +179,10 @@ public class PoshiRunnerContext {
 		return getDefaultNamespace();
 	}
 
+	public static String getOverrideClassName(String namespacedClassName) {
+		return _overrideClassNames.get(namespacedClassName);
+	}
+
 	public static String getPathLocator(
 		String pathLocatorKey, String namespace) {
 
@@ -734,6 +738,10 @@ public class PoshiRunnerContext {
 		}
 	}
 
+	private static boolean _isClassOverridden(String namespacedClassName) {
+		return _overrideClassNames.containsKey(namespacedClassName);
+	}
+
 	private static boolean _isIgnorableCommandNames(
 		Element rootElement, Element commandElement, String commandName) {
 
@@ -787,12 +795,31 @@ public class PoshiRunnerContext {
 			throw new RuntimeException(sb.toString());
 		}
 
-		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
-			filePath);
-
 		String baseNamespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassName(
 				baseNamespacedClassName);
+
+		if (_isClassOverridden(baseNamespace + "." + baseClassName)) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("Duplicate override for class '");
+			sb.append(baseNamespace);
+			sb.append(".");
+			sb.append(baseClassName);
+			sb.append("'\n at ");
+			sb.append(namespace);
+			sb.append(".");
+			sb.append(className);
+			sb.append("\npreviously overridden by ");
+			sb.append(getOverrideClassName(baseNamespace));
+			sb.append(".");
+			sb.append(baseClassName);
+
+			throw new RuntimeException(sb.toString());
+		}
+
+		String classType = PoshiRunnerGetterUtil.getClassTypeFromFilePath(
+			filePath);
 
 		if (classType.equals("test-case")) {
 			if (rootElement.element("set-up") != null) {
@@ -1546,6 +1573,8 @@ public class PoshiRunnerContext {
 	private static final Map<String, Properties>
 		_namespacedClassCommandNamePropertiesMap = new HashMap<>();
 	private static final List<String> _namespaces = new ArrayList<>();
+	private static final Map<String, String> _overrideClassNames =
+		new HashMap<>();
 	private static final Map<String, String> _pathExtensions = new HashMap<>();
 	private static final Map<String, String> _pathLocators = new HashMap<>();
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
