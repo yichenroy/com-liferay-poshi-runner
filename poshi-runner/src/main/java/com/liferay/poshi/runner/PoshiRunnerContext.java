@@ -835,7 +835,6 @@ public class PoshiRunnerContext {
 			Element tearDownElement = rootElement.element("tear-down");
 
 			if (tearDownElement != null) {
-
 				String classCommandName = className + "#tear-down";
 
 				_commandElements.put(
