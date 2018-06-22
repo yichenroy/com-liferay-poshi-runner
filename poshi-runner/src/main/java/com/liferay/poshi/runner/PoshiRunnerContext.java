@@ -868,7 +868,7 @@ public class PoshiRunnerContext {
 
 				_rootVarElements.put(
 					classType + "#" + baseNamespace + "." + className,
-					new ArrayList(overriddenVarElementMap.values()));
+					new ArrayList<>(overriddenVarElementMap.values()));
 			}
 
 			List<Element> overrideCommandElements = rootElement.elements(
