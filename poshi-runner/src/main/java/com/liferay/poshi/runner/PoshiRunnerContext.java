@@ -822,9 +822,9 @@ public class PoshiRunnerContext {
 			filePath);
 
 		if (classType.equals("test-case")) {
-			if (rootElement.element("set-up") != null) {
-				Element setUpElement = rootElement.element("set-up");
+			Element setUpElement = rootElement.element("set-up");
 
+			if (setUpElement != null) {
 				String classCommandName = className + "#set-up";
 
 				_commandElements.put(
@@ -832,8 +832,9 @@ public class PoshiRunnerContext {
 					setUpElement);
 			}
 
-			if (rootElement.element("tear-down") != null) {
-				Element tearDownElement = rootElement.element("tear-down");
+			Element tearDownElement = rootElement.element("tear-down");
+
+			if (tearDownElement != null) {
 
 				String classCommandName = className + "#tear-down";
 
