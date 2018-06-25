@@ -66,6 +66,14 @@ public class FileUtil {
 		return exists(file);
 	}
 
+	public static String getFileName(String filePath) {
+		Path path = Paths.get(filePath);
+
+		Path fileName = path.getFileName();
+
+		return fileName.toString();
+	}
+
 	public static List<URL> getIncludedResourceURLs(
 			FileSystem fileSystem, String[] includes, String baseDirName)
 		throws IOException {
@@ -123,14 +131,6 @@ public class FileUtil {
 
 		return getIncludedResourceURLs(
 			FileSystems.getDefault(), includes, baseDirName);
-	}
-
-	public static String getFileName(String filePath) {
-		Path path = Paths.get(filePath);
-
-		Path fileName = path.getFileName();
-
-		return fileName.toString();
 	}
 
 	public static String getSeparator() {
