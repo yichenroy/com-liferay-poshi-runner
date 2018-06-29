@@ -227,10 +227,12 @@ public abstract class PoshiElement
 		StringBuilder sb = new StringBuilder();
 
 		for (char c : poshiScriptBlock.toCharArray()) {
-			if (isBalancedPoshiScript(sb.toString()) && (c == '{')) {
-				String blockName = sb.toString();
+			if (c == '{') {
+				if (isBalancedPoshiScript(sb.toString())) {
+					String blockName = sb.toString();
 
-				return blockName.trim();
+					return blockName.trim();
+				}
 			}
 
 			sb.append(c);
@@ -361,9 +363,11 @@ public abstract class PoshiElement
 				continue;
 			}
 
-			if (isBalancedPoshiScript(poshiScriptSnippet) &&
-				((c == '}') || (c == ';'))) {
+			if ((c != '}') && (c != ';')) {
+				continue;
+			}
 
+			if (isBalancedPoshiScript(poshiScriptSnippet)) {
 				if (splitElseBlocks) {
 					if (isValidPoshiScriptBlock(
 							ElseIfPoshiElement.blockNamePattern,
