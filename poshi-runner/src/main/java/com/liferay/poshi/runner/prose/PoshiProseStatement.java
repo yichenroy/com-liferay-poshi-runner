@@ -122,6 +122,10 @@ public class PoshiProseStatement extends BasePoshiProse {
 				"macro",
 				_poshiProseMatcher.getMacroNamespacedClassCommandName()));
 
+		Element proseElement = Dom4JUtil.getNewElement("prose", element);
+
+		proseElement.addCDATA(_proseStatement);
+
 		for (Map.Entry<String, String> varMapEntry : _varMap.entrySet()) {
 			Element varElement = Dom4JUtil.getNewElement(
 				"var", null,
