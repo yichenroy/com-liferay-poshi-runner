@@ -96,6 +96,10 @@ public class HttpRequestUtil {
 		return httpResponse.getResponseBody();
 	}
 
+	public static String getResponseErrorMessage(HttpResponse httpResponse) {
+		return httpResponse.getResponseErrorMessage();
+	}
+
 	public static String getStatusCode(HttpResponse httpResponse) {
 		return httpResponse.getStatusCode();
 	}
