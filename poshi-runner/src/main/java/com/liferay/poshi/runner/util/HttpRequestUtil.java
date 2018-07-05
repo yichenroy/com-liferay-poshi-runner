@@ -14,16 +14,15 @@
 
 package com.liferay.poshi.runner.util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -198,26 +197,22 @@ public class HttpRequestUtil {
 				int responseCode = httpURLConnection.getResponseCode();
 
 				if ((responseCode >= 200) && (responseCode <= 299)) {
-					try (BufferedReader bufferedReader = new BufferedReader(
-							new InputStreamReader(
-								httpURLConnection.getInputStream()))) {
+					try (InputStream inputStream =
+							httpURLConnection.getInputStream()) {
 
-						String body = _getStringFromBufferedReader(
-							bufferedReader);
+						String body = _readInputStream(inputStream, false);
 
 						return new HttpResponse(body, null, responseCode);
 					}
 				}
 
-				try (BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(
-							httpURLConnection.getErrorStream()))) {
+				try (InputStream errorInputStream =
+						httpURLConnection.getErrorStream()) {
 
-					String errorMessage = _getStringFromBufferedReader(
-						bufferedReader);
+					String errorMessage = _readInputStream(
+						errorInputStream, false);
 
-					return new HttpResponse(
-						null, errorMessage, responseCode);
+					return new HttpResponse(null, errorMessage, responseCode);
 				}
 			}
 			catch (IOException ioe) {
@@ -343,28 +338,36 @@ public class HttpRequestUtil {
 		return url;
 	}
 
-	private static String _getStringFromBufferedReader(
-			BufferedReader bufferedReader)
+	private static String _readInputStream(
+			InputStream inputStream, boolean resetAfterReading)
 		throws IOException {
 
-		StringBuilder sb = new StringBuilder();
+		if (resetAfterReading && !inputStream.markSupported()) {
+			Class<?> inputStreamClass = inputStream.getClass();
 
-		int bytes = 0;
-		String line = null;
+			System.out.println(
+				"Unable to reset after reading input stream " +
+					inputStreamClass.getName());
+		}
 
-		while ((line = bufferedReader.readLine()) != null) {
-			byte[] lineBytes = line.getBytes();
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.mark(Integer.MAX_VALUE);
+		}
 
-			bytes += lineBytes.length;
+		StringBuffer sb = new StringBuffer();
 
-			if (bytes > (30 * 1024 * 1024)) {
-				sb.append("Response for was truncated due to its size.");
+		byte[] bytes = new byte[1024];
 
-				break;
-			}
+		int size = inputStream.read(bytes);
 
-			sb.append(line);
-			sb.append("\n");
+		while (size > 0) {
+			sb.append(new String(Arrays.copyOf(bytes, size)));
+
+			size = inputStream.read(bytes);
+		}
+
+		if (resetAfterReading && inputStream.markSupported()) {
+			inputStream.reset();
 		}
 
 		return sb.toString();
