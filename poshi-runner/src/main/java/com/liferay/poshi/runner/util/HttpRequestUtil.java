@@ -196,7 +196,7 @@ public class HttpRequestUtil {
 
 				int responseCode = httpURLConnection.getResponseCode();
 
-				if ((responseCode >= 200) && (responseCode <= 299)) {
+				if ((responseCode >= 200) && (responseCode <= 399)) {
 					try (InputStream inputStream =
 							httpURLConnection.getInputStream()) {
 
