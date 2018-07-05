@@ -16,6 +16,7 @@ package com.liferay.poshi.runner.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
@@ -23,7 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -207,17 +208,16 @@ public class HttpRequestUtil {
 						return new HttpResponse(body, null, responseCode);
 					}
 				}
-				else {
-					try (BufferedReader bufferedReader = new BufferedReader(
-							new InputStreamReader(
-								httpURLConnection.getErrorStream()))) {
 
-						String errorMessage = _getStringFromBufferedReader(
-							bufferedReader);
+				try (BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(
+							httpURLConnection.getErrorStream()))) {
 
-						return new HttpResponse(
-							null, errorMessage, responseCode);
-					}
+					String errorMessage = _getStringFromBufferedReader(
+						bufferedReader);
+
+					return new HttpResponse(
+						null, errorMessage, responseCode);
 				}
 			}
 			catch (IOException ioe) {
