@@ -92,10 +92,11 @@ public class PoshiRunnerExecutor {
 			}
 		}
 		else if (elementName.equals("contains")) {
-			String string = (String)PoshiRunnerVariablesUtil.replaceCommandVars(
-				element.attributeValue("string"));
+			String string =
+				PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
+					element.attributeValue("string"));
 			String substring =
-				(String)PoshiRunnerVariablesUtil.replaceCommandVars(
+				PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
 					element.attributeValue("substring"));
 
 			if (string.contains(substring)) {
@@ -103,9 +104,10 @@ public class PoshiRunnerExecutor {
 			}
 		}
 		else if (elementName.equals("equals")) {
-			String arg1 = (String)PoshiRunnerVariablesUtil.replaceCommandVars(
+			String arg1 = PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
 				element.attributeValue("arg1"));
-			String arg2 = (String)PoshiRunnerVariablesUtil.replaceCommandVars(
+
+			String arg2 = PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
 				element.attributeValue("arg2"));
 
 			if (arg1.equals(arg2)) {
