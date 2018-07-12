@@ -47,6 +47,10 @@ public class PoshiRunnerVariablesUtil {
 		return _staticMap.containsKey(replaceCommandVars(key));
 	}
 
+	public static Map<String, Object> getCommandMapVariables() {
+		return new HashMap<>(_commandMap);
+	}
+
 	public static String getStringFromCommandMap(String key) {
 		if (containsKeyInCommandMap((String)replaceCommandVars(key))) {
 			Object object = getValueFromCommandMap(key);
