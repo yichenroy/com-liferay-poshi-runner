@@ -174,8 +174,38 @@ public class PoshiRunnerExecutor {
 		for (Element childElement : childElements) {
 			String childElementName = childElement.getName();
 
-			try {
-				if (childElementName.equals("execute")) {
+			if (childElementName.equals("execute")) {
+				if ((childElement.attributeValue("selenium") != null) ||
+					(childElement.attributeValue("method") != null)) {
+
+					try {
+						if (childElement.attributeValue("selenium") !=
+								null) {
+
+							runSeleniumElement(childElement);
+						}
+						else if (childElement.attributeValue("method") !=
+									null) {
+
+							runMethodExecuteElement(childElement);
+						}
+
+						PoshiElementLogger.pass(childElement);
+					}
+					catch (Exception e) {
+						String warning = _getWarningFromThrowable(e);
+
+						if (warning != null) {
+							PoshiElementLogger.warn(childElement, e);
+						}
+						else {
+							PoshiElementLogger.fail(childElement, e);
+						}
+
+						throw e;
+					}
+				}
+				else {
 					PoshiElementLogger.pushExecutionStack(childElement);
 
 					if (childElement.attributeValue("function") != null) {
@@ -189,77 +219,76 @@ public class PoshiRunnerExecutor {
 					else if (childElement.attributeValue("macro") != null) {
 						runMacroExecuteElement(childElement, "macro");
 					}
-					else if ((childElement.attributeValue("macro-desktop") !=
-								null) &&
-							 !PropsValues.MOBILE_BROWSER) {
+					else if (!PropsValues.MOBILE_BROWSER &&
+								(childElement.attributeValue(
+									"macro-desktop") != null)) {
 
-						runMacroExecuteElement(childElement, "macro-desktop");
+						runMacroExecuteElement(
+							childElement, "macro-desktop");
 					}
 					else if ((childElement.attributeValue("macro-mobile") !=
 								null) &&
-							 PropsValues.MOBILE_BROWSER) {
+								PropsValues.MOBILE_BROWSER) {
 
-						runMacroExecuteElement(childElement, "macro-mobile");
+						runMacroExecuteElement(
+							childElement, "macro-mobile");
 					}
-					else if (childElement.attributeValue("selenium") != null) {
-						runSeleniumElement(childElement);
-					}
-					else if (childElement.attributeValue("test-case") != null) {
+					else if (childElement.attributeValue("test-case") !=
+								null) {
+
 						runTestCaseExecuteElement(childElement);
-					}
-					else if (childElement.attributeValue("method") != null) {
-						runMethodExecuteElement(childElement);
 					}
 
 					PoshiElementLogger.popExecutionStack();
 				}
-				else {
-					if (childElementName.equals("echo") ||
-						childElementName.equals("description") ||
-						childElementName.equals("fail") ||
-						childElementName.equals("return") ||
-						childElementName.equals("var")) {
+			}
+			else {
+				if (childElementName.equals("echo") ||
+					childElementName.equals("description") ||
+					childElementName.equals("return") ||
+					childElementName.equals("var")) {
 
-						if (childElementName.equals("echo")) {
-							runEchoElement(childElement);
-						}
-						else if (childElementName.equals("fail")) {
-							runFailElement(childElement);
-						}
-						else if (childElementName.equals("return")) {
-							runReturnElement(childElement);
-						}
-						else if (childElementName.equals("var")) {
-							runCommandVarElement(childElement, true);
-						}
-
-						PoshiElementLogger.pass(childElement);
+					if (childElementName.equals("echo")) {
+						runEchoElement(childElement);
 					}
-					else {
-						PoshiElementLogger.pass(childElement);
+					else if (childElementName.equals("return")) {
+						runReturnElement(childElement);
+					}
+					else if (childElementName.equals("var")) {
+						runCommandVarElement(childElement, true);
+					}
 
-						if (childElementName.equals("if")) {
-							runIfElement(childElement);
-						}
-						else if (childElementName.equals("for")) {
-							runForElement(childElement);
-						}
-						else if (childElementName.equals("task")) {
-							runTaskElement(childElement);
-						}
-						else if (childElementName.equals("toggle")) {
-							runToggleElement(childElement);
-						}
-						else if (childElementName.equals("while")) {
-							runWhileElement(childElement);
-						}
+					PoshiElementLogger.pass(childElement);
+				}
+				else if(childElementName.equals("fail")) {
+					try {
+						runFailElement(childElement);
+					}
+					catch(Exception e) {
+						PoshiElementLogger.fail(childElement, e);
+
+						throw e;
 					}
 				}
-			}
-			catch (Exception e) {
-				PoshiElementLogger.fail(childElement, e);
+				else {
+					PoshiElementLogger.pass(childElement);
 
-				throw e;
+					if (childElementName.equals("if")) {
+						runIfElement(childElement);
+					}
+					else if (childElementName.equals("for")) {
+						runForElement(childElement);
+					}
+					else if (childElementName.equals("task")) {
+						runTaskElement(childElement);
+					}
+					else if (childElementName.equals("toggle")) {
+						runToggleElement(childElement);
+					}
+					else if (childElementName.equals("while")) {
+						runWhileElement(childElement);
+					}
+				}
 			}
 		}
 	}
