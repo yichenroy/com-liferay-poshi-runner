@@ -35,14 +35,32 @@ public class PoshiLoggerElement {
 		return _element;
 	}
 
+	public PoshiLoggerElement getLastChildLoggerElement() {
+		if (!_childPoshiLoggerElements.isEmpty()) {
+			return _childPoshiLoggerElements.get(
+				_childPoshiLoggerElements.size() - 1);
+		}
+
+		return null;
+	}
+
+	public String getStatus() {
+		return _status;
+	}
+
 	public void setExecutionException(Exception e) {
 		_executionException = e;
 	}
 
+	public void setStatus(String status) {
+		_status = status;
+	}
+
 	protected PoshiLoggerElement(
-		Element element, Map<String, Object> variables) {
+		Element element, String status, Map<String, Object> variables) {
 
 		_element = element;
+		_status = status;
 		_variables = variables;
 	}
 
@@ -50,6 +68,7 @@ public class PoshiLoggerElement {
 		new ArrayList<>();
 	private final Element _element;
 	private Exception _executionException;
+	private String _status;
 	private final Map<String, Object> _variables;
 
 }
