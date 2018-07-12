@@ -40,6 +40,17 @@ public class PoshiElementLogger {
 		_addPoshiLoggerElement(poshiLoggerElement);
 	}
 
+	public static String getString() {
+		StringBuilder sb = new StringBuilder();
+
+		for (PoshiLoggerElement poshiElementLogger : _poshiLoggerElements) {
+			sb.append(poshiElementLogger.toString(1));
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	}
+
 	public static void pass(Element element) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
 			element, "pass", PoshiRunnerVariablesUtil.getCommandMapVariables());

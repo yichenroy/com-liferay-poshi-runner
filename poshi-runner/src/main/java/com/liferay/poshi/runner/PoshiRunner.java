@@ -180,6 +180,8 @@ public class PoshiRunner {
 			LoggerUtil.stopLogger();
 
 			SeleniumUtil.stopSelenium();
+
+			System.out.println(PoshiElementLogger.getString());
 		}
 	}
 
