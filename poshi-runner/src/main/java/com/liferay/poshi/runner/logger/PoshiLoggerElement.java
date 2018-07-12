@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 /**
@@ -54,6 +55,40 @@ public class PoshiLoggerElement {
 
 	public void setStatus(String status) {
 		_status = status;
+	}
+
+	@Override
+	public String toString() {
+		return toString(0);
+	}
+
+	public String toString(int tabstop) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_element.getName());
+		sb.append(" ");
+		sb.append("Status:" + _status);
+
+		for (Attribute attribute : (List<Attribute>)_element.attributes()) {
+			sb.append(attribute.getName());
+			sb.append("=");
+			sb.append(attribute.getValue());
+			sb.append(" ");
+		}
+
+		for (PoshiLoggerElement childLoggerElement :
+				_childPoshiLoggerElements) {
+
+			sb.append("\n");
+
+			for (int i = 0; i < tabstop; i++) {
+				sb.append("\t");
+			}
+
+			sb.append(childLoggerElement.toString(tabstop + 1));
+		}
+
+		return sb.toString();
 	}
 
 	protected PoshiLoggerElement(
