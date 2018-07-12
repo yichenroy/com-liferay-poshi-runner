@@ -824,6 +824,8 @@ public class PoshiRunnerExecutor {
 					returnName, _macroReturnValue);
 
 				_macroReturnValue = null;
+
+				PoshiElementLogger.pass(returnElement);
 			}
 		}
 		catch (Exception e) {
@@ -864,6 +866,8 @@ public class PoshiRunnerExecutor {
 			if (returnElement != null) {
 				PoshiRunnerVariablesUtil.putIntoCommandMap(
 					returnElement.attributeValue("name"), returnValue);
+
+				PoshiElementLogger.pass(returnElement);
 			}
 
 			CommandLoggerHandler.logExternalMethodCommand(
