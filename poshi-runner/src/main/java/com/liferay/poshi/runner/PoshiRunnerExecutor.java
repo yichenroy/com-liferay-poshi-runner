@@ -340,32 +340,42 @@ public class PoshiRunnerExecutor {
 						"static context.");
 		}
 
-		Object varValue = _getVarValue(element);
-
-		if (varValue instanceof String) {
-			varValue = PoshiRunnerVariablesUtil.replaceExecuteVars(
-				(String)varValue);
-
-			varValue = PoshiRunnerVariablesUtil.replaceCommandVars(
-				(String)varValue);
+		try {
+			Object varValue = _getVarValue(element);
 
 			if (varValue instanceof String) {
-				Matcher matcher = _variablePattern.matcher((String)varValue);
+				varValue = PoshiRunnerVariablesUtil.replaceExecuteVars(
+					(String)varValue);
 
-				if (matcher.matches() && varValue.equals(varValue)) {
-					if (updateLoggerStatus) {
-						XMLLoggerHandler.updateStatus(element, "pass");
+				varValue = PoshiRunnerVariablesUtil.replaceCommandVars(
+					(String)varValue);
+
+				if (varValue instanceof String) {
+					Matcher matcher = _variablePattern.matcher(
+						(String)varValue);
+
+					if (matcher.matches() && varValue.equals(varValue)) {
+						if (updateLoggerStatus) {
+							XMLLoggerHandler.updateStatus(element, "pass");
+						}
+
+						return;
 					}
-
-					return;
 				}
 			}
+
+			PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+
+			if (updateLoggerStatus) {
+				XMLLoggerHandler.updateStatus(element, "pass");
+			}
+
+			PoshiElementLogger.pass(element);
 		}
+		catch (Exception e) {
+			PoshiElementLogger.fail(element, e);
 
-		PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
-
-		if (updateLoggerStatus) {
-			XMLLoggerHandler.updateStatus(element, "pass");
+			throw e;
 		}
 	}
 
@@ -889,47 +899,59 @@ public class PoshiRunnerExecutor {
 
 		PoshiRunnerStackTraceUtil.setCurrentElement(element);
 
-		Object varValue = _getVarValue(element);
-
-		if (varValue instanceof String) {
-			varValue = PoshiRunnerVariablesUtil.replaceExecuteVars(
-				(String)varValue);
-
-			varValue = PoshiRunnerVariablesUtil.replaceStaticVars(
-				(String)varValue);
+		try {
+			Object varValue = _getVarValue(element);
 
 			if (varValue instanceof String) {
-				Matcher matcher = _variablePattern.matcher((String)varValue);
+				varValue = PoshiRunnerVariablesUtil.replaceExecuteVars(
+					(String)varValue);
 
-				if (matcher.matches() && varValue.equals(varValue)) {
-					if (updateLoggerStatus) {
-						XMLLoggerHandler.updateStatus(element, "pass");
+				varValue = PoshiRunnerVariablesUtil.replaceStaticVars(
+					(String)varValue);
+
+				if (varValue instanceof String) {
+					Matcher matcher = _variablePattern.matcher(
+						(String)varValue);
+
+					if (matcher.matches() && varValue.equals(varValue)) {
+						if (updateLoggerStatus) {
+							XMLLoggerHandler.updateStatus(element, "pass");
+						}
+
+						return;
 					}
-
-					return;
 				}
 			}
-		}
 
-		String varName = element.attributeValue("name");
+			String varName = element.attributeValue("name");
 
-		if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(varName)) {
-			PoshiRunnerVariablesUtil.putIntoExecuteMap(
-				varName,
-				PoshiRunnerVariablesUtil.getStringFromCommandMap(varName));
-		}
-		else {
-			PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
-		}
-
-		String currentFilePath = PoshiRunnerStackTraceUtil.getCurrentFilePath();
-
-		if (currentFilePath.contains(".testcase")) {
-			String staticValue = element.attributeValue("static");
-
-			if ((staticValue != null) && staticValue.equals("true")) {
-				PoshiRunnerVariablesUtil.putIntoStaticMap(varName, varValue);
+			if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(varName)) {
+				PoshiRunnerVariablesUtil.putIntoExecuteMap(
+					varName,
+					PoshiRunnerVariablesUtil.getStringFromCommandMap(varName));
 			}
+			else {
+				PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+			}
+
+			String currentFilePath =
+				PoshiRunnerStackTraceUtil.getCurrentFilePath();
+
+			if (currentFilePath.contains(".testcase")) {
+				String staticValue = element.attributeValue("static");
+
+				if ((staticValue != null) && staticValue.equals("true")) {
+					PoshiRunnerVariablesUtil.putIntoStaticMap(
+						varName, varValue);
+				}
+			}
+
+			PoshiElementLogger.pass(element);
+		}
+		catch (Exception e) {
+			PoshiElementLogger.fail(element, e);
+
+			throw e;
 		}
 	}
 
