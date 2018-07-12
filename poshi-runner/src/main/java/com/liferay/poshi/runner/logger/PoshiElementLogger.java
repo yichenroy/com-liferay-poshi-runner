@@ -33,7 +33,7 @@ public class PoshiElementLogger {
 
 	public static void fail(Element element, Exception e) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, "fail", PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		poshiLoggerElement.setExecutionException(e);
 
@@ -42,18 +42,34 @@ public class PoshiElementLogger {
 
 	public static void pass(Element element) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, "pass", PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		_addPoshiLoggerElement(poshiLoggerElement);
 	}
 
 	public static void popExecutionStack() {
-		_executionStack.pop();
+		if (_executionStack.empty()) {
+			return;
+		}
+
+		PoshiLoggerElement poshiLoggerElement = _executionStack.pop();
+
+		PoshiLoggerElement lastChildPoshiLoggerElement =
+			poshiLoggerElement.getLastChildLoggerElement();
+
+		if (lastChildPoshiLoggerElement != null) {
+			String status = lastChildPoshiLoggerElement.getStatus();
+
+			if (!status.equals("fail")) {
+				poshiLoggerElement.setStatus("pass");
+			}
+		}
 	}
 
 	public static void pushExecutionStack(Element element) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, "pending",
+			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		_addPoshiLoggerElement(poshiLoggerElement);
 
@@ -63,6 +79,15 @@ public class PoshiElementLogger {
 	public static void startLog() {
 		_executionStack = new Stack<>();
 		_poshiLoggerElements = new ArrayList<>();
+	}
+
+	public static void warn(Element element, Exception e) {
+		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
+			element, "warn", PoshiRunnerVariablesUtil.getCommandMapVariables());
+
+		poshiLoggerElement.setExecutionException(e);
+
+		_addPoshiLoggerElement(poshiLoggerElement);
 	}
 
 	private static void _addPoshiLoggerElement(
