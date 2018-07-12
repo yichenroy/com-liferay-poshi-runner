@@ -16,6 +16,7 @@ package com.liferay.poshi.runner;
 
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.logger.CommandLoggerHandler;
+import com.liferay.poshi.runner.logger.PoshiElementLogger;
 import com.liferay.poshi.runner.logger.SummaryLoggerHandler;
 import com.liferay.poshi.runner.logger.XMLLoggerHandler;
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
@@ -158,66 +159,92 @@ public class PoshiRunnerExecutor {
 		for (Element childElement : childElements) {
 			String childElementName = childElement.getName();
 
-			if (childElementName.equals("echo") ||
-				childElementName.equals("description")) {
+			try {
+				if (childElementName.equals("execute")) {
+					PoshiElementLogger.pushExecutionStack(childElement);
 
-				runEchoElement(childElement);
-			}
-			else if (childElementName.equals("execute")) {
-				if (childElement.attributeValue("function") != null) {
-					runFunctionExecuteElement(childElement);
-				}
-				else if (childElement.attributeValue("groovy-script") != null) {
-					runGroovyScriptElement(childElement);
-				}
-				else if (childElement.attributeValue("macro") != null) {
-					runMacroExecuteElement(childElement, "macro");
-				}
-				else if ((childElement.attributeValue("macro-desktop") !=
-							 null) &&
-						 !PropsValues.MOBILE_BROWSER) {
+					if (childElement.attributeValue("function") != null) {
+						runFunctionExecuteElement(childElement);
+					}
+					else if (childElement.attributeValue("groovy-script") !=
+								null) {
 
-					runMacroExecuteElement(childElement, "macro-desktop");
-				}
-				else if ((childElement.attributeValue("macro-mobile") !=
-							 null) &&
-						 PropsValues.MOBILE_BROWSER) {
+						runGroovyScriptElement(childElement);
+					}
+					else if (childElement.attributeValue("macro") != null) {
+						runMacroExecuteElement(childElement, "macro");
+					}
+					else if ((childElement.attributeValue("macro-desktop") !=
+								null) &&
+							 !PropsValues.MOBILE_BROWSER) {
 
-					runMacroExecuteElement(childElement, "macro-mobile");
+						runMacroExecuteElement(childElement, "macro-desktop");
+					}
+					else if ((childElement.attributeValue("macro-mobile") !=
+								null) &&
+							 PropsValues.MOBILE_BROWSER) {
+
+						runMacroExecuteElement(childElement, "macro-mobile");
+					}
+					else if (childElement.attributeValue("selenium") != null) {
+						runSeleniumElement(childElement);
+					}
+					else if (childElement.attributeValue("test-case") != null) {
+						runTestCaseExecuteElement(childElement);
+					}
+					else if (childElement.attributeValue("method") != null) {
+						runMethodExecuteElement(childElement);
+					}
+
+					PoshiElementLogger.popExecutionStack();
 				}
-				else if (childElement.attributeValue("selenium") != null) {
-					runSeleniumElement(childElement);
+				else {
+					if (childElementName.equals("echo") ||
+						childElementName.equals("description") ||
+						childElementName.equals("fail") ||
+						childElementName.equals("return") ||
+						childElementName.equals("var")) {
+
+						if (childElementName.equals("echo")) {
+							runEchoElement(childElement);
+						}
+						else if (childElementName.equals("fail")) {
+							runFailElement(childElement);
+						}
+						else if (childElementName.equals("return")) {
+							runReturnElement(childElement);
+						}
+						else if (childElementName.equals("var")) {
+							runCommandVarElement(childElement, true);
+						}
+
+						PoshiElementLogger.pass(childElement);
+					}
+					else {
+						PoshiElementLogger.pass(childElement);
+
+						if (childElementName.equals("if")) {
+							runIfElement(childElement);
+						}
+						else if (childElementName.equals("for")) {
+							runForElement(childElement);
+						}
+						else if (childElementName.equals("task")) {
+							runTaskElement(childElement);
+						}
+						else if (childElementName.equals("toggle")) {
+							runToggleElement(childElement);
+						}
+						else if (childElementName.equals("while")) {
+							runWhileElement(childElement);
+						}
+					}
 				}
-				else if (childElement.attributeValue("test-case") != null) {
-					runTestCaseExecuteElement(childElement);
-				}
-				else if (childElement.attributeValue("method") != null) {
-					runMethodExecuteElement(childElement);
-				}
 			}
-			else if (childElementName.equals("if")) {
-				runIfElement(childElement);
-			}
-			else if (childElementName.equals("fail")) {
-				runFailElement(childElement);
-			}
-			else if (childElementName.equals("for")) {
-				runForElement(childElement);
-			}
-			else if (childElementName.equals("return")) {
-				runReturnElement(childElement);
-			}
-			else if (childElementName.equals("task")) {
-				runTaskElement(childElement);
-			}
-			else if (childElementName.equals("toggle")) {
-				runToggleElement(childElement);
-			}
-			else if (childElementName.equals("var")) {
-				runCommandVarElement(childElement, true);
-			}
-			else if (childElementName.equals("while")) {
-				runWhileElement(childElement);
+			catch (Exception e) {
+				PoshiElementLogger.fail(childElement, e);
+
+				throw e;
 			}
 		}
 	}
