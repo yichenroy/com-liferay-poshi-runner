@@ -33,7 +33,8 @@ public class PoshiElementLogger {
 
 	public static void fail(Element element, Exception e) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, "fail", PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, null, "fail",
+			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		poshiLoggerElement.setExecutionException(e);
 
@@ -41,8 +42,13 @@ public class PoshiElementLogger {
 	}
 
 	public static void pass(Element element) {
+		pass(element, null);
+	}
+
+	public static void pass(Element element, String event) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, "pass", PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, event, "pass",
+			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		_addPoshiLoggerElement(poshiLoggerElement);
 	}
@@ -68,7 +74,7 @@ public class PoshiElementLogger {
 
 	public static void pushExecutionStack(Element element) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, "pending",
+			element, null, "pending",
 			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		_addPoshiLoggerElement(poshiLoggerElement);
@@ -83,7 +89,8 @@ public class PoshiElementLogger {
 
 	public static void warn(Element element, Exception e) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
-			element, "warn", PoshiRunnerVariablesUtil.getCommandMapVariables());
+			element, e.getMessage(), "warn",
+			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		poshiLoggerElement.setExecutionException(e);
 
