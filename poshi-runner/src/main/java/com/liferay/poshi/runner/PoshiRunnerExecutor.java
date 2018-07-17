@@ -705,15 +705,24 @@ public class PoshiRunnerExecutor {
 		if (condition) {
 			conditionRun = true;
 
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Entering 'then' element: 'if' condition met");
+
 			Element ifThenElement = element.element("then");
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(ifThenElement);
 
 			parseElement(ifThenElement);
 
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Exiting 'if' element: 'then' finished execution");
+
 			XMLLoggerHandler.updateStatus(ifThenElement, "pass");
 		}
 		else if (element.element("elseif") != null) {
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"'if' condition not met");
+
 			List<Element> elseIfElements = element.elements("elseif");
 
 			for (Element elseIfElement : elseIfElements) {
@@ -728,12 +737,18 @@ public class PoshiRunnerExecutor {
 				if (condition) {
 					conditionRun = true;
 
+					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+						"Entering 'then' element: 'elseif' condition met");
+
 					Element elseIfThenElement = elseIfElement.element("then");
 
 					PoshiRunnerStackTraceUtil.setCurrentElement(
 						elseIfThenElement);
 
 					parseElement(elseIfThenElement);
+
+					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+						"Exiting 'if' element: 'then' finished execution");
 
 					XMLLoggerHandler.updateStatus(elseIfThenElement, "pass");
 
@@ -742,6 +757,9 @@ public class PoshiRunnerExecutor {
 					break;
 				}
 				else {
+					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+						"'elseif' condition not met");
+
 					XMLLoggerHandler.updateStatus(
 						elseIfElement, "conditional-fail");
 				}
@@ -751,11 +769,17 @@ public class PoshiRunnerExecutor {
 		if ((element.element("else") != null) && !conditionRun) {
 			conditionRun = true;
 
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Entering 'else' element: 'if' condition(s) not met");
+
 			Element elseElement = element.element("else");
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(elseElement);
 
 			parseElement(elseElement);
+
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Exiting 'if' element: 'else' finished execution");
 
 			XMLLoggerHandler.updateStatus(elseElement, "pass");
 		}
@@ -764,6 +788,9 @@ public class PoshiRunnerExecutor {
 			XMLLoggerHandler.updateStatus(element, "pass");
 		}
 		else {
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Exiting 'if' element: 'if' condition not met");
+
 			XMLLoggerHandler.updateStatus(element, "conditional-fail");
 		}
 	}
