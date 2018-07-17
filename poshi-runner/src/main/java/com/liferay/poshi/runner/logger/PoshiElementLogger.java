@@ -87,6 +87,21 @@ public class PoshiElementLogger {
 		_poshiLoggerElements = new ArrayList<>();
 	}
 
+	public static void updateExecutingPoshiLoggerElementEvent(String event) {
+		if (_executionStack.empty()) {
+			throw new RuntimeException(
+				"Failed to update execution stack with event, the execution " +
+					"stack is empty");
+		}
+
+		PoshiLoggerElement executingPoshiLoggerElement = _executionStack.peek();
+
+		PoshiLoggerElement lastChildLoggerElement =
+			executingPoshiLoggerElement.getLastChildLoggerElement();
+
+		lastChildLoggerElement.setEvent(event);
+	}
+
 	public static void warn(Element element, Exception e) {
 		PoshiLoggerElement poshiLoggerElement = new PoshiLoggerElement(
 			element, e.getMessage(), "warn",
