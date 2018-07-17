@@ -179,9 +179,7 @@ public class PoshiRunnerExecutor {
 					(childElement.attributeValue("method") != null)) {
 
 					try {
-						if (childElement.attributeValue("selenium") !=
-								null) {
-
+						if (childElement.attributeValue("selenium") != null) {
 							runSeleniumElement(childElement);
 						}
 						else if (childElement.attributeValue("method") !=
@@ -220,22 +218,18 @@ public class PoshiRunnerExecutor {
 						runMacroExecuteElement(childElement, "macro");
 					}
 					else if (!PropsValues.MOBILE_BROWSER &&
-								(childElement.attributeValue(
-									"macro-desktop") != null)) {
+							 (childElement.attributeValue("macro-desktop") !=
+								 null)) {
 
-						runMacroExecuteElement(
-							childElement, "macro-desktop");
+						runMacroExecuteElement(childElement, "macro-desktop");
 					}
 					else if ((childElement.attributeValue("macro-mobile") !=
 								null) &&
-								PropsValues.MOBILE_BROWSER) {
+							 PropsValues.MOBILE_BROWSER) {
 
-						runMacroExecuteElement(
-							childElement, "macro-mobile");
+						runMacroExecuteElement(childElement, "macro-mobile");
 					}
-					else if (childElement.attributeValue("test-case") !=
-								null) {
-
+					else if (childElement.attributeValue("test-case") != null) {
 						runTestCaseExecuteElement(childElement);
 					}
 
@@ -260,11 +254,11 @@ public class PoshiRunnerExecutor {
 
 					PoshiElementLogger.pass(childElement);
 				}
-				else if(childElementName.equals("fail")) {
+				else if (childElementName.equals("fail")) {
 					try {
 						runFailElement(childElement);
 					}
-					catch(Exception e) {
+					catch (Exception e) {
 						PoshiElementLogger.fail(childElement, e);
 
 						throw e;
@@ -459,6 +453,9 @@ public class PoshiRunnerExecutor {
 				parseElement(element);
 			}
 		}
+
+		PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			"Exiting 'for' element: finished execution");
 
 		XMLLoggerHandler.updateStatus(element, "pass");
 	}
@@ -1242,14 +1239,30 @@ public class PoshiRunnerExecutor {
 
 		for (int i = 0; i < maxIterations; i++) {
 			if (!evaluateConditionalElement(conditionElement)) {
+				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					"Exiting 'while' element: condition not met");
+
 				break;
 			}
 
 			conditionRun = true;
 
+			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				"Entering 'then' element: 'while' condition met");
+
 			PoshiRunnerStackTraceUtil.setCurrentElement(thenElement);
 
 			parseElement(thenElement);
+
+			if ((i + 1) == maxIterations) {
+				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					"Exiting 'while' element: max iterations(" + maxIterations +
+						") reached");
+			}
+			else {
+				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					"Exiting 'then' element: execution finished");
+			}
 
 			XMLLoggerHandler.updateStatus(thenElement, "pass");
 		}
