@@ -871,7 +871,14 @@ public class PoshiRunnerExecutor {
 
 		String varName = element.attributeValue("name");
 
-		PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+		if (PoshiRunnerVariablesUtil.containsKeyInCommandMap(varName)) {
+			PoshiRunnerVariablesUtil.putIntoExecuteMap(
+				varName,
+				PoshiRunnerVariablesUtil.getStringFromCommandMap(varName));
+		}
+		else {
+			PoshiRunnerVariablesUtil.putIntoExecuteMap(varName, varValue);
+		}
 
 		String currentFilePath = PoshiRunnerStackTraceUtil.getCurrentFilePath();
 
