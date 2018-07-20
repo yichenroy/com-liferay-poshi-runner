@@ -2,4 +2,12 @@
 	<command name="testAssertStatusCode">
 		<execute macro="HttpRequester#getGoogleResponse" />
 	</command>
+
+	<command name="testCrumb">
+		<execute macro="Breadcrumb#viewPG" >
+			<var name="breadcrumbListNotVisible" value="Site Name" />
+			<var name="breadcrumbListVisible" value="Parent Page Name, Child Page Name" />
+			<var name="pathLocator" value="PAGE" />
+		</execute>
+	</command>
 </definition>

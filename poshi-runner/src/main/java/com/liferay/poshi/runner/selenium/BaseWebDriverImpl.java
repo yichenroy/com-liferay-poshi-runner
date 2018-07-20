@@ -324,9 +324,11 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertElementNotPresent(String locator) throws Exception {
-		if (isElementPresent(locator)) {
-			throw new Exception("Element is present at \"" + locator + "\"");
-		}
+		System.out.println("assertElementNotPresent: " + locator);
+
+//		if (isElementPresent(locator)) {
+//			throw new Exception("Element is present at \"" + locator + "\"");
+//		}
 	}
 
 	@Override
@@ -676,16 +678,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertText(String locator, String pattern) throws Exception {
-		assertElementPresent(locator);
+		System.out.println("assertText locator: " + locator);
 
-		if (isNotText(locator, pattern)) {
-			String text = getText(locator);
-
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + text + "\" at \"" +
-						locator + "\"");
-		}
+//		assertElementPresent(locator);
+//
+//		if (isNotText(locator, pattern)) {
+//			String text = getText(locator);
+//
+//			throw new Exception(
+//				"Expected text \"" + pattern +
+//					"\" does not match actual text \"" + text + "\" at \"" +
+//						locator + "\"");
+//		}
 	}
 
 	@Override
@@ -718,16 +722,19 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertValue(String locator, String pattern) throws Exception {
-		assertElementPresent(locator);
+		System.out.println("assertValue locator: " + locator);
 
-		if (isNotValue(locator, pattern)) {
-			String value = getElementValue(locator);
+//		assertElementPresent(locator);
+//
+//		if (isNotValue(locator, pattern)) {
+//			String value = getElementValue(locator);
 
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + value + "\" at \"" +
-						locator + "\"");
-		}
+//
+//			throw new Exception(
+//				"Expected text \"" + pattern +
+//					"\" does not match actual text \"" + value + "\" at \"" +
+//						locator + "\"");
+//		}
 	}
 
 	@Override

@@ -1,0 +1,5 @@
+<definition default="assertElementNotPresent" summary="Assert that '${locator1}' is not available">
+	<command name="assertElementNotPresent">
+		<execute selenium="assertElementNotPresent" />
+	</command>
+</definition>

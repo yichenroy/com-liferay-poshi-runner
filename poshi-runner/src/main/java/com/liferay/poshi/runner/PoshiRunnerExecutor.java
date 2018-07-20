@@ -174,13 +174,13 @@ public class PoshiRunnerExecutor {
 					runMacroExecuteElement(childElement, "macro");
 				}
 				else if ((childElement.attributeValue("macro-desktop") !=
-							null) &&
+							 null) &&
 						 !PropsValues.MOBILE_BROWSER) {
 
 					runMacroExecuteElement(childElement, "macro-desktop");
 				}
 				else if ((childElement.attributeValue("macro-mobile") !=
-							null) &&
+							 null) &&
 						 PropsValues.MOBILE_BROWSER) {
 
 					runMacroExecuteElement(childElement, "macro-mobile");
@@ -361,7 +361,11 @@ public class PoshiRunnerExecutor {
 				PoshiRunnerVariablesUtil.putIntoCommandMap(
 					paramName, paramValue);
 
+				PoshiRunnerVariablesUtil.pushCommandMap();
+
 				parseElement(element);
+
+				PoshiRunnerVariablesUtil.popCommandMap();
 			}
 		}
 		else if (element.attributeValue("table") != null) {
@@ -375,7 +379,11 @@ public class PoshiRunnerExecutor {
 				PoshiRunnerVariablesUtil.putIntoCommandMap(
 					paramName, iter.next());
 
+				PoshiRunnerVariablesUtil.pushCommandMap();
+
 				parseElement(element);
+
+				PoshiRunnerVariablesUtil.popCommandMap();
 			}
 		}
 
@@ -931,6 +939,8 @@ public class PoshiRunnerExecutor {
 						argument =
 							PoshiRunnerVariablesUtil.getStringFromCommandMap(
 								"locator1");
+
+						System.out.println("argument = locator1 = " + argument);
 					}
 				}
 				else if (i == 1) {

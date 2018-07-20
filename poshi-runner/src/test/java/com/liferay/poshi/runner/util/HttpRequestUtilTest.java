@@ -57,8 +57,7 @@ public class HttpRequestUtilTest extends TestCase {
 
 	@Test
 	public void testAssertStatusCode() throws Exception {
-		PoshiRunner pr = new PoshiRunner(
-			"LocalFile.HttpRequestTest#testAssertStatusCode");
+		PoshiRunner pr = new PoshiRunner("LocalFile.HttpRequestTest#testCrumb");
 
 		pr.setUp();
 
