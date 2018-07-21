@@ -63,6 +63,11 @@ public class VariableScopeTest extends TestCase {
 	}
 
 	@Test
+	public void testAssertExecuteVarInheritance() throws Exception {
+		runPoshiTest("VariableScope#ExecuteVarInheritance");
+	}
+
+	@Test
 	public void testAssertRootVarInheritance() throws Exception {
 		runPoshiTest("VariableScope#RootVarInheritance");
 	}
