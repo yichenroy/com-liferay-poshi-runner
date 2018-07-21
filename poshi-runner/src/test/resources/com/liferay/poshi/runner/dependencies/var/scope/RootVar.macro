@@ -1,0 +1,35 @@
+<definition>
+	<var name="rootVar" value="A global variable in the macro file."/>
+
+	<command name="assertRootVar">
+		<if>
+			<not>
+				<equals arg1="${rootVar}" arg2="A global variable in the macro file." />
+			</not>
+			<then>
+				<fail message="'rootVar' does not match the global value set in RootVar.macro" />
+			</then>
+		</if>
+	</command>
+
+	<command name="assertRootVarInNestedMacro">
+		<execute macro="RootVar#assertRootVar" />
+	</command>
+
+	<command name="overrideRootVar">
+		<if>
+			<not>
+				<equals arg1="${rootVar}" arg2="An execute variable passed into a macro." />
+			</not>
+			<then>
+				<fail message="'rootVar' does not match the overridden value set in VariableScope.testcase" />
+			</then>
+		</if>
+	</command>
+
+	<command name="overrideRootVarInNestedMacro">
+		<execute macro="RootVar#overrideRootVar">
+			<var name="rootVar" value="${rootVar}" />
+		</execute>
+	</command>
+</definition>

@@ -1,0 +1,15 @@
+<definition>
+	<command name="RootVarInheritance">
+		<execute macro="RootVar#assertRootVar" />
+
+		<execute macro="RootVar#assertRootVarInNestedMacro" />
+
+		<execute macro="RootVar#overrideRootVar">
+			<var name="rootVar" value="An execute variable passed into a macro." />
+		</execute>
+
+		<execute macro="RootVar#overrideRootVarInNestedMacro">
+			<var name="rootVar" value="An execute variable passed into a macro." />
+		</execute>
+	</command>
+</definition>

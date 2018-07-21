@@ -62,7 +62,12 @@ public class VariableScopeTest extends TestCase {
 		SeleniumUtil.stopSelenium();
 	}
 
-	private final String _TEST_BASE_DIR_NAME =
+	@Test
+	public void testAssertRootVarInheritance() throws Exception {
+		runPoshiTest("VariableScope#RootVarInheritance");
+	}
+
+	private static final String _TEST_BASE_DIR_NAME =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/var/scope";
 
 	private File _testBaseDir;
