@@ -183,7 +183,7 @@ public class PoshiRunnerExecutor {
 							runSeleniumElement(childElement);
 						}
 						else if (childElement.attributeValue("method") !=
-									null) {
+									 null) {
 
 							runMethodExecuteElement(childElement);
 						}
@@ -210,7 +210,7 @@ public class PoshiRunnerExecutor {
 						runFunctionExecuteElement(childElement);
 					}
 					else if (childElement.attributeValue("groovy-script") !=
-								null) {
+								 null) {
 
 						runGroovyScriptElement(childElement);
 					}
@@ -224,7 +224,7 @@ public class PoshiRunnerExecutor {
 						runMacroExecuteElement(childElement, "macro-desktop");
 					}
 					else if ((childElement.attributeValue("macro-mobile") !=
-								null) &&
+								 null) &&
 							 PropsValues.MOBILE_BROWSER) {
 
 						runMacroExecuteElement(childElement, "macro-mobile");
@@ -712,6 +712,8 @@ public class PoshiRunnerExecutor {
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(ifThenElement);
 
+			PoshiElementLogger.pass(ifThenElement);
+
 			parseElement(ifThenElement);
 
 			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
@@ -745,6 +747,8 @@ public class PoshiRunnerExecutor {
 					PoshiRunnerStackTraceUtil.setCurrentElement(
 						elseIfThenElement);
 
+					PoshiElementLogger.pass(elseIfElement);
+
 					parseElement(elseIfThenElement);
 
 					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
@@ -775,6 +779,8 @@ public class PoshiRunnerExecutor {
 			Element elseElement = element.element("else");
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(elseElement);
+
+			PoshiElementLogger.pass(elseElement);
 
 			parseElement(elseElement);
 
@@ -1278,6 +1284,8 @@ public class PoshiRunnerExecutor {
 				"Entering 'then' element: 'while' condition met");
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(thenElement);
+
+			PoshiElementLogger.pass(thenElement);
 
 			parseElement(thenElement);
 
