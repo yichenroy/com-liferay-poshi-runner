@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner;
 
+import com.google.common.reflect.ClassPath;
+
 import com.liferay.poshi.runner.elements.PoshiElement;
 import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.elements.PoshiNodeFactory;
@@ -24,6 +26,7 @@ import com.liferay.poshi.runner.util.ExternalMethod;
 import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.GetterUtil;
 import com.liferay.poshi.runner.util.OSDetector;
+import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
@@ -40,6 +43,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -482,6 +487,15 @@ public class PoshiRunnerGetterUtil {
 		return rootElement;
 	}
 
+	public static String getUtilityClassName(String simpleClassName) {
+		if (_utilityClassWhitelist.containsKey(simpleClassName)) {
+			return _utilityClassWhitelist.get(simpleClassName);
+		}
+
+		throw new IllegalArgumentException(
+			simpleClassName + " is not a valid simple class name");
+	}
+
 	public static Object getVarMethodValue(String expression, String namespace)
 		throws Exception {
 
@@ -541,6 +555,14 @@ public class PoshiRunnerGetterUtil {
 		return returnObject;
 	}
 
+	public static boolean isValidUtilityClass(String className) {
+		if (_utilityClassWhitelist.containsValue(className)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final Pattern _namespacedClassCommandNamePattern =
 		Pattern.compile(
 			"((?<namespace>\\w+)\\.)?(?<className>\\w+)(\\#(?<commandName>" +
@@ -557,7 +579,27 @@ public class PoshiRunnerGetterUtil {
 			"thead", "then", "title", "toggle", "tr", "var", "while"
 		});
 	private static final Pattern _tagPattern = Pattern.compile("<[a-z\\-]+");
+	private static final Map<String, String > _utilityClassWhitelist =
+		new TreeMap<>();
 	private static final Pattern _variablePattern = Pattern.compile(
 		"\\$\\{([^}]*)\\}");
+
+	static {
+		try {
+			ClassPath classPath = ClassPath.from(
+				PropsUtil.class.getClassLoader());
+
+			for (ClassPath.ClassInfo classInfo :
+					classPath.getTopLevelClasses(
+						"com.liferay.poshi.runner.util")) {
+
+				_utilityClassWhitelist.put(
+					classInfo.getSimpleName(), classInfo.getName());
+			}
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+	}
 
 }
