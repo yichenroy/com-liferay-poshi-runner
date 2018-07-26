@@ -771,9 +771,7 @@ public abstract class PoshiElement
 				utilClassNames.add(classInfo.getSimpleName());
 			}
 
-			utilClassNames.add("PoshiRunnerStackTraceUtil");
 			utilClassNames.add("selenium");
-			utilClassNames.add("TestPropsUtil");
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(ioe);
