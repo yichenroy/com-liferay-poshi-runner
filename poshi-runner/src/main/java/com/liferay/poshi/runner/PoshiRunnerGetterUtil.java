@@ -548,20 +548,13 @@ public class PoshiRunnerGetterUtil {
 		String className = expression.substring(0, y);
 		String methodName = expression.substring(y + 1, x);
 
-		Object returnObject = null;
+		Object object = null;
 
 		if (className.equals("selenium")) {
-			Object object = SeleniumUtil.getSelenium();
-
-			returnObject = getMethodReturnValue(
-				args, className, methodName, object);
-		}
-		else {
-			returnObject = getMethodReturnValue(
-				args, className, methodName, null);
+			object = SeleniumUtil.getSelenium();
 		}
 
-		return returnObject;
+		return getMethodReturnValue(args, className, methodName, object);
 	}
 
 	public static boolean isValidUtilityClass(String className) {
