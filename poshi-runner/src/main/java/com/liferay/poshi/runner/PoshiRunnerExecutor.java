@@ -454,7 +454,7 @@ public class PoshiRunnerExecutor {
 			}
 		}
 
-		PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+		PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 			"Exiting 'for' element: finished execution");
 
 		XMLLoggerHandler.updateStatus(element, "pass");
@@ -705,7 +705,7 @@ public class PoshiRunnerExecutor {
 		if (condition) {
 			conditionRun = true;
 
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Entering 'then' element: 'if' condition met");
 
 			Element ifThenElement = element.element("then");
@@ -716,13 +716,13 @@ public class PoshiRunnerExecutor {
 
 			parseElement(ifThenElement);
 
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Exiting 'if' element: 'then' finished execution");
 
 			XMLLoggerHandler.updateStatus(ifThenElement, "pass");
 		}
 		else if (element.element("elseif") != null) {
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"'if' condition not met");
 
 			List<Element> elseIfElements = element.elements("elseif");
@@ -739,7 +739,7 @@ public class PoshiRunnerExecutor {
 				if (condition) {
 					conditionRun = true;
 
-					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 						"Entering 'then' element: 'elseif' condition met");
 
 					Element elseIfThenElement = elseIfElement.element("then");
@@ -751,7 +751,7 @@ public class PoshiRunnerExecutor {
 
 					parseElement(elseIfThenElement);
 
-					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 						"Exiting 'if' element: 'then' finished execution");
 
 					XMLLoggerHandler.updateStatus(elseIfThenElement, "pass");
@@ -761,7 +761,7 @@ public class PoshiRunnerExecutor {
 					break;
 				}
 				else {
-					PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+					PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 						"'elseif' condition not met");
 
 					XMLLoggerHandler.updateStatus(
@@ -773,7 +773,7 @@ public class PoshiRunnerExecutor {
 		if ((element.element("else") != null) && !conditionRun) {
 			conditionRun = true;
 
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Entering 'else' element: 'if' condition(s) not met");
 
 			Element elseElement = element.element("else");
@@ -784,7 +784,7 @@ public class PoshiRunnerExecutor {
 
 			parseElement(elseElement);
 
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Exiting 'if' element: 'else' finished execution");
 
 			XMLLoggerHandler.updateStatus(elseElement, "pass");
@@ -794,7 +794,7 @@ public class PoshiRunnerExecutor {
 			XMLLoggerHandler.updateStatus(element, "pass");
 		}
 		else {
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Exiting 'if' element: 'if' condition not met");
 
 			XMLLoggerHandler.updateStatus(element, "conditional-fail");
@@ -1272,7 +1272,7 @@ public class PoshiRunnerExecutor {
 
 		for (int i = 0; i < maxIterations; i++) {
 			if (!evaluateConditionalElement(conditionElement)) {
-				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 					"Exiting 'while' element: condition not met");
 
 				break;
@@ -1280,7 +1280,7 @@ public class PoshiRunnerExecutor {
 
 			conditionRun = true;
 
-			PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+			PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 				"Entering 'then' element: 'while' condition met");
 
 			PoshiRunnerStackTraceUtil.setCurrentElement(thenElement);
@@ -1290,12 +1290,12 @@ public class PoshiRunnerExecutor {
 			parseElement(thenElement);
 
 			if ((i + 1) == maxIterations) {
-				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 					"Exiting 'while' element: max iterations(" + maxIterations +
 						") reached");
 			}
 			else {
-				PoshiElementLogger.updateExecutingPoshiLoggerElementEvent(
+				PoshiElementLogger.updateCurrentPoshiLogEntryEvent(
 					"Exiting 'then' element: execution finished");
 			}
 

@@ -23,12 +23,10 @@ import org.dom4j.Element;
 /**
  * @author Leslie Wong
  */
-public class PoshiLoggerElement {
+public class PoshiLogEntry {
 
-	public void addToExecutionStackTrace(
-		PoshiLoggerElement poshiLoggerElement) {
-
-		_childPoshiLoggerElements.add(poshiLoggerElement);
+	public void addToChildPoshiLogEntries(PoshiLogEntry poshiLogEntry) {
+		_childPoshiLogEntries.add(poshiLogEntry);
 	}
 
 	public Element getElement() {
@@ -39,10 +37,9 @@ public class PoshiLoggerElement {
 		return _event;
 	}
 
-	public PoshiLoggerElement getLastChildLoggerElement() {
-		if (!_childPoshiLoggerElements.isEmpty()) {
-			return _childPoshiLoggerElements.get(
-				_childPoshiLoggerElements.size() - 1);
+	public PoshiLogEntry getLastChildPoshiLogEntry() {
+		if (!_childPoshiLogEntries.isEmpty()) {
+			return _childPoshiLogEntries.get(_childPoshiLogEntries.size() - 1);
 		}
 
 		return null;
@@ -64,7 +61,7 @@ public class PoshiLoggerElement {
 		_status = status;
 	}
 
-	protected PoshiLoggerElement(
+	protected PoshiLogEntry(
 		Element element, String event, String status,
 		Map<String, Object> variables) {
 
@@ -74,8 +71,7 @@ public class PoshiLoggerElement {
 		_variables = variables;
 	}
 
-	private List<PoshiLoggerElement> _childPoshiLoggerElements =
-		new ArrayList<>();
+	private List<PoshiLogEntry> _childPoshiLogEntries = new ArrayList<>();
 	private final Element _element;
 	private String _event;
 	private Exception _executionException;
