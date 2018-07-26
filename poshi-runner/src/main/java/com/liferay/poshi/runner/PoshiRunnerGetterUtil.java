@@ -246,6 +246,10 @@ public class PoshiRunnerGetterUtil {
 		throws Exception {
 
 		if (!className.equals("selenium")) {
+			if (!className.contains(".")) {
+				className = getUtilityClassName(className);
+			}
+
 			if (!isValidUtilityClass(className)) {
 				throw new IllegalArgumentException(
 					className + " is not a valid class name.");
@@ -553,8 +557,6 @@ public class PoshiRunnerGetterUtil {
 				args, className, methodName, object);
 		}
 		else {
-			className = "com.liferay.poshi.runner.util." + className;
-
 			returnObject = getMethodReturnValue(
 				args, className, methodName, null);
 		}
