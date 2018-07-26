@@ -245,6 +245,13 @@ public class PoshiRunnerGetterUtil {
 			Object object)
 		throws Exception {
 
+		if (!className.equals("selenium")) {
+			if (!isValidUtilityClass(className)) {
+				throw new IllegalArgumentException(
+					className + " is not a valid class name.");
+			}
+		}
+
 		Object[] parameters = new Object[args.size()];
 
 		for (int i = 0; i < args.size(); i++) {
