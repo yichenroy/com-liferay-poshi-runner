@@ -17,6 +17,7 @@ package com.liferay.poshi.runner.elements;
 import com.google.common.reflect.ClassPath;
 
 import com.liferay.poshi.runner.PoshiRunnerContext;
+import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.util.Dom4JUtil;
 import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.RegexUtil;
@@ -586,12 +587,24 @@ public abstract class PoshiElement
 	}
 
 	protected boolean isValidUtilClassName(String classCommandName) {
-		classCommandName = classCommandName.trim();
+		String className = getClassName(classCommandName);
 
-		for (String utilClassName : utilClassNames) {
-			if (classCommandName.startsWith(utilClassName)) {
+		if (className.equals("selenium")) {
+			return true;
+		}
+
+		try {
+			if (!className.contains(".")) {
+				className = PoshiRunnerGetterUtil.getUtilityClassName(
+					className);
+			}
+
+			if (PoshiRunnerGetterUtil.isValidUtilityClass(className)) {
 				return true;
 			}
+		}
+		catch (IllegalArgumentException iae) {
+			return false;
 		}
 
 		return false;
