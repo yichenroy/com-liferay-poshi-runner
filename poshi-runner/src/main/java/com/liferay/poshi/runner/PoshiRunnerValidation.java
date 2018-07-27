@@ -1656,8 +1656,8 @@ public class PoshiRunnerValidation {
 
 			if (!PoshiRunnerGetterUtil.isValidUtilityClass(className)) {
 				throw new Exception(
-					className + " is an invalid utility class\n" +
-						filePath + ":" + element.attributeValue("line-number"));
+					className + " is an invalid utility class\n" + filePath +
+						":" + element.attributeValue("line-number"));
 			}
 		}
 	}
