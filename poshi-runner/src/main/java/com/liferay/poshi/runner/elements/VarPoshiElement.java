@@ -157,7 +157,7 @@ public class VarPoshiElement extends PoshiElement {
 			return;
 		}
 
-		if (isValidUtilClassName(value) || value.startsWith("selenium.")) {
+		if (isValidUtilityClassName(value) || value.startsWith("selenium.")) {
 			value = value.replaceFirst("\\.", "#");
 
 			addAttribute("method", value);
@@ -228,7 +228,7 @@ public class VarPoshiElement extends PoshiElement {
 				}
 			}
 			else if (valueAttributeName.equals("method")) {
-				if (isValidUtilClassName(value) ||
+				if (isValidUtilityClassName(value) ||
 					value.startsWith("selenium#")) {
 
 					value = value.replaceFirst("#", ".");

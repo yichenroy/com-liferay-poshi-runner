@@ -581,7 +581,7 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isValidUtilClassName(String classCommandName) {
+	protected boolean isValidUtilityClassName(String classCommandName) {
 		String className = getClassName(classCommandName);
 
 		if (className.equals("selenium")) {
@@ -612,7 +612,8 @@ public abstract class PoshiElement
 
 		if (isValidPoshiScriptStatement(
 				_varInvocationAssignmentStatementPattern, poshiScript) &&
-			!isValidFunctionFileName(value) && !isValidUtilClassName(value)) {
+			!isValidFunctionFileName(value) &&
+			!isValidUtilityClassName(value)) {
 
 			return true;
 		}
