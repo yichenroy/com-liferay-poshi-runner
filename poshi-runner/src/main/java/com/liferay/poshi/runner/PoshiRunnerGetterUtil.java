@@ -499,8 +499,8 @@ public class PoshiRunnerGetterUtil {
 	}
 
 	public static String getUtilityClassName(String simpleClassName) {
-		if (_utilityClassWhitelist.containsKey(simpleClassName)) {
-			return _utilityClassWhitelist.get(simpleClassName);
+		if (_utilityClassMap.containsKey(simpleClassName)) {
+			return _utilityClassMap.get(simpleClassName);
 		}
 
 		throw new IllegalArgumentException(
@@ -558,7 +558,7 @@ public class PoshiRunnerGetterUtil {
 	}
 
 	public static boolean isValidUtilityClass(String className) {
-		if (_utilityClassWhitelist.containsValue(className)) {
+		if (_utilityClassMap.containsValue(className)) {
 			return true;
 		}
 
@@ -581,7 +581,7 @@ public class PoshiRunnerGetterUtil {
 			"thead", "then", "title", "toggle", "tr", "var", "while"
 		});
 	private static final Pattern _tagPattern = Pattern.compile("<[a-z\\-]+");
-	private static final Map<String, String > _utilityClassWhitelist =
+	private static final Map<String, String > _utilityClassMap =
 		new TreeMap<>();
 	private static final Pattern _variablePattern = Pattern.compile(
 		"\\$\\{([^}]*)\\}");
@@ -595,7 +595,7 @@ public class PoshiRunnerGetterUtil {
 					classPath.getTopLevelClasses(
 						"com.liferay.poshi.runner.util")) {
 
-				_utilityClassWhitelist.put(
+				_utilityClassMap.put(
 					classInfo.getSimpleName(), classInfo.getName());
 			}
 		}
