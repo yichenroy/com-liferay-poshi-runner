@@ -25,8 +25,22 @@ import org.dom4j.Element;
  */
 public class PoshiLogEntry {
 
+	public PoshiLogEntry(
+		Element element, String event, String status,
+		Map<String, Object> variables) {
+
+		_element = element;
+		_event = event;
+		_status = status;
+		_variables = variables;
+	}
+
 	public void addToChildPoshiLogEntries(PoshiLogEntry poshiLogEntry) {
 		_childPoshiLogEntries.add(poshiLogEntry);
+	}
+
+	public List<PoshiLogEntry> getChildPoshiLogEntries() {
+		return _childPoshiLogEntries;
 	}
 
 	public Element getElement() {
@@ -59,16 +73,6 @@ public class PoshiLogEntry {
 
 	public void setStatus(String status) {
 		_status = status;
-	}
-
-	protected PoshiLogEntry(
-		Element element, String event, String status,
-		Map<String, Object> variables) {
-
-		_element = element;
-		_event = event;
-		_status = status;
-		_variables = variables;
 	}
 
 	private List<PoshiLogEntry> _childPoshiLogEntries = new ArrayList<>();

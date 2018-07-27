@@ -17,6 +17,7 @@ package com.liferay.poshi.runner;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.logger.CommandLoggerHandler;
 import com.liferay.poshi.runner.logger.PoshiElementLogger;
+import com.liferay.poshi.runner.logger.PoshiLogEntry;
 import com.liferay.poshi.runner.logger.SummaryLoggerHandler;
 import com.liferay.poshi.runner.logger.XMLLoggerHandler;
 import com.liferay.poshi.runner.selenium.LiferaySelenium;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +57,10 @@ import org.openqa.selenium.StaleElementReferenceException;
  * @author Peter Yoo
  */
 public class PoshiRunnerExecutor {
+
+	public static void emptyExecutionStack() {
+		_executionStack = new Stack<>();
+	}
 
 	public static boolean evaluateConditionalElement(Element element)
 		throws Exception {
@@ -168,6 +174,18 @@ public class PoshiRunnerExecutor {
 		return conditionalValue;
 	}
 
+	public static PoshiLogEntry getCurrentLogEntry() {
+		if (_executionStack.isEmpty()) {
+			return null;
+		}
+
+		return _executionStack.peek();
+	}
+
+	public static boolean isExecutionStackEmpty() {
+		return _executionStack.isEmpty();
+	}
+
 	public static void parseElement(Element element) throws Exception {
 		List<Element> childElements = element.elements();
 
@@ -204,7 +222,7 @@ public class PoshiRunnerExecutor {
 					}
 				}
 				else {
-					PoshiElementLogger.pushExecutionStack(childElement);
+					pushExecutionStack(childElement);
 
 					if (childElement.attributeValue("function") != null) {
 						runFunctionExecuteElement(childElement);
@@ -233,7 +251,7 @@ public class PoshiRunnerExecutor {
 						runTestCaseExecuteElement(childElement);
 					}
 
-					PoshiElementLogger.popExecutionStack();
+					popExecutionStack();
 				}
 			}
 			else {
@@ -1310,6 +1328,33 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	protected static PoshiLogEntry popExecutionStack() {
+		if (_executionStack.empty()) {
+			return null;
+		}
+
+		PoshiLogEntry poshiLogEntry = _executionStack.pop();
+
+		PoshiLogEntry lastChildPoshiLogEntry =
+			poshiLogEntry.getLastChildPoshiLogEntry();
+
+		if (lastChildPoshiLogEntry != null) {
+			String status = lastChildPoshiLogEntry.getStatus();
+
+			if (!status.equals("fail")) {
+				poshiLogEntry.setStatus("pass");
+			}
+		}
+
+		return poshiLogEntry;
+	}
+
+	protected static void pushExecutionStack(Element element) {
+		PoshiElementLogger.pend(element);
+
+		_executionStack.push(PoshiElementLogger.getLastPoshiLogEntry());
+	}
+
 	private static Object _getVarValue(Element element) throws Exception {
 		Object varValue = element.attributeValue("value");
 
@@ -1468,6 +1513,7 @@ public class PoshiRunnerExecutor {
 		return null;
 	}
 
+	private static Stack<PoshiLogEntry> _executionStack;
 	private static Element _functionExecuteElement;
 	private static String _functionWarningMessage;
 	private static final Pattern _locatorKeyPattern = Pattern.compile(

@@ -14,11 +14,11 @@
 
 package com.liferay.poshi.runner.logger;
 
+import com.liferay.poshi.runner.PoshiRunnerExecutor;
 import com.liferay.poshi.runner.PoshiRunnerVariablesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import org.dom4j.Element;
 
@@ -26,10 +26,6 @@ import org.dom4j.Element;
  * @author Leslie Wong
  */
 public class PoshiElementLogger {
-
-	public static void emptyExecutionStack() {
-		_executionStack = new Stack<>();
-	}
 
 	public static void fail(Element element, Exception e) {
 		PoshiLogEntry poshiLogEntry = new PoshiLogEntry(
@@ -39,6 +35,23 @@ public class PoshiElementLogger {
 		poshiLogEntry.setExecutionException(e);
 
 		_addPoshiLogEntry(poshiLogEntry);
+	}
+
+	public static PoshiLogEntry getLastPoshiLogEntry() {
+		PoshiLogEntry poshiLogEntry = PoshiRunnerExecutor.getCurrentLogEntry();
+
+		if (poshiLogEntry != null) {
+			PoshiLogEntry childPoshiLogEntry =
+				poshiLogEntry.getLastChildPoshiLogEntry();
+
+			if (childPoshiLogEntry != null) {
+				return childPoshiLogEntry;
+			}
+
+			return poshiLogEntry;
+		}
+
+		return null;
 	}
 
 	public static void pass(Element element) {
@@ -53,50 +66,30 @@ public class PoshiElementLogger {
 		_addPoshiLogEntry(poshiLogEntry);
 	}
 
-	public static void popExecutionStack() {
-		if (_executionStack.empty()) {
-			return;
-		}
-
-		PoshiLogEntry poshiLogEntry = _executionStack.pop();
-
-		PoshiLogEntry lastChildLogEntry = poshiLogEntry.getLastChildLogEntry();
-
-		if (lastChildLogEntry != null) {
-			String status = lastChildLogEntry.getStatus();
-
-			if (!status.equals("fail")) {
-				poshiLogEntry.setStatus("pass");
-			}
-		}
-	}
-
-	public static void pushExecutionStack(Element element) {
+	public static void pend(Element element) {
 		PoshiLogEntry poshiLogEntry = new PoshiLogEntry(
 			element, null, "pending",
 			PoshiRunnerVariablesUtil.getCommandMapVariables());
 
 		_addPoshiLogEntry(poshiLogEntry);
-
-		_executionStack.push(poshiLogEntry);
 	}
 
 	public static void startLog() {
-		_executionStack = new Stack<>();
 		_poshiLogEntries = new ArrayList<>();
 	}
 
 	public static void updateCurrentPoshiLogEntryEvent(String event) {
-		if (_executionStack.empty()) {
+		if (PoshiRunnerExecutor.isExecutionStackEmpty()) {
 			throw new RuntimeException(
 				"Failed to update execution stack with event, the execution " +
 					"stack is empty");
 		}
 
-		PoshiLogEntry currentPoshiLogEntry = _executionStack.peek();
+		PoshiLogEntry currentPoshiLogEntry =
+			PoshiRunnerExecutor.getCurrentLogEntry();
 
 		PoshiLogEntry lastChildLogEntry =
-			currentPoshiLogEntry.getLastChildLogEntry();
+			currentPoshiLogEntry.getLastChildPoshiLogEntry();
 
 		lastChildLogEntry.setEvent(event);
 	}
@@ -112,17 +105,17 @@ public class PoshiElementLogger {
 	}
 
 	private static void _addPoshiLogEntry(PoshiLogEntry poshiLogEntry) {
-		if (!_executionStack.empty()) {
-			PoshiLogEntry executingPoshiLogEntry = _executionStack.peek();
-
-			executingPoshiLogEntry.addToChildPoshiLogEntries(poshiLogEntry);
+		if (PoshiRunnerExecutor.isExecutionStackEmpty()) {
+			_poshiLogEntries.add(poshiLogEntry);
 		}
 		else {
-			_poshiLogEntries.add(poshiLogEntry);
+			PoshiLogEntry currentPoshiLogEntry =
+				PoshiRunnerExecutor.getCurrentLogEntry();
+
+			currentPoshiLogEntry.addToChildPoshiLogEntries(poshiLogEntry);
 		}
 	}
 
-	private static Stack<PoshiLogEntry> _executionStack;
 	private static List<PoshiLogEntry> _poshiLogEntries;
 
 }

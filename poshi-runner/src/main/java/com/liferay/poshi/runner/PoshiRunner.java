@@ -16,7 +16,6 @@ package com.liferay.poshi.runner;
 
 import com.liferay.poshi.runner.logger.CommandLoggerHandler;
 import com.liferay.poshi.runner.logger.LoggerUtil;
-import com.liferay.poshi.runner.logger.PoshiElementLogger;
 import com.liferay.poshi.runner.logger.SummaryLoggerHandler;
 import com.liferay.poshi.runner.logger.XMLLoggerHandler;
 import com.liferay.poshi.runner.selenium.LiferaySeleniumHelper;
@@ -261,15 +260,15 @@ public class PoshiRunner {
 			PoshiRunnerStackTraceUtil.startStackTrace(
 				namespacedClassCommandName, "test-case");
 
-			PoshiElementLogger.emptyExecutionStack();
+			PoshiRunnerExecutor.emptyExecutionStack();
 
-			PoshiElementLogger.pushExecutionStack(commandElement);
+			PoshiRunnerExecutor.pushExecutionStack(commandElement);
 
 			XMLLoggerHandler.updateStatus(commandElement, "pending");
 
 			PoshiRunnerExecutor.parseElement(commandElement);
 
-			PoshiElementLogger.popExecutionStack();
+			PoshiRunnerExecutor.popExecutionStack();
 
 			XMLLoggerHandler.updateStatus(commandElement, "pass");
 
