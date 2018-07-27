@@ -1656,7 +1656,7 @@ public class PoshiRunnerValidation {
 
 			if (!PoshiRunnerGetterUtil.isValidUtilityClass(className)) {
 				throw new Exception(
-					className + " is not a whitelisted utility class\n" +
+					className + " is an invalid utility class\n" +
 						filePath + ":" + element.attributeValue("line-number"));
 			}
 		}

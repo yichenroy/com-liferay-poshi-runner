@@ -924,22 +924,22 @@ public class PoshiRunnerValidationTest extends TestCase {
 		String filePath = "validateMethodExecuteElement.macro";
 		String invalidClassName = "com.liferay.poshi.runner.util.FakeUtil";
 		String invalidMethodName = "FakeMethod";
-		String nonWhitelistedClassName =
+		String invalidUtilityClassName =
 			"com.liferay.poshi.runner.PoshiRunnerGetterUtil";
-		String nonWhitelistedMethodName = "getCurrentNamespace";
+		String invalidUtilityClassMethodName = "getCurrentNamespace";
 		String validClassName = "com.liferay.poshi.runner.util.StringUtil";
 		String validMethodName = "add";
 
 		List<String> testClassNames = new ArrayList<>();
 
 		testClassNames.add(invalidClassName);
-		testClassNames.add(nonWhitelistedClassName);
+		testClassNames.add(invalidUtilityClassName);
 		testClassNames.add(validClassName);
 
 		List<String> testMethodNames = new ArrayList<>();
 
 		testMethodNames.add(validMethodName);
-		testMethodNames.add(nonWhitelistedMethodName);
+		testMethodNames.add(invalidUtilityClassMethodName);
 		testMethodNames.add(invalidMethodName);
 
 		List<List<String>> testArguments = new ArrayList<>();
@@ -952,7 +952,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 
 		expectedMessages.add("Unable to find class " + invalidClassName);
 		expectedMessages.add(
-			nonWhitelistedClassName + " is not a whitelisted utility class");
+			invalidUtilityClassName + " is an invalid utility class");
 		expectedMessages.add(
 			"Unable to find method " + validClassName + "#" +
 				invalidMethodName);
