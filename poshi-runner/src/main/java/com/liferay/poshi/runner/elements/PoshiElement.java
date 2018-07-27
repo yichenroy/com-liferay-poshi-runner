@@ -14,16 +14,11 @@
 
 package com.liferay.poshi.runner.elements;
 
-import com.google.common.reflect.ClassPath;
-
 import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.util.Dom4JUtil;
-import com.liferay.poshi.runner.util.PropsUtil;
 import com.liferay.poshi.runner.util.RegexUtil;
 import com.liferay.poshi.runner.util.StringUtil;
-
-import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -760,7 +755,6 @@ public abstract class PoshiElement
 		Pattern.DOTALL);
 	protected static final Pattern poshiScriptAnnotationPattern =
 		Pattern.compile("@[\\w-]*[\\s]*?=[\\s]\".*?\"", Pattern.DOTALL);
-	protected static final Set<String> utilClassNames = new TreeSet<>();
 
 	private void _addAttributes(Element element) {
 		for (Attribute attribute :
@@ -810,24 +804,6 @@ public abstract class PoshiElement
 			"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + INVOCATION_REGEX +
 				STATEMENT_END_REGEX,
 			Pattern.DOTALL);
-
-		try {
-			ClassPath classPath = ClassPath.from(
-				PropsUtil.class.getClassLoader());
-
-			for (ClassPath.ClassInfo classInfo :
-					classPath.getTopLevelClasses(
-						"com.liferay.poshi.runner.util")) {
-
-				utilClassNames.add(classInfo.getName());
-				utilClassNames.add(classInfo.getSimpleName());
-			}
-
-			utilClassNames.add("selenium");
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
 
 		for (String namespacedFunctionFileName :
 				PoshiRunnerContext.getFilePathKeys()) {
