@@ -249,10 +249,11 @@ public class PoshiRunnerGetterUtil {
 			if (!className.contains(".")) {
 				className = getUtilityClassName(className);
 			}
-
-			if (!isValidUtilityClass(className)) {
-				throw new IllegalArgumentException(
-					className + " is not a valid class name.");
+			else {
+				if (!isValidUtilityClass(className)) {
+					throw new IllegalArgumentException(
+						className + " is not a valid class name.");
+				}
 			}
 		}
 
