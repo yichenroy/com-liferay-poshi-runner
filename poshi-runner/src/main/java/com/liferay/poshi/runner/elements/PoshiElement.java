@@ -250,6 +250,45 @@ public abstract class PoshiElement
 		return RegexUtil.getGroup(poshiScript, ".*?\\[(.*)\\]", 1);
 	}
 
+	protected String getClassName(String classCommand) {
+		classCommand = classCommand.trim();
+
+		if (classCommand.contains("(")) {
+			int index = classCommand.indexOf("(");
+
+			classCommand = classCommand.substring(0, index);
+		}
+
+		int index = classCommand.length();
+
+		if (classCommand.contains(".")) {
+			index = classCommand.lastIndexOf(".");
+		}
+		else if (classCommand.contains("#")) {
+			index = classCommand.lastIndexOf("#");
+		}
+
+		return classCommand.substring(0, index);
+	}
+
+	protected String getCommandName(String classCommand) {
+		classCommand = classCommand.trim();
+
+		if (classCommand.contains("(")) {
+			int index = classCommand.indexOf("(");
+
+			classCommand = classCommand.substring(0, index);
+		}
+
+		if (classCommand.contains(".")) {
+			int index = classCommand.lastIndexOf(".");
+
+			return classCommand.substring(index + 1);
+		}
+
+		return classCommand;
+	}
+
 	protected String getFileType() {
 		PoshiElement poshiParentElement = (PoshiElement)getParent();
 
