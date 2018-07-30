@@ -252,7 +252,7 @@ public class PoshiRunnerGetterUtil {
 			else {
 				if (!isValidUtilityClass(className)) {
 					throw new IllegalArgumentException(
-						className + " is not a valid class name.");
+						className + " is not a valid class name");
 				}
 			}
 		}
