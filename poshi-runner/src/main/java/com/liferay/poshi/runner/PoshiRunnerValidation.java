@@ -1683,9 +1683,8 @@ public class PoshiRunnerValidation {
 		Collections.addAll(
 			possibleAttributeNames,
 			new String[] {
-				"attribute", "from", "group", "hash", "index", "input",
-				"line-number", "locator", "method", "name", "pattern",
-				"property-value", "type", "value"
+				"from", "hash", "index", "line-number", "method", "name",
+				"type", "value"
 			});
 
 		if (filePath.contains(".macro")) {
