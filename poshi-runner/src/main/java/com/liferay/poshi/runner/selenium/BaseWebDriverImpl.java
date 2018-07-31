@@ -248,7 +248,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		if (isAttributePresent(attribute, locator)) {
 			throw new Exception(
-				"Expected attribute \"" + attribute + "\" is present.");
+				"Unexpected attribute \"" + attribute + "\" is present.");
 		}
 	}
 
