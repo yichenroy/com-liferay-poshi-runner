@@ -1542,22 +1542,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		JavascriptExecutor javascriptExecutor =
 			(JavascriptExecutor)wrappedWebDriver;
 
-		StringBuilder sb = new StringBuilder(4);
+		StringBuilder sb = new StringBuilder();
 
-		sb.append("var items = {}; var element = arguments[0];");
-		sb.append("for (i = 0; i < element.attributes.length; ++i) {");
-		sb.append(
-			"items[element.attributes[i].name] = element.attributes[i].value");
-		sb.append("}; return items;");
+		sb.append("var element = arguments[0];");
+		sb.append("return element.attributes[\'");
+		sb.append(attribute);
+		sb.append("\'];");
 
-		Map<String, Object> attributes =
-			(Map<String, Object>)javascriptExecutor.executeScript(
-				sb.toString(), webElement);
+		Object returnObject = javascriptExecutor.executeScript(
+			sb.toString(), webElement);
 
-		for (String attributeName : attributes.keySet()) {
-			if (attributeName.equals(attribute)) {
-				return true;
-			}
+		if (returnObject != null) {
+			return true;
 		}
 
 		return false;
