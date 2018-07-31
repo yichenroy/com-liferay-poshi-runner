@@ -50,8 +50,9 @@ public class PoshiElementLogger {
 
 			return poshiLogEntry;
 		}
-
-		return null;
+		else {
+			return _poshiLogEntries.get(_poshiLogEntries.size() - 1);
+		}
 	}
 
 	public static void pass(Element element) {
