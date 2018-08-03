@@ -1208,18 +1208,11 @@ public class PoshiRunnerExecutor {
 				locator = PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
 					locator);
 
-				try {
-					if (locator.contains("/input")) {
-						varValue = liferaySelenium.getElementValue(locator);
-					}
-					else {
-						varValue = liferaySelenium.getText(locator);
-					}
+				if (locator.contains("/input")) {
+					varValue = liferaySelenium.getElementValue(locator);
 				}
-				catch (Exception e) {
-					XMLLoggerHandler.updateStatus(element, "fail");
-
-					throw e;
+				else {
+					varValue = liferaySelenium.getText(locator);
 				}
 			}
 			else if (element.attributeValue("method") != null) {
@@ -1231,8 +1224,6 @@ public class PoshiRunnerExecutor {
 						PoshiRunnerStackTraceUtil.getCurrentNamespace());
 				}
 				catch (Exception e) {
-					XMLLoggerHandler.updateStatus(element, "fail");
-
 					Throwable throwable = e.getCause();
 
 					if (throwable != null) {
