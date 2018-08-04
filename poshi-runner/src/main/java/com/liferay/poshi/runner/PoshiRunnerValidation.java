@@ -1706,42 +1706,18 @@ public class PoshiRunnerValidation {
 		validatePossibleAttributeNames(
 			element, possibleAttributeNames, filePath);
 
-		if (Validator.isNotNull(element.attributeValue("attribute"))) {
-			List<String> attributeNames = Arrays.asList(
-				"attribute", "line-number", "locator", "name");
+		if (Validator.isNotNull(element.attributeValue("method"))) {
+			String methodAttribute = element.attributeValue("method");
 
-			validatePossibleAttributeNames(element, attributeNames, filePath);
-			validateRequiredAttributeNames(element, attributeNames, filePath);
-		}
-		else if (Validator.isNotNull(element.attributeValue("group")) ||
-				 Validator.isNotNull(element.attributeValue("input")) ||
-				 Validator.isNotNull(element.attributeValue("pattern"))) {
+			int x = methodAttribute.indexOf("#");
 
-			List<String> attributeNames = Arrays.asList(
-				"group", "line-number", "input", "name", "pattern");
+			String className = methodAttribute.substring(0, x);
 
-			validatePossibleAttributeNames(element, attributeNames, filePath);
-			validateRequiredAttributeNames(element, attributeNames, filePath);
-		}
-		else if (Validator.isNotNull(element.attributeValue("locator")) ||
-				 Validator.isNotNull(element.attributeValue("method")) ||
-				 Validator.isNotNull(
-					 element.attributeValue("property-value")) ||
-				 Validator.isNotNull(element.attributeValue("var"))) {
-
-			if (Validator.isNotNull(element.attributeValue("method"))) {
-				String methodAttribute = element.attributeValue("method");
-
-				int x = methodAttribute.indexOf("#");
-
-				String className = methodAttribute.substring(0, x);
-
-				try {
-					validateUtilityClassName(element, filePath, className);
-				}
-				catch (Exception e) {
-					_exceptions.add(e);
-				}
+			try {
+				validateUtilityClassName(element, filePath, className);
+			}
+			catch (Exception e) {
+				_exceptions.add(e);
 			}
 
 			int expectedAttributeCount = 1;
