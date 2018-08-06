@@ -1201,54 +1201,7 @@ public class PoshiRunnerExecutor {
 		Object varValue = element.attributeValue("value");
 
 		if (varValue == null) {
-			if (element.attributeValue("attribute") != null) {
-				LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
-
-				String attribute = element.attributeValue("attribute");
-
-				String locator = element.attributeValue("locator");
-
-				if (locator.contains("#")) {
-					locator = PoshiRunnerContext.getPathLocator(
-						locator,
-						PoshiRunnerStackTraceUtil.getCurrentNamespace());
-				}
-
-				varValue = liferaySelenium.getAttribute(
-					locator + "@" + attribute);
-			}
-			else if ((element.attributeValue("group") != null) &&
-					 (element.attributeValue("input") != null) &&
-					 (element.attributeValue("pattern") != null)) {
-
-				varValue = RegexUtil.replace(
-					PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
-						element.attributeValue("input")),
-					element.attributeValue("pattern"),
-					element.attributeValue("group"));
-			}
-			else if (element.attributeValue("locator") != null) {
-				String locator = element.attributeValue("locator");
-
-				if (locator.contains("#")) {
-					locator = PoshiRunnerContext.getPathLocator(
-						locator,
-						PoshiRunnerStackTraceUtil.getCurrentNamespace());
-				}
-
-				LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
-
-				locator = PoshiRunnerVariablesUtil.getReplacedCommandVarsString(
-					locator);
-
-				if (locator.contains("/input")) {
-					varValue = liferaySelenium.getElementValue(locator);
-				}
-				else {
-					varValue = liferaySelenium.getText(locator);
-				}
-			}
-			else if (element.attributeValue("method") != null) {
+			if (element.attributeValue("method") != null) {
 				String methodName = element.attributeValue("method");
 
 				try {
@@ -1265,14 +1218,6 @@ public class PoshiRunnerExecutor {
 					else {
 						throw e;
 					}
-				}
-			}
-			else if (element.attributeValue("property-value") != null) {
-				varValue = PropsUtil.get(
-					element.attributeValue("property-value"));
-
-				if (varValue == null) {
-					varValue = "";
 				}
 			}
 			else if (element.attributeValue("type") != null) {
