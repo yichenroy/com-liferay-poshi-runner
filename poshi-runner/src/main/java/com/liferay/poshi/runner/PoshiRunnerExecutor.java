@@ -208,9 +208,6 @@ public class PoshiRunnerExecutor {
 			else if (childElementName.equals("task")) {
 				runTaskElement(childElement);
 			}
-			else if (childElementName.equals("toggle")) {
-				runToggleElement(childElement);
-			}
 			else if (childElementName.equals("var")) {
 				runCommandVarElement(childElement, true);
 			}
@@ -1111,48 +1108,6 @@ public class PoshiRunnerExecutor {
 		PoshiRunnerStackTraceUtil.popStackTrace();
 
 		XMLLoggerHandler.updateStatus(executeElement, "pass");
-	}
-
-	public static void runToggleElement(Element element) throws Exception {
-		PoshiRunnerStackTraceUtil.setCurrentElement(element);
-
-		String toggleName = element.attributeValue("name");
-
-		boolean toggleRun = false;
-
-		if (PoshiRunnerContext.isTestToggle(toggleName)) {
-			Element onElement = element.element("on");
-
-			if (onElement != null) {
-				PoshiRunnerStackTraceUtil.setCurrentElement(onElement);
-
-				parseElement(onElement);
-
-				XMLLoggerHandler.updateStatus(onElement, "pass");
-
-				toggleRun = true;
-			}
-		}
-		else {
-			Element offElement = element.element("off");
-
-			if (offElement != null) {
-				PoshiRunnerStackTraceUtil.setCurrentElement(offElement);
-
-				parseElement(offElement);
-
-				XMLLoggerHandler.updateStatus(offElement, "pass");
-
-				toggleRun = true;
-			}
-		}
-
-		if (toggleRun) {
-			XMLLoggerHandler.updateStatus(element, "pass");
-		}
-		else {
-			XMLLoggerHandler.updateStatus(element, "conditional-fail");
-		}
 	}
 
 	public static void runWhileElement(Element element) throws Exception {

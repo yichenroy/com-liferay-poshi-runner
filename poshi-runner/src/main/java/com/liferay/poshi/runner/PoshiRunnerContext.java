@@ -281,10 +281,6 @@ public class PoshiRunnerContext {
 			classType + "#" + namespace + "." + rootElementKey);
 	}
 
-	public static boolean isTestToggle(String toggleName) {
-		return _testToggleNames.contains(toggleName);
-	}
-
 	public static void main(String[] args) throws Exception {
 		readFiles();
 
@@ -297,7 +293,6 @@ public class PoshiRunnerContext {
 	public static void readFiles() throws Exception {
 		_readPoshiFiles();
 		_readSeleniumFiles();
-		_readTestToggleFiles();
 	}
 
 	public static void readFiles(String[] includes, String... baseDirNames)
@@ -1092,97 +1087,6 @@ public class PoshiRunnerContext {
 		}
 
 		_seleniumParameterCounts.put("open", 1);
-	}
-
-	private static void _readTestToggleFiles() throws Exception {
-		for (String testToggleFileName : PropsValues.TEST_TOGGLE_FILE_NAMES) {
-			if (!FileUtil.exists(testToggleFileName)) {
-				continue;
-			}
-
-			SAXReader saxReader = new SAXReader();
-
-			String content = FileUtil.read(testToggleFileName);
-
-			InputStream inputStream = new ByteArrayInputStream(
-				content.getBytes("UTF-8"));
-
-			Document document = saxReader.read(inputStream);
-
-			Element rootElement = document.getRootElement();
-
-			List<Element> toggleElements = rootElement.elements("toggle");
-
-			for (Element toggleElement : toggleElements) {
-				String toggleName = toggleElement.attributeValue("name");
-
-				Element dateElement = toggleElement.element("date");
-
-				if (dateElement == null) {
-					StringBuilder sb = new StringBuilder();
-
-					sb.append("Unable to parse toggle:\n");
-					sb.append(testToggleFileName);
-					sb.append(":");
-					sb.append(toggleName);
-					sb.append(" because the date was not found");
-
-					Exception e = new RuntimeException(sb.toString());
-
-					e.printStackTrace();
-
-					throw e;
-				}
-				else {
-					try {
-						_toggleDateFormat.parse(dateElement.getText());
-					}
-					catch (ParseException pe) {
-						StringBuilder sb = new StringBuilder();
-
-						sb.append("Unable to parse date \"");
-						sb.append(dateElement.getText());
-						sb.append("\" in ");
-						sb.append(testToggleFileName);
-						sb.append(":");
-						sb.append(toggleName);
-						sb.append(" because it doesn't match the format \"");
-						sb.append(_toggleDateFormat.toPattern());
-						sb.append("\"");
-
-						Exception e = new RuntimeException(sb.toString(), pe);
-
-						e.printStackTrace();
-
-						throw e;
-					}
-				}
-
-				Element ownerElement = toggleElement.element("owner");
-
-				if ((ownerElement == null) ||
-					Validator.isNull(ownerElement.getText())) {
-
-					Exception exception = new Exception(
-						"Please set an author for this toggle:\n" +
-							testToggleFileName + ":" + toggleName);
-
-					exception.printStackTrace();
-
-					throw exception;
-				}
-
-				_testToggleNames.add(toggleName);
-			}
-		}
-
-		System.out.println("Active Toggles:");
-
-		for (String testToggleName : _testToggleNames) {
-			System.out.println("* " + testToggleName);
-		}
-
-		System.out.println();
 	}
 
 	private static void _storePathElement(
