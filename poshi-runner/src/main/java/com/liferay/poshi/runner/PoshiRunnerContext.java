@@ -29,9 +29,7 @@ import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import java.lang.reflect.Method;
 
@@ -40,9 +38,6 @@ import java.net.URL;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,9 +58,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
-import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 /**
  * @author Karen Dang
@@ -1497,9 +1490,6 @@ public class PoshiRunnerContext {
 		new ArrayList<>();
 	private static final List<String> _testCaseRequiredPropertyNames =
 		new ArrayList<>();
-	private static final Set<String> _testToggleNames = new HashSet<>();
-	private static final SimpleDateFormat _toggleDateFormat =
-		new SimpleDateFormat("YYYY-MM-dd");
 	private static final Pattern _urlPathPattern = Pattern.compile(
 		".*\\.(\\w+)");
 
