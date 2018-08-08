@@ -79,7 +79,7 @@ public abstract class PoshiElement
 		for (PoshiElementAttribute poshiElementAttribute :
 				toPoshiElementAttributes(attributes())) {
 
-			if (poshiElementAttribute.getAttribute() == attribute) {
+			if (poshiElementAttribute == attribute) {
 				return super.remove(poshiElementAttribute);
 			}
 		}
