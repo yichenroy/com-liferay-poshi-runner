@@ -336,6 +336,62 @@ public class ExecutePoshiElement extends PoshiElement {
 		return sb.toString();
 	}
 
+	protected String createPoshiScriptSnippet(List<String> assignments) {
+		StringBuilder sb = new StringBuilder();
+
+		String blockName = getBlockName();
+		String pad = getPad();
+
+		sb.append("\n\n");
+		sb.append(pad);
+		sb.append(blockName.replace("#", "."));
+		sb.append("(");
+
+		boolean multilineSnippet = false;
+
+		String assignmentsString = assignments.toString();
+
+		int invocationStringLength =
+			blockName.length() + assignmentsString.length();
+
+		if ((invocationStringLength > 80) &&
+			!isConditionValidInParent((PoshiElement)getParent())) {
+
+			multilineSnippet = true;
+		}
+
+		for (String assignment : assignments) {
+			if (multilineSnippet) {
+				sb.append("\n\t");
+				sb.append(pad);
+			}
+
+			sb.append(assignment);
+			sb.append(",");
+
+			if (!multilineSnippet) {
+				sb.append(" ");
+			}
+		}
+
+		if (!assignments.isEmpty()) {
+			sb.setLength(sb.length() - 1);
+
+			if (!multilineSnippet) {
+				sb.setLength(sb.length() - 1);
+			}
+		}
+
+		if (multilineSnippet) {
+			sb.append("\n");
+			sb.append(pad);
+		}
+
+		sb.append(");");
+
+		return sb.toString();
+	}
+
 	@Override
 	protected String getBlockName() {
 		if (attributeValue("function") != null) {
