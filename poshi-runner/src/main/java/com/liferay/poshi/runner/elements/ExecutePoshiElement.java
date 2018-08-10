@@ -146,68 +146,24 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	public String toPoshiScript() {
-		StringBuilder sb = new StringBuilder();
+		List<String> assignments = new ArrayList<>();
 
-		if (attributeValue("class") != null) {
-			String pad = getPad();
+		for (PoshiElementAttribute poshiElementAttribute :
+				toPoshiElementAttributes(attributes())) {
 
-			sb.append("\n\n");
-			sb.append(pad);
-			sb.append(attributeValue("class"));
-			sb.append(".");
-			sb.append(attributeValue("method"));
-			sb.append("(");
+			String poshiElementAttributeName = poshiElementAttribute.getName();
 
-			for (PoshiElement poshiElement : toPoshiElements(elements())) {
-				String poshiScript = poshiElement.toPoshiScript();
+			if (poshiElementAttributeName.equals("class") ||
+				poshiElementAttributeName.equals("function") ||
+				poshiElementAttributeName.equals("macro") ||
+				poshiElementAttributeName.equals("method")) {
 
-				if (poshiElement instanceof ArgPoshiElement) {
-					sb.append(poshiScript.trim());
-					sb.append(", ");
-
-					continue;
-				}
+				continue;
 			}
 
-			if (sb.length() > 2) {
-				sb.setLength(sb.length() - 2);
-			}
+			String poshiScript = poshiElementAttribute.toPoshiScript();
 
-			sb.append(");");
-
-			return sb.toString();
-		}
-
-		if (attributeValue("function") != null) {
-			for (PoshiElementAttribute poshiElementAttribute :
-					toPoshiElementAttributes(attributeList())) {
-
-				String name = poshiElementAttribute.getName();
-
-				if (name.equals("function")) {
-					continue;
-				}
-
-				sb.append(poshiElementAttribute.toPoshiScript());
-				sb.append(", ");
-			}
-
-			for (PoshiElement poshiElement : toPoshiElements(elements())) {
-				String poshiScript = poshiElement.toPoshiScript();
-
-				if (poshiElement instanceof VarPoshiElement) {
-					sb.append(poshiScript.trim());
-					sb.append(", ");
-
-					continue;
-				}
-			}
-
-			if (sb.length() > 2) {
-				sb.setLength(sb.length() - 2);
-			}
-
-			return createFunctionPoshiScriptSnippet(sb.toString());
+			assignments.add(poshiScript.trim());
 		}
 
 		ReturnPoshiElement returnPoshiElement = null;
@@ -219,11 +175,12 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			sb.append(poshiElement.toPoshiScript());
+			String poshiScript = poshiElement.toPoshiScript();
+
+			assignments.add(poshiScript.trim());
 		}
 
-		String poshiScriptSnippet = createMacroPoshiScriptSnippet(
-			sb.toString());
+		String poshiScriptSnippet = createPoshiScriptSnippet(assignments);
 
 		if (returnPoshiElement == null) {
 			return poshiScriptSnippet;
