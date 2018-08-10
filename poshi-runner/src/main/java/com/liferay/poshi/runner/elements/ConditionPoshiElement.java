@@ -80,6 +80,20 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 	}
 
 	@Override
+	protected String createPoshiScriptSnippet(List<String> assignments) {
+		String poshiScriptSnippet = super.createPoshiScriptSnippet(assignments);
+
+		poshiScriptSnippet = poshiScriptSnippet.trim();
+
+		if (poshiScriptSnippet.endsWith(";")) {
+			poshiScriptSnippet = poshiScriptSnippet.substring(
+				0, poshiScriptSnippet.length() - 1);
+		}
+
+		return poshiScriptSnippet;
+	}
+
+	@Override
 	protected String getBlockName() {
 		return attributeValue("function");
 	}
