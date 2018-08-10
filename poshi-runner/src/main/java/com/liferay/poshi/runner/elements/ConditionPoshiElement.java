@@ -65,21 +65,6 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 	}
 
 	@Override
-	protected String createFunctionPoshiScriptSnippet(String content) {
-		String poshiScriptSnippet = super.createFunctionPoshiScriptSnippet(
-			content);
-
-		poshiScriptSnippet = poshiScriptSnippet.trim();
-
-		if (poshiScriptSnippet.endsWith(";")) {
-			poshiScriptSnippet = poshiScriptSnippet.substring(
-				0, poshiScriptSnippet.length() - 1);
-		}
-
-		return poshiScriptSnippet;
-	}
-
-	@Override
 	protected String createPoshiScriptSnippet(List<String> assignments) {
 		String poshiScriptSnippet = super.createPoshiScriptSnippet(assignments);
 
@@ -91,11 +76,6 @@ public class ConditionPoshiElement extends ExecutePoshiElement {
 		}
 
 		return poshiScriptSnippet;
-	}
-
-	@Override
-	protected String getBlockName() {
-		return attributeValue("function");
 	}
 
 	private boolean _isElementType(

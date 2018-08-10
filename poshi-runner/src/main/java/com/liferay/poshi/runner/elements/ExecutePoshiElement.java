@@ -15,7 +15,6 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.util.RegexUtil;
-import com.liferay.poshi.runner.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,75 +221,6 @@ public class ExecutePoshiElement extends PoshiElement {
 		String name, PoshiElement parentPoshiElement, String poshiScript) {
 
 		super(name, parentPoshiElement, poshiScript);
-	}
-
-	protected String createFunctionPoshiScriptSnippet(String content) {
-		StringBuilder sb = new StringBuilder();
-
-		String blockName = getBlockName();
-		String pad = getPad();
-
-		sb.append("\n\n");
-		sb.append(pad);
-		sb.append(blockName.replace("#", "."));
-		sb.append("(");
-
-		if (!content.equals("")) {
-			if (content.contains("\n")) {
-				content = content.replaceAll("\n", ",\n" + pad);
-				content = content.replaceFirst(",", "");
-				content = content + "\n" + pad;
-			}
-		}
-
-		sb.append(content);
-
-		sb.append(");");
-
-		return sb.toString();
-	}
-
-	protected String createMacroPoshiScriptSnippet(String content) {
-		StringBuilder sb = new StringBuilder();
-
-		String blockName = getBlockName();
-		String pad = getPad();
-
-		sb.append("\n\n");
-		sb.append(pad);
-		sb.append(blockName.replace("#", "."));
-		sb.append("(");
-
-		Matcher matcher = nestedVarAssignmentPattern.matcher(content);
-
-		StringBuffer formattedContent = new StringBuffer();
-
-		while (matcher.find()) {
-			String replacementString = StringUtil.combine(
-				pad, matcher.group(1), ",", matcher.group(2));
-
-			replacementString = replacementString.replace("$", "\\$");
-
-			matcher.appendReplacement(formattedContent, replacementString);
-		}
-
-		if (formattedContent.length() > 1) {
-			formattedContent.setLength(formattedContent.length() - 1);
-		}
-
-		sb.append(formattedContent.toString());
-
-		String trimmedContent = content.trim();
-
-		if (!trimmedContent.equals("")) {
-			sb.append("\n");
-
-			sb.append(pad);
-		}
-
-		sb.append(");");
-
-		return sb.toString();
 	}
 
 	protected String createPoshiScriptSnippet(List<String> assignments) {
