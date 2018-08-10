@@ -26,6 +26,7 @@ definition {
 				v1 = "${row.hash('status')}"
 			);
 		}
+
 		var RawTable rawTable = new RawTable("${table}");
 
 		for (var row : table "${rawTable}") {
