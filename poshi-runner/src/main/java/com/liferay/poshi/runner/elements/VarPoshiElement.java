@@ -237,10 +237,6 @@ public class VarPoshiElement extends PoshiElement {
 			else {
 				value = StringEscapeUtils.escapeXml10(value);
 
-				if (parentElement instanceof ExecutePoshiElement) {
-					value = value.replace("\\", "\\\\");
-				}
-
 				value = quoteContent(value);
 			}
 		}
