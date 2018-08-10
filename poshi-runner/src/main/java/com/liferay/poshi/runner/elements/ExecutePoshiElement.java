@@ -394,6 +394,10 @@ public class ExecutePoshiElement extends PoshiElement {
 
 	@Override
 	protected String getBlockName() {
+		if (attributeValue("class") != null) {
+			return attributeValue("class") + "." + attributeValue("method");
+		}
+
 		if (attributeValue("function") != null) {
 			return attributeValue("function");
 		}
