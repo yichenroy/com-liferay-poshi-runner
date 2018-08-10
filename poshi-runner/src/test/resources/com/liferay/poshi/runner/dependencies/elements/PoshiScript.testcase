@@ -40,9 +40,7 @@ definition {
 			fieldValue = ",-+!@#$%^*()=_.?/;:{}[]\|"
 		);
 
-		ProductMenu.gotoControlPanelUsers(
-			portlet = "Users and Organizations"
-		);
+		ProductMenu.gotoControlPanelUsers(portlet = "Users and Organizations");
 
 		echo("This is a message.");
 
@@ -51,10 +49,16 @@ definition {
 			var breadcrumbNameUppercase = StringUtil.upperCase('${breadcrumbName}');
 			var historyVersion = selenium.getText('Staging#HISTORY_VERSION');
 
-			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+			AssertTextEquals(
+				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+				value1 = "${breadcrumbNameUppercase}"
+			);
 
 			for (var breadcrumbName : list "${breadcrumbListVisible}") {
-				AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+				AssertTextEquals(
+					locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+					value1 = "${breadcrumbNameUppercase}"
+				);
 			}
 
 			if (isSet(duplicate)) {
@@ -76,7 +80,10 @@ definition {
 		}
 
 		for (var breadcrumbName : list "Breadcrumb: 1, Breadcrumb: 2") {
-			AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
+			AssertTextEquals(
+				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
+				value1 = "${breadcrumbNameUppercase}"
+			);
 		}
 
 		User.addCP(
@@ -163,9 +170,7 @@ definition {
 			echo("String contains substring");
 		}
 
-		var siteName = TestCase.getSiteName(
-			siteName = "${siteName}"
-		);
+		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		var testCDATA = ''''alert(0)'"alert(0)"><img src=x onerror=alert(0)><script>alert(0)</script>''';
 
@@ -220,7 +225,10 @@ definition {
 
 		Type(value1 = "Welcome");
 
-		AssertElementPresent.assertElementPresent(locator1 = "Home#PAGE", value1 = "Welcome");
+		AssertElementPresent.assertElementPresent(
+			locator1 = "Home#PAGE",
+			value1 = "Welcome"
+		);
 
 		com.liferay.poshi.runner.util.JSONCurlUtil.delete('${curl}');
 	}
