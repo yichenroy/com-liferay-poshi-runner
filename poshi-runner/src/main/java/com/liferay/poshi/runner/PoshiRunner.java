@@ -217,21 +217,9 @@ public class PoshiRunner {
 			String namespacedClassCommandName)
 		throws Exception {
 
-		String className =
-			PoshiRunnerGetterUtil.getClassNameFromNamespacedClassCommandName(
-				namespacedClassCommandName);
 		String namespace =
 			PoshiRunnerGetterUtil.getNamespaceFromNamespacedClassCommandName(
 				namespacedClassCommandName);
-
-		List<Element> varElements = PoshiRunnerContext.getRootVarElements(
-			"test-case", className, namespace);
-
-		for (Element varElement : varElements) {
-			PoshiRunnerExecutor.runRootVarElement(varElement, false);
-		}
-
-		PoshiRunnerVariablesUtil.pushCommandMap();
 
 		String classCommandName =
 			PoshiRunnerGetterUtil.
@@ -245,7 +233,8 @@ public class PoshiRunner {
 			PoshiRunnerStackTraceUtil.startStackTrace(
 				namespacedClassCommandName, "test-case");
 
-			PoshiRunnerExecutor.parseElement(commandElement);
+			PoshiRunnerExecutor.runTestCaseCommandElement(
+				commandElement, namespacedClassCommandName);
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
 		}
