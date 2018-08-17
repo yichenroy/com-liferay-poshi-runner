@@ -381,9 +381,14 @@ public abstract class PoshiElement
 
 			if (trimmedPoshiScriptSnippet.startsWith("//")) {
 				if (c == '\n') {
+					poshiScriptSnippet = poshiScriptSnippet.substring(
+						0, poshiScriptSnippet.length() - 1);
+
 					poshiScriptSnippets.add(poshiScriptSnippet);
 
 					sb.setLength(0);
+
+					sb.append(c);
 				}
 
 				continue;
