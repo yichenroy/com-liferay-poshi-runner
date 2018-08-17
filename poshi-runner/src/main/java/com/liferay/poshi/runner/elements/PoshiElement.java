@@ -791,6 +791,8 @@ public abstract class PoshiElement
 		Pattern.DOTALL);
 	protected static final Pattern poshiScriptAnnotationPattern =
 		Pattern.compile("@[\\w-]*[\\s]*?=[\\s]\".*?\"", Pattern.DOTALL);
+	protected static final Pattern poshiScriptBlockNamePattern =
+		Pattern.compile("[\\s\\S]*");
 
 	private void _addAttributes(Element element) {
 		for (Attribute attribute :
