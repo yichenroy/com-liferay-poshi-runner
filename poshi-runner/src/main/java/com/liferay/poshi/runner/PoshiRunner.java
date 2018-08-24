@@ -233,7 +233,7 @@ public class PoshiRunner {
 			PoshiRunnerStackTraceUtil.startStackTrace(
 				namespacedClassCommandName, "test-case");
 
-			_poshiRunnerExecutor.runTestCaseCommandElement(
+			PoshiRunnerExecutor.runTestCaseCommandElement(
 				commandElement, namespacedClassCommandName);
 
 			PoshiRunnerStackTraceUtil.emptyStackTrace();
@@ -248,8 +248,6 @@ public class PoshiRunner {
 		_runNamespacedClassCommandName(_testNamespacedClassName + "#tear-down");
 	}
 
-	private final PoshiRunnerExecutor _poshiRunnerExecutor =
-		new PoshiRunnerExecutor();
 	private final String _testNamespacedClassCommandName;
 	private final String _testNamespacedClassName;
 
