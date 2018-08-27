@@ -376,23 +376,23 @@ public class PoshiRunnerGetterUtil {
 		String fileContent = FileUtil.read(url);
 		String filePath = url.getFile();
 
+		if (!fileContent.contains("<definition") &&
+			(filePath.endsWith(".macro") || filePath.endsWith(".testcase"))) {
+
+			PoshiNode poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
+				filePath);
+
+			if (poshiNode instanceof PoshiElement) {
+				return (PoshiElement)poshiNode;
+			}
+		}
+
 		if (filePath.endsWith(".prose")) {
 			PoshiProseDefinition poshiProseDefinition =
 				new PoshiProseDefinition(
 					getFileNameFromFilePath(filePath), fileContent);
 
 			fileContent = Dom4JUtil.format(poshiProseDefinition.toElement());
-		}
-
-		if (!fileContent.contains("<definition") &&
-			(filePath.endsWith(".macro") || filePath.endsWith(".testcase"))) {
-
-			PoshiNode<?, ?> poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
-				filePath);
-
-			if (poshiNode instanceof PoshiElement) {
-				fileContent = Dom4JUtil.format((PoshiElement)poshiNode);
-			}
 		}
 
 		BufferedReader bufferedReader = new BufferedReader(
