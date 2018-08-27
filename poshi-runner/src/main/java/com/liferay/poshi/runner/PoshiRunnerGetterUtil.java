@@ -195,6 +195,22 @@ public class PoshiRunnerGetterUtil {
 			"Unable to find command name in " + namespacedClassCommandName);
 	}
 
+	public static int getElementLineNumber(Element element) {
+		if (element instanceof PoshiElement) {
+			PoshiElement poshiElement = (PoshiElement)element;
+
+			return poshiElement.getPoshiScriptLineNumber();
+		}
+
+		String lineNumber = element.attributeValue("line-number");
+
+		if (lineNumber != null) {
+			return Integer.valueOf(lineNumber);
+		}
+
+		return -1;
+	}
+
 	public static String getExtendedTestCaseName() {
 		String testName = PropsValues.TEST_NAME;
 
