@@ -395,7 +395,7 @@ public class PoshiRunnerGetterUtil {
 		if (!fileContent.contains("<definition") &&
 			(filePath.endsWith(".macro") || filePath.endsWith(".testcase"))) {
 
-			PoshiNode poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
+			PoshiNode<?, ?> poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
 				filePath);
 
 			if (poshiNode instanceof PoshiElement) {
