@@ -399,7 +399,7 @@ public class PoshiRunnerGetterUtil {
 				filePath);
 
 			if (poshiNode instanceof PoshiElement) {
-				return (PoshiElement)poshiNode;
+				return (Element)poshiNode;
 			}
 		}
 
