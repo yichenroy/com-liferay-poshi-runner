@@ -167,7 +167,7 @@ public final class XMLLoggerHandler {
 
 		sb.append(
 			_getLineNumberItemText(
-				PoshiRunnerGetterUtil.getElementLineNumber(element)));
+				PoshiRunnerGetterUtil.getLineNumber(element)));
 
 		List<Element> childElements = element.elements();
 
@@ -667,7 +667,7 @@ public final class XMLLoggerHandler {
 		for (Element childElement : childElements) {
 			loggerElement.addChildLoggerElement(
 				_getLineNumberItem(
-					PoshiRunnerGetterUtil.getElementLineNumber(childElement)));
+					PoshiRunnerGetterUtil.getLineNumber(childElement)));
 			loggerElement.addChildLoggerElement(
 				_getLineContainerLoggerElement(childElement));
 		}
