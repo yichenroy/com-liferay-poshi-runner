@@ -890,8 +890,8 @@ public class PoshiRunnerValidation {
 		if (!requiredPropertyNames.isEmpty()) {
 			_exceptions.add(
 				new ValidationException(
-					"Missing required properties ", requiredPropertyNames, "\n",
-					filePath));
+					"Missing required properties ",
+					requiredPropertyNames.toString(), "\n", filePath));
 		}
 	}
 
@@ -1779,8 +1779,8 @@ public class PoshiRunnerValidation {
 					PoshiRunnerGetterUtil.getLineNumber(element)));
 		}
 
-		public ValidationException(Object... messageParts) {
-			super(_join(messageParts));
+		public ValidationException(String... messageParts) {
+			super(_join((Object[])messageParts));
 		}
 
 		private static String _join(Object... objects) {
