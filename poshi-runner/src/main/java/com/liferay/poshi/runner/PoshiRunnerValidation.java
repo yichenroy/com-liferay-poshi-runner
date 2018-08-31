@@ -14,8 +14,6 @@
 
 package com.liferay.poshi.runner;
 
-import static com.liferay.poshi.runner.PoshiRunnerGetterUtil.getLineNumber;
-
 import com.liferay.poshi.runner.elements.PoshiElement;
 import com.liferay.poshi.runner.util.OSDetector;
 import com.liferay.poshi.runner.util.PropsUtil;
@@ -1456,7 +1454,7 @@ public class PoshiRunnerValidation {
 
 		validateTestName(
 			namespace + "." + className + "#" + commandName,
-			filePath + ":" + getLineNumber(element));
+			filePath + ":" + PoshiRunnerGetterUtil.getLineNumber(element));
 	}
 
 	protected static void validateTestCaseFile(
@@ -1687,7 +1685,7 @@ public class PoshiRunnerValidation {
 				expectedAttributeCount++;
 			}
 
-			if (getLineNumber(element) != -1) {
+			if (PoshiRunnerGetterUtil.getLineNumber(element) != -1) {
 				expectedAttributeCount++;
 			}
 
@@ -1775,7 +1773,10 @@ public class PoshiRunnerValidation {
 	private static class ValidationException extends Exception {
 
 		public ValidationException(Element element, Object... messageParts) {
-			super(_join(_join(messageParts), ":", getLineNumber(element)));
+			super(
+				_join(
+					_join(messageParts), ":",
+					PoshiRunnerGetterUtil.getLineNumber(element)));
 		}
 
 		public ValidationException(Object... messageParts) {
