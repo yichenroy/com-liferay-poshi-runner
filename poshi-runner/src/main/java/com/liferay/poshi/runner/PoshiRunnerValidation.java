@@ -239,8 +239,7 @@ public class PoshiRunnerValidation {
 							"No return variables were stated in command " +
 								"declaration, but found return name-value " +
 									"mapping\n" + filePath + ":" +
-										commandReturnElement.attributeValue(
-											"line-number")));
+										getLineNumber(commandReturnElement)));
 				}
 			}
 		}
@@ -254,9 +253,6 @@ public class PoshiRunnerValidation {
 			}
 			else {
 				for (Element commandReturnElement : commandReturnElements) {
-					String lineNumber = commandReturnElement.attributeValue(
-						"line-number");
-
 					String returnVariableName =
 						commandReturnElement.attributeValue("name");
 
@@ -265,7 +261,9 @@ public class PoshiRunnerValidation {
 							new Exception(
 								"Return variable was stated as '" + returnName +
 									"', but no 'name' attribute was found\n" +
-										filePath + ":" + lineNumber));
+										filePath + ":" +
+											getLineNumber(
+												commandReturnElement)));
 
 						continue;
 					}
@@ -278,7 +276,8 @@ public class PoshiRunnerValidation {
 						new Exception(
 							"'" + returnVariableName +
 								"' not listed as a return variable\n" +
-									filePath + ":" + lineNumber));
+									filePath + ":" +
+										getLineNumber(commandReturnElement)));
 				}
 			}
 		}
@@ -1264,13 +1263,10 @@ public class PoshiRunnerValidation {
 							locator, namespace);
 
 					if (pathRootElement == null) {
-						String lineNumber = trElement.attributeValue(
-							"line-number");
-
 						_exceptions.add(
 							new Exception(
 								"Nonexistent parent path file\n" + filePath +
-									":" + lineNumber));
+									":" + getLineNumber(trElement)));
 					}
 				}
 			}
@@ -1538,9 +1534,7 @@ public class PoshiRunnerValidation {
 					_exceptions.add(
 						new Exception(
 							"Duplicate property name " + propertyName + "\n" +
-								filePath + ":" +
-									childElement.attributeValue(
-										"line-number")));
+								filePath + ":" + getLineNumber(childElement)));
 				}
 			}
 			else if (childElementName.equals("set-up") ||
@@ -1718,7 +1712,7 @@ public class PoshiRunnerValidation {
 				expectedAttributeCount++;
 			}
 
-			if (Validator.isNotNull(getLineNumber(element))) {
+			if (getLineNumber(element) != -1) {
 				expectedAttributeCount++;
 			}
 
