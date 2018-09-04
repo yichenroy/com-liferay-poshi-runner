@@ -65,6 +65,10 @@ public abstract class PoshiElement
 		return clone(null, poshiScript);
 	}
 
+	public String getPoshiLogDescriptor() {
+		return getPoshiScript();
+	}
+
 	@Override
 	public String getPoshiScript() {
 		if (_poshiScript == null) {
@@ -72,10 +76,6 @@ public abstract class PoshiElement
 		}
 
 		return _poshiScript;
-	}
-
-	public String getShallowPoshiScript() {
-		return getPoshiScript();
 	}
 
 	public boolean isPoshiScriptComment(String poshiScript) {

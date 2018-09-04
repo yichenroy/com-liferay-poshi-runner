@@ -47,7 +47,7 @@ public class TaskPoshiElement extends PoshiElement {
 	}
 
 	@Override
-	public String getShallowPoshiScript() {
+	public String getPoshiLogDescriptor() {
 		return getBlockName();
 	}
 

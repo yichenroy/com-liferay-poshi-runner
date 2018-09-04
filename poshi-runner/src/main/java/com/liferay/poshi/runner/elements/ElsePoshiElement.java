@@ -47,7 +47,7 @@ public class ElsePoshiElement extends ThenPoshiElement {
 	}
 
 	@Override
-	public String getShallowPoshiScript() {
+	public String getPoshiLogDescriptor() {
 		return getBlockName();
 	}
 
