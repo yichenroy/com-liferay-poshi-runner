@@ -40,12 +40,6 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 			return 1;
 		}
 
-		if ((this instanceof ThenPoshiElement) &&
-			!(this instanceof ElsePoshiElement)) {
-
-			return parentPoshiElement.getPoshiScriptLineNumber();
-		}
-
 		List<PoshiNode> poshiNodes = parentPoshiElement.getPoshiNodes();
 
 		PoshiNode previousPoshiNode = null;
