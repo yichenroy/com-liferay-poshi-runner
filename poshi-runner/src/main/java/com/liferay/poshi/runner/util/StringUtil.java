@@ -141,7 +141,8 @@ public class StringUtil {
 	}
 
 	public static int countStartingNewLines(String s) {
-		String[] snippets = s.split(System.getProperty("line.separator"), -1);
+		String[] snippets = s.split(
+			System.getProperty("line.separator") + "\\h*", -1);
 
 		if (snippets.length == 1) {
 			return 0;
@@ -150,7 +151,7 @@ public class StringUtil {
 		int i = 0;
 
 		for (; i < snippets.length; i++) {
-			String snippet = snippets[i].trim();
+			String snippet = snippets[i];
 
 			if (snippet.isEmpty()) {
 				continue;
