@@ -148,9 +148,7 @@ public class StringUtil {
 			return 0;
 		}
 
-		int i = 0;
-
-		for (; i < snippets.length; i++) {
+		for (int i = 0; i < snippets.length; i++) {
 			String snippet = snippets[i];
 
 			if (snippet.isEmpty()) {
@@ -160,7 +158,7 @@ public class StringUtil {
 			return i;
 		}
 
-		return i;
+		return snippets.length - 1;
 	}
 
 	public static boolean endsWith(String s, String end) {
