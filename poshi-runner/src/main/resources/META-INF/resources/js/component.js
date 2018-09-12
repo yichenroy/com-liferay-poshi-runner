@@ -681,82 +681,87 @@ YUI.add(
 
 						var currentScope = instance.get(STR_CURRENT_SCOPE);
 
-						if (currentScope) {
-							var sidebar = instance.get(STR_SIDEBAR);
+						if (!currentScope) {
+							return;
+						}
 
-							var scopeNames = currentScope.all('> .line-container .name');
-							var scopeTypes = currentScope.all('> .line-container .tag-type');
+						var sidebar = instance.get(STR_SIDEBAR);
 
-							if ((scopeNames.size() > 0) && (scopeTypes.size() > 0)) {
-								var scopeName = scopeNames.first();
+						var scopeNames = currentScope.all('> .line-container .name');
+						var scopeTypes = currentScope.all('> .line-container .tag-type');
 
-								scopeName = scopeName.html();
+						if ((scopeNames.size() == 0) || (scopeTypes.size() == 0)) {
+							return;
+						}
 
-								var scopeType = scopeTypes.first();
+						var scopeName = scopeNames.first();
 
-								scopeType = scopeType.html();
+						scopeName = scopeName.html();
 
-								sidebar.one('.scope-type .scope-name').html(scopeName);
-								sidebar.one('.scope-type .title').html(scopeType);
+						var scopeType = scopeTypes.first();
 
-								var sidebarParameterList = sidebar.one('.parameter .parameter-list');
+						scopeType = scopeType.html();
 
-								sidebarParameterList.empty();
+						sidebar.one('.scope-type .scope-name').html(scopeName);
+						sidebar.one('.scope-type .title').html(scopeType);
 
-								var sidebarParameterTitle = sidebar.one('.parameter .title');
+						var sidebarParameterList = sidebar.one('.parameter .parameter-list');
 
-								sidebarParameterTitle.removeClass(CSS_HIDDEN);
+						sidebarParameterList.empty();
 
-								if (scopeType !== 'function' && scopeType !== 'macro') {
-									sidebarParameterTitle.addClass(CSS_HIDDEN);
-								}
-								else {
-									var buffer = [];
+						var sidebarParameterTitle = sidebar.one('.parameter .title');
 
-									if (scopeType === 'macro' || scopeType === 'function') {
-										var increment = 2;
-										var start = 0;
-										var valueIncrement = 1;
+						sidebarParameterTitle.removeClass(CSS_HIDDEN);
 
-										var paramCollection = currentScope.all('> .line-container .child-container .name');
+						if (scopeType !== 'function' && scopeType !== 'macro') {
+							sidebarParameterTitle.addClass(CSS_HIDDEN);
 
-										if (scopeType === 'function') {
-											increment = 1;
-											start = 1;
-											valueIncrement = 0;
+							return;
+						}
 
-											paramCollection = scopeNames;
+						var buffer = [];
+
+						if (scopeType === 'macro' || scopeType === 'function') {
+							var increment = 2;
+							var start = 0;
+							var valueIncrement = 1;
+
+							var paramCollection = currentScope.all('> .line-container .child-container .name');
+
+							if (scopeType === 'function') {
+								increment = 1;
+								start = 1;
+								valueIncrement = 0;
+
+								paramCollection = scopeNames;
+							}
+
+							var limit = paramCollection.size();
+
+							for (var i = start; i < limit; i += increment) {
+								buffer.push(
+									A.Lang.sub(
+										TPL_PARAMETER,
+										{
+											cssClass: 'parameter-name',
+											parameter: scopeTypes.item(i).html()
 										}
+									),
 
-										var limit = paramCollection.size();
-
-										for (var i = start; i < limit; i += increment) {
-											buffer.push(
-												A.Lang.sub(
-													TPL_PARAMETER,
-													{
-														cssClass: 'parameter-name',
-														parameter: scopeTypes.item(i).html()
-													}
-												),
-
-												A.Lang.sub(
-													TPL_PARAMETER,
-													{
-														cssClass: 'parameter-value',
-														parameter: scopeNames.item(i + valueIncrement).html()
-													}
-												)
-											);
+									A.Lang.sub(
+										TPL_PARAMETER,
+										{
+											cssClass: 'parameter-value',
+											parameter: scopeNames.item(i + valueIncrement).html()
 										}
-									}
-
-									buffer = buffer.join(STR_BLANK);
-
-									sidebarParameterList.append(buffer);
-								}
+									)
+								);
 							}
 						}
+
+						buffer = buffer.join(STR_BLANK);
+
+						sidebarParameterList.append(buffer);
 					},
 
 					_scopeCommandLog: function(node) {
