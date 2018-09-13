@@ -183,8 +183,8 @@ public abstract class PoshiElement
 
 		PoshiNode previousPoshiNode = null;
 
-		for (Iterator<PoshiNode> iterator =
-			 poshiNodes.iterator(); iterator.hasNext();) {
+		for (Iterator<PoshiNode> iterator = poshiNodes.iterator();
+			 iterator.hasNext();) {
 
 			PoshiNode poshiNode = iterator.next();
 
