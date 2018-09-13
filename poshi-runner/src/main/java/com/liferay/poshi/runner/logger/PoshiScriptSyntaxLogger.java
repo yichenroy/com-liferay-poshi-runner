@@ -46,7 +46,6 @@ public final class PoshiScriptSyntaxLogger extends SyntaxLogger {
 
 		closingLineContainerLoggerElement.setClassName("line-container");
 		closingLineContainerLoggerElement.setName("div");
-
 		closingLineContainerLoggerElement.setText("}");
 
 		return closingLineContainerLoggerElement;
@@ -142,7 +141,6 @@ public final class PoshiScriptSyntaxLogger extends SyntaxLogger {
 
 		loggerElement.addChildLoggerElement(
 			getChildContainerLoggerElement(element.element("then")));
-
 		loggerElement.addChildLoggerElement(
 			getClosingLineContainerLoggerElement());
 
