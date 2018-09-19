@@ -30,6 +30,7 @@ import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.lang.reflect.Method;
@@ -59,7 +60,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -1448,75 +1448,79 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _writeTestCSVReportFile() throws Exception {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("Namespace");
-		sb.append(",");
-		sb.append("Class Name");
-		sb.append(",");
-		sb.append("Command Name");
-
-		for (String propertyName : PropsValues.TEST_CSV_REPORT_PROPERTY_NAMES) {
-			sb.append(",");
-			sb.append(propertyName);
-		}
-
-		sb.append("\n");
-
-		for (String testCaseNamespacedClassCommandName :
-				_testCaseNamespacedClassCommandNames) {
-
-			Matcher matcher = _namespaceClassCommandNamePattern.matcher(
-				testCaseNamespacedClassCommandName);
-
-			if (!matcher.find()) {
-				throw new RuntimeException(
-					"Invalid namespaced class command name " +
-						testCaseNamespacedClassCommandName);
-			}
-
-			sb.append(matcher.group("namespace"));
-			sb.append(",");
-			sb.append(matcher.group("className"));
-			sb.append(",");
-			sb.append(matcher.group("commandName"));
-
-			Properties properties =
-				_namespacedClassCommandNamePropertiesMap.get(
-					testCaseNamespacedClassCommandName);
-
-			for (String propertyName :
-					PropsValues.TEST_CSV_REPORT_PROPERTY_NAMES) {
-
-				sb.append(",");
-
-				if (properties.containsKey(propertyName)) {
-					String propertyValue = properties.getProperty(propertyName);
-
-					if (propertyValue.contains(",")) {
-						sb.append("\"");
-						sb.append(propertyValue);
-						sb.append("\"");
-					}
-					else {
-						sb.append(propertyValue);
-					}
-				}
-			}
-
-			sb.append("\n");
-		}
-
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yyyy");
 
 		File reportCSVFile = new File(
 			StringUtil.combine(
 				"Report_", simpleDateFormat.format(new Date()), ".csv"));
 
-		try {
-			FileUtils.writeStringToFile(reportCSVFile, sb.toString());
+		try (FileWriter reportCSVFileWriter = new FileWriter(reportCSVFile)) {
+			List<String> reportLineItems = new ArrayList<>();
+
+			reportLineItems.add("Namespace");
+			reportLineItems.add("Class Name");
+			reportLineItems.add("Command Name");
+
+			for (String propertyName :
+					PropsValues.TEST_CSV_REPORT_PROPERTY_NAMES) {
+
+				reportLineItems.add(propertyName);
+			}
+
+			reportCSVFileWriter.write(StringUtils.join(reportLineItems, ","));
+
+			reportLineItems.clear();
+
+			for (String testCaseNamespacedClassCommandName :
+					_testCaseNamespacedClassCommandNames) {
+
+				Matcher matcher = _namespaceClassCommandNamePattern.matcher(
+					testCaseNamespacedClassCommandName);
+
+				if (!matcher.find()) {
+					throw new RuntimeException(
+						"Invalid namespaced class command name " +
+							testCaseNamespacedClassCommandName);
+				}
+
+				reportLineItems.add(matcher.group("namespace"));
+				reportLineItems.add(matcher.group("className"));
+				reportLineItems.add(matcher.group("commandName"));
+
+				Properties properties =
+					_namespacedClassCommandNamePropertiesMap.get(
+						testCaseNamespacedClassCommandName);
+
+				for (String propertyName :
+						PropsValues.TEST_CSV_REPORT_PROPERTY_NAMES) {
+
+					if (properties.containsKey(propertyName)) {
+						String propertyValue = properties.getProperty(
+							propertyName);
+
+						if (propertyValue.contains(",")) {
+							reportLineItems.add(
+								StringUtils.join(
+									ArrayUtils.toArray(
+										"\"", propertyValue, "\"")));
+						}
+						else {
+							reportLineItems.add(propertyValue);
+						}
+					}
+				}
+
+				reportCSVFileWriter.write(
+					"\n" + StringUtils.join(reportLineItems, ","));
+
+				reportLineItems.clear();
+			}
 		}
 		catch (IOException ioe) {
+			if (reportCSVFile.exists()) {
+				reportCSVFile.deleteOnExit();
+			}
+
 			throw new RuntimeException(ioe);
 		}
 	}
