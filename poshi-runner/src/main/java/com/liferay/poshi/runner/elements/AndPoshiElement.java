@@ -95,7 +95,7 @@ public class AndPoshiElement extends PoshiElement {
 	protected List<String> getPoshiScriptSnippets(String poshiScript) {
 		List<String> poshiScriptSnippets = new ArrayList<>();
 
-		for (String condition : poshiScript.split(" && ")) {
+		for (String condition : poshiScript.split("&&")) {
 			condition = getParentheticalContent(condition);
 
 			poshiScriptSnippets.add(condition);
