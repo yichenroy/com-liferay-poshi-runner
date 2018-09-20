@@ -16,6 +16,8 @@ package com.liferay.poshi.runner.elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -111,17 +113,14 @@ public class AndPoshiElement extends PoshiElement {
 
 		poshiScript = poshiScript.trim();
 
-		if (poshiScript.startsWith("!") || poshiScript.startsWith("else")) {
-			return false;
-		}
+		Matcher matcher = _conditionPattern.matcher(poshiScript);
 
-		if (poshiScript.contains(" && ")) {
-			return true;
-		}
-
-		return false;
+		return matcher.find();
 	}
 
 	private static final String _ELEMENT_NAME = "and";
+
+	private static final Pattern _conditionPattern = Pattern.compile(
+		"^(?!!|else)[\\s\\S]*&&[\\s\\S]*$", Pattern.DOTALL);
 
 }
