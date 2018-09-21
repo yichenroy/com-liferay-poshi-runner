@@ -15,7 +15,6 @@
 package com.liferay.poshi.runner.elements;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
@@ -81,18 +80,15 @@ public class IsSetPoshiElement extends PoshiElement {
 		return _POSHI_SCRIPT_KEYWORD;
 	}
 
+	@Override
+	protected Pattern getConditionPattern() {
+		return _conditionPattern;
+	}
+
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 
-		if (!isConditionValidInParent(parentPoshiElement)) {
-			return false;
-		}
-
-		poshiScript = poshiScript.trim();
-
-		Matcher matcher = _conditionPattern.matcher(poshiScript);
-
-		return matcher.find();
+		return isConditionElementType(parentPoshiElement, poshiScript);
 	}
 
 	private static final String _ELEMENT_NAME = "isset";
