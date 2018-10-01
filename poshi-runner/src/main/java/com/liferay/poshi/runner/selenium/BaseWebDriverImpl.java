@@ -2557,7 +2557,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		if (!PropsValues.BROWSER_TYPE.equals("safari")) {
 			timeouts.implicitlyWait(
-				GetterUtil.getInteger(timeout), TimeUnit.MILLISECONDS);
+				GetterUtil.getInteger(timeout), TimeUnit.SECONDS);
 		}
 	}
 
