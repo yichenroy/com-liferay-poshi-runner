@@ -113,14 +113,12 @@ public class ExecutePoshiElement extends PoshiElement {
 		if (executeType.equals("selenium")) {
 			List<String> methodParameters = getMethodParameters(content);
 
-			int i = 1;
+			for (int i = 0; i < methodParameters.size(); i++) {
+				String methodParameter = methodParameters.get(i);
 
-			for (String methodParameter : methodParameters) {
 				String value = getQuotedContent(methodParameter);
 
-				addAttribute("argument" + i, value);
-
-				i++;
+				addAttribute("argument" + ++i, value);
 			}
 
 			return;
