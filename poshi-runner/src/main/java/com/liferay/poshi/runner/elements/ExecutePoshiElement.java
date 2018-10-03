@@ -118,7 +118,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 				String value = getQuotedContent(methodParameter);
 
-				addAttribute("argument" + ++i, value);
+				addAttribute("argument" + (i + 1), value);
 			}
 
 			return;
