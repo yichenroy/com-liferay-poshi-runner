@@ -207,7 +207,7 @@ public class PoshiElementFactoryTest {
 
 		_assertEqualElements(
 			actualElement, expectedElement,
-			"Poshi XML syntax does not translate to XML.");
+			"Poshi XML syntax does not translate to XML");
 	}
 
 	private static void _assertEqualElements(
