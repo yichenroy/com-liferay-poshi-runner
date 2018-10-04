@@ -104,7 +104,7 @@ public class VarPoshiElement extends PoshiElement {
 		}
 
 		if (value.startsWith("new ")) {
-			addAttribute("from", getQuotedContent(value));
+			addAttribute("from", getDoubleQuotedContent(value));
 
 			value = value.replace("new ", "");
 
@@ -118,7 +118,7 @@ public class VarPoshiElement extends PoshiElement {
 		}
 
 		if (value.endsWith("\"") && value.startsWith("\"")) {
-			value = getQuotedContent(value);
+			value = getDoubleQuotedContent(value);
 
 			if (value.endsWith("}") && value.startsWith("${")) {
 				String bracedContent = getBracedContent(value);
@@ -217,7 +217,7 @@ public class VarPoshiElement extends PoshiElement {
 
 					value = value.replace(innerValue, newInnerValue);
 
-					value = quoteContent(value);
+					value = doubleQuoteContent(value);
 				}
 				else if (attribute("index") != null) {
 					String innerValue = getBracedContent(value);
@@ -227,7 +227,7 @@ public class VarPoshiElement extends PoshiElement {
 
 					value = value.replace(innerValue, newInnerValue);
 
-					value = quoteContent(value);
+					value = doubleQuoteContent(value);
 				}
 				else if (attribute("type") != null) {
 					value = StringUtil.combine(
@@ -251,7 +251,7 @@ public class VarPoshiElement extends PoshiElement {
 			else {
 				value = StringEscapeUtils.escapeXml10(value);
 
-				value = quoteContent(value);
+				value = doubleQuoteContent(value);
 			}
 		}
 
@@ -364,10 +364,10 @@ public class VarPoshiElement extends PoshiElement {
 				parameter = parameter.replace("\\\'", "'");
 				parameter = parameter.replace("\"", "&quot;");
 
-				parameter = quoteContent(parameter);
+				parameter = doubleQuoteContent(parameter);
 			}
 			else {
-				parameter = getQuotedContent(parameter);
+				parameter = getDoubleQuotedContent(parameter);
 
 				parameter = parameter.replace("'", "\\\'");
 				parameter = parameter.replace("&quot;", "\"");

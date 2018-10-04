@@ -47,12 +47,12 @@ public class ArgPoshiElement extends PoshiElement {
 
 	@Override
 	public void parsePoshiScript(String poshiScript) {
-		addAttribute("value", getQuotedContent(poshiScript));
+		addAttribute("value", getDoubleQuotedContent(poshiScript));
 	}
 
 	@Override
 	public String toPoshiScript() {
-		return quoteContent(attributeValue("value"));
+		return doubleQuoteContent(attributeValue("value"));
 	}
 
 	protected ArgPoshiElement() {
