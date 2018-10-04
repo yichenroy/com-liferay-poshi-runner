@@ -778,6 +778,10 @@ public abstract class PoshiElement
 		return "\"" + content + "\"";
 	}
 
+	protected String singleQuoteContent(String content) {
+		return "'" + content + "'";
+	}
+
 	protected List<PoshiElementAttribute> toPoshiElementAttributes(
 		List<?> list) {
 
