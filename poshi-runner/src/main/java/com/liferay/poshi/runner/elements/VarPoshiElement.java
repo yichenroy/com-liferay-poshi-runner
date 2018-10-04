@@ -328,6 +328,49 @@ public class VarPoshiElement extends PoshiElement {
 		}
 	}
 
+	protected String swapParameterQuotations(String parametersString) {
+		StringBuilder sb = new StringBuilder();
+
+		parametersString = parametersString.trim();
+
+		boolean singleQuote = false;
+
+		if (parametersString.endsWith("'") &&
+			parametersString.startsWith("'")) {
+
+			singleQuote = true;
+		}
+
+		List<String> parameters = getMethodParameters(parametersString);
+
+		for (String parameter : parameters) {
+			if (singleQuote) {
+				parameter = getSingleQuotedContent(parameter);
+
+				parameter = parameter.replace("\\\'", "'");
+				parameter = parameter.replace("\"", "&quot;");
+
+				parameter = quoteContent(parameter);
+			}
+			else {
+				parameter = getQuotedContent(parameter);
+
+				parameter = parameter.replace("'", "\\\'");
+				parameter = parameter.replace("&quot;", "\"");
+
+				parameter = singleQuoteContent(parameter);
+			}
+
+			sb.append(parameter);
+
+			sb.append(", ");
+		}
+
+		sb.setLength(sb.length() - 2);
+
+		return sb.toString();
+	}
+
 	protected String valueAttributeName;
 
 	private boolean _isElementType(String poshiScript) {
