@@ -81,7 +81,9 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			String parentheticalContent = getParentheticalContent(poshiScript);
 
-			add(PoshiNodeFactory.newPoshiNode(this, parentheticalContent));
+			for (String parameter : getMethodParameters(parentheticalContent)) {
+				add(PoshiNodeFactory.newPoshiNode(this, parameter));
+			}
 
 			return;
 		}
