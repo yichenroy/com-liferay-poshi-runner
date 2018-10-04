@@ -160,6 +160,13 @@ public class VarPoshiElement extends PoshiElement {
 		if (isValidUtilityClassName(value) || value.startsWith("selenium.")) {
 			value = value.replaceFirst("\\.", "#");
 
+			String content = getParentheticalContent(value);
+
+			if (!content.equals("")) {
+				value = value.replace(
+					content, swapParameterQuotations(content));
+			}
+
 			addAttribute("method", value);
 		}
 	}
@@ -232,6 +239,13 @@ public class VarPoshiElement extends PoshiElement {
 					value.startsWith("selenium#")) {
 
 					value = value.replaceFirst("#", ".");
+
+					String content = getParentheticalContent(value);
+
+					if (!content.equals("")) {
+						value = value.replace(
+							content, swapParameterQuotations(content));
+					}
 				}
 			}
 			else {
