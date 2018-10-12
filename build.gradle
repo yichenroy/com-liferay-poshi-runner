@@ -12,4 +12,5 @@ buildscript {
 	}
 }
 
+
 apply plugin: "com.liferay.root.defaults.plugin"
