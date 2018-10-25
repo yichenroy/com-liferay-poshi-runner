@@ -129,7 +129,7 @@ Sets the path to a file of a log file to be evaluated. This is generally used mo
 Sets the path to the log file containing the shutdown process of an application server.
 
 ### test.csv.report.property.names
-If this property is set, then a CSV report file will be generated. This property contains a comma-delimited list of poshi properties that will be attributed to each individual test within the CSV report.
+If this property is set, then a CSV report file will be generated. This property contains a comma-delimited list of Poshi properties that will be attributed to each individual test within the CSV report.
 
 ### test.dependencies.dir.name
 Sets the path to a directory that contains dependency files used for Poshi tests.
