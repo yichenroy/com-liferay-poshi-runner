@@ -59,9 +59,9 @@ public class ExecutePoshiElement extends PoshiElement {
 		throws PoshiScriptParserException {
 
 		String executeType = "macro";
-		String fileType = getFileType();
+		String fileExtension = getFileExtension();
 
-		if (fileType.equals("function")) {
+		if (fileExtension.equals("function")) {
 			executeType = "function";
 
 			if (poshiScript.startsWith("selenium.")) {
@@ -203,9 +203,9 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			String fileType = getFileType();
+			String fileExtension = getFileExtension();
 
-			if (fileType.equals("function")) {
+			if (fileExtension.equals("function")) {
 				String poshiElementAttributeValue =
 					poshiElementAttribute.getValue();
 

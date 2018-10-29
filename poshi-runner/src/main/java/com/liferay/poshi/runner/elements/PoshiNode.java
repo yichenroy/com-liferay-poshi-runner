@@ -33,16 +33,16 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 
 	public B clone(String poshiScript) throws PoshiScriptParserException;
 
+	public default String getFileExtension() {
+		PoshiNode parentPoshiNode = (PoshiNode)getParent();
+
+		return parentPoshiNode.getFileExtension();
+	}
+
 	public default String getFilePath() {
 		PoshiNode parentPoshiNode = (PoshiNode)getParent();
 
 		return parentPoshiNode.getFilePath();
-	}
-
-	public default String getFileType() {
-		PoshiNode parentPoshiNode = (PoshiNode)getParent();
-
-		return parentPoshiNode.getFileType();
 	}
 
 	public String getPoshiScript();

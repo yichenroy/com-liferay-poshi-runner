@@ -62,16 +62,16 @@ public class DefinitionPoshiElement extends PoshiElement {
 		return null;
 	}
 
-	public String getFilePath() {
-		return _filePath;
-	}
-
-	public String getFileType() {
+	public String getFileExtension() {
 		String filePath = getFilePath();
 
 		int index = filePath.lastIndexOf(".");
 
 		return filePath.substring(index + 1);
+	}
+
+	public String getFilePath() {
+		return _filePath;
 	}
 
 	@Override
@@ -159,11 +159,13 @@ public class DefinitionPoshiElement extends PoshiElement {
 	}
 
 	protected String getPoshiScriptKeyword() {
-		if (getFileType().equals("testcase")) {
+		String fileExtension = getFileExtension();
+
+		if (fileExtension.equals("testcase")) {
 			return "test";
 		}
 
-		return getFileType();
+		return fileExtension;
 	}
 
 	protected boolean isElementType(String poshiScript) {
