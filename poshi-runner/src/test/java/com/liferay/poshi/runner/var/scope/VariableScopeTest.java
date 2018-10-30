@@ -39,6 +39,11 @@ public class VariableScopeTest extends PoshiRunnerTestCase {
 		runPoshiTest("VariableScope#RootVarInheritance");
 	}
 
+	@Test
+	public void testAssertStaticTestVarInheritance() throws Exception {
+		runPoshiTest("VariableScope#TestCaseStaticVarInheritance");
+	}
+
 	private static final String _TEST_BASE_DIR_NAME =
 		"src/test/resources/com/liferay/poshi/runner/dependencies/var/scope";
 
