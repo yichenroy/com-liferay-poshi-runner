@@ -28,6 +28,12 @@
 		</execute>
 	</command>
 
+	<command name="MacroStaticVarInheritance">
+		<execute macro="MacroVar#setStaticVar" />
+
+		<execute macro="MacroVar#callStaticVar" />
+	</command>
+
 	<command name="RootVarInheritance">
 		<execute macro="RootVar#assertRootVar" />
 

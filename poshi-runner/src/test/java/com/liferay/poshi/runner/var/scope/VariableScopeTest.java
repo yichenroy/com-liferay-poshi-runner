@@ -40,6 +40,11 @@ public class VariableScopeTest extends PoshiRunnerTestCase {
 	}
 
 	@Test
+	public void testAssertStaticMacroVarInheritance() throws Exception {
+		runPoshiTest("VariableScope#MacroStaticVarInheritance");
+	}
+
+	@Test
 	public void testAssertStaticTestVarInheritance() throws Exception {
 		runPoshiTest("VariableScope#TestCaseStaticVarInheritance");
 	}
