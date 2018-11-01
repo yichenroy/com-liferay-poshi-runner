@@ -405,8 +405,12 @@ public class VarPoshiElement extends PoshiElement {
 
 	private static final String _ELEMENT_NAME = "var";
 
+	private static final String _VAR_VALUE_REGEX =
+		"(\".*?\"|'''.*?'''|(new[\\s]*|)[\\w\\.]*\\(.*?\\))";
+
 	private static final Pattern _statementPattern = Pattern.compile(
-		"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + ".*" + STATEMENT_END_REGEX,
+		"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + _VAR_VALUE_REGEX +
+			STATEMENT_END_REGEX,
 		Pattern.DOTALL);
 
 }
