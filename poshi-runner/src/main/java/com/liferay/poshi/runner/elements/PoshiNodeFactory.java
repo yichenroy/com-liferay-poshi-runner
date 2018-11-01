@@ -91,8 +91,8 @@ public abstract class PoshiNodeFactory {
 			throw pspe;
 		}
 
-		throw new RuntimeException(
-			"Unknown Poshi script syntax\n" + poshiScript);
+		throw new PoshiScriptParserException(
+			"Invalid Poshi Script syntax", poshiScript, parentPoshiNode);
 	}
 
 	public static PoshiNode<?, ?> newPoshiNode(String poshiScript, File file) {
