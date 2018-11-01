@@ -67,39 +67,45 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 				continue;
 			}
 
-			if (poshiNode.equals(this)) {
-				if (previousPoshiNode == null) {
-					String parentPoshiScript =
-						parentPoshiElement.getPoshiScript();
+			if (!poshiNode.equals(this)) {
+				previousPoshiNode = poshiNode;
 
-					Matcher poshiScriptBlockMatcher =
-						PoshiElement.poshiScriptBlockPattern.matcher(
-							parentPoshiScript);
-
-					if (poshiScriptBlockMatcher.find()) {
-						String blockName = parentPoshiElement.getBlockName(
-							parentPoshiScript);
-
-						return parentPoshiElement.getPoshiScriptLineNumber() +
-							StringUtil.count(blockName, "\n") +
-								StringUtil.countStartingNewLines(
-									getPoshiScript());
-					}
-
-					return parentPoshiElement.getPoshiScriptLineNumber();
+				if (iterator.hasNext()) {
+					continue;
 				}
-
-				String previousPoshiScript = previousPoshiNode.getPoshiScript();
-
-				String poshiScript = poshiNode.getPoshiScript();
-
-				return previousPoshiNode.getPoshiScriptLineNumber() -
-					StringUtil.countStartingNewLines(previousPoshiScript) +
-						StringUtil.countStartingNewLines(poshiScript) +
-							StringUtil.count(previousPoshiScript, "\n");
 			}
 
-			previousPoshiNode = poshiNode;
+			if (previousPoshiNode == null) {
+				String parentPoshiScript = parentPoshiElement.getPoshiScript();
+
+				Matcher poshiScriptBlockMatcher =
+					PoshiElement.poshiScriptBlockPattern.matcher(
+						parentPoshiScript);
+
+				if (poshiScriptBlockMatcher.find()) {
+					String blockName = parentPoshiElement.getBlockName(
+						parentPoshiScript);
+
+					return parentPoshiElement.getPoshiScriptLineNumber() +
+						StringUtil.count(blockName, "\n") +
+							StringUtil.countStartingNewLines(getPoshiScript());
+				}
+
+				return parentPoshiElement.getPoshiScriptLineNumber();
+			}
+
+			String previousPoshiScript = previousPoshiNode.getPoshiScript();
+
+			String poshiScript = poshiNode.getPoshiScript();
+
+			if (!iterator.hasNext()) {
+				poshiScript = getPoshiScript();
+			}
+
+			return previousPoshiNode.getPoshiScriptLineNumber() -
+				StringUtil.countStartingNewLines(previousPoshiScript) +
+					StringUtil.countStartingNewLines(poshiScript) +
+						StringUtil.count(previousPoshiScript, "\n");
 		}
 
 		return previousPoshiNode.getPoshiScriptLineNumber() +
