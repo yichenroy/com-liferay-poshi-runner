@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.script;
 
 import com.liferay.poshi.runner.elements.PoshiNode;
+import com.liferay.poshi.runner.util.StringUtil;
 
 /**
  * @author Kenji Heigel
@@ -34,6 +35,14 @@ public class PoshiScriptParserException extends Exception {
 		_poshiNode = poshiNode;
 	}
 
+	public PoshiScriptParserException(
+		String msg, String poshiScript, PoshiNode parentPoshiNode) {
+
+		super(_formatMessage(msg, poshiScript, parentPoshiNode));
+
+		_poshiNode = parentPoshiNode;
+	}
+
 	public PoshiScriptParserException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
@@ -47,23 +56,44 @@ public class PoshiScriptParserException extends Exception {
 	}
 
 	private static String _formatMessage(String msg, PoshiNode poshiNode) {
+		return _formatMessage(
+			msg, poshiNode.getFilePath(), poshiNode.getPoshiScriptLineNumber(),
+			poshiNode.getPoshiScript());
+	}
+
+	private static String _formatMessage(
+		String msg, String filePath, int lineNumber, String poshiScript) {
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(msg);
-
 		sb.append(" at:\n\t");
-		sb.append(poshiNode.getFilePath());
+		sb.append(filePath);
 		sb.append(":");
-		sb.append(poshiNode.getPoshiScriptLineNumber());
+		sb.append(lineNumber);
 		sb.append("\n\t[");
-
-		String poshiScript = poshiNode.getPoshiScript();
-
 		sb.append(poshiScript.trim());
 
 		sb.append("]");
 
 		return sb.toString();
+	}
+
+	private static String _formatMessage(
+		String msg, String poshiScript, PoshiNode parentPoshiNode) {
+
+		String parentPoshiScript = parentPoshiNode.getPoshiScript();
+
+		parentPoshiScript = parentPoshiScript.trim();
+
+		int index = parentPoshiScript.indexOf(poshiScript.trim());
+
+		int lineNumber =
+			parentPoshiNode.getPoshiScriptLineNumber() +
+				StringUtil.count(parentPoshiScript, "\n", index);
+
+		return _formatMessage(
+			msg, parentPoshiNode.getFilePath(), lineNumber, poshiScript);
 	}
 
 	private PoshiNode _poshiNode;
