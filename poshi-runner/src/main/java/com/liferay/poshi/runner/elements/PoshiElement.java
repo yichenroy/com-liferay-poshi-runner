@@ -189,7 +189,12 @@ public abstract class PoshiElement
 
 		setPoshiScript(poshiScript);
 
-		parsePoshiScript(poshiScript.trim());
+		try {
+			parsePoshiScript(poshiScript.trim());
+		}
+		catch (PoshiScriptParserException pspe) {
+			System.out.println(pspe.getMessage());
+		}
 
 		detach();
 	}

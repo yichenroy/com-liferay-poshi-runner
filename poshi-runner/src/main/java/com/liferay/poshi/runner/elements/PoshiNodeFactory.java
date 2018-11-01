@@ -73,22 +73,17 @@ public abstract class PoshiNodeFactory {
 
 		PoshiNode<?, ?> newPoshiNode = null;
 
-		try {
-			newPoshiNode = _newPoshiComment(poshiScript);
+		newPoshiNode = _newPoshiComment(poshiScript);
 
-			if (newPoshiNode != null) {
-				return newPoshiNode;
-			}
-
-			newPoshiNode = _newPoshiElement(
-				(PoshiElement)parentPoshiNode, poshiScript);
-
-			if (newPoshiNode != null) {
-				return newPoshiNode;
-			}
+		if (newPoshiNode != null) {
+			return newPoshiNode;
 		}
-		catch (PoshiScriptParserException pspe) {
-			throw pspe;
+
+		newPoshiNode = _newPoshiElement(
+			(PoshiElement)parentPoshiNode, poshiScript);
+
+		if (newPoshiNode != null) {
+			return newPoshiNode;
 		}
 
 		throw new PoshiScriptParserException(
@@ -101,10 +96,8 @@ public abstract class PoshiNodeFactory {
 				return _definitionPoshiElement.clone(poshiScript, file);
 			}
 		}
-		catch (Exception e) {
-			System.out.println("Unable to generate the Poshi XML");
-
-			e.printStackTrace();
+		catch (PoshiScriptParserException pspe) {
+			System.out.println(pspe.getMessage());
 		}
 
 		return null;
