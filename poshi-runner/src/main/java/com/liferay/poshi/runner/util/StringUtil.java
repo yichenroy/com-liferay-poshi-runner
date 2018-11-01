@@ -121,6 +121,10 @@ public class StringUtil {
 	}
 
 	public static int count(String s, String text) {
+		return count(s, text, s.length());
+	}
+
+	public static int count(String s, String text, int index) {
 		if ((s == null) || (s.length() == 0) || (text == null) ||
 			(text.length() == 0)) {
 
@@ -131,7 +135,7 @@ public class StringUtil {
 
 		int pos = s.indexOf(text);
 
-		while (pos != -1) {
+		while ((pos != -1) && (pos < index)) {
 			pos = s.indexOf(text, pos + text.length());
 
 			count++;
