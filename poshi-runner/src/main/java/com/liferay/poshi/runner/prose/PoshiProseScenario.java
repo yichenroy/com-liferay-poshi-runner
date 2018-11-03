@@ -116,7 +116,10 @@ public class PoshiProseScenario extends BasePoshiProse {
 
 		for (Map.Entry<String, String> entry : _tagMap.entrySet()) {
 			commandElement.add(
-				new DefaultAttribute(entry.getKey(), entry.getValue()));
+				Dom4JUtil.getNewElement(
+					"property", null,
+					new DefaultAttribute("name", entry.getKey()),
+					new DefaultAttribute("value", entry.getValue())));
 		}
 
 		for (PoshiProseStatement poshiProseStatement : _poshiProseStatements) {
