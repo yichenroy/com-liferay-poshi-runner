@@ -25,4 +25,29 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		super(browserURL, webDriver);
 	}
 
+	@Override
+	public String getSelectedLabel(String selectLocator, String timeout) {
+		String text = super.getSelectedLabel(selectLocator, timeout);
+
+		return text.trim();
+	}
+
+	@Override
+	public String[] getSelectedLabels(String selectLocator) {
+		String[] selectedLabels = super.getSelectedLabels(selectLocator);
+
+		for (int i = 0; i < selectedLabels.length; i++) {
+			selectedLabels[i] = selectedLabels[i].trim();
+		}
+
+		return selectedLabels;
+	}
+
+	@Override
+	public String getText(String locator, String timeout) throws Exception {
+		String text = super.getText(locator, timeout);
+
+		return text.trim();
+	}
+
 }
