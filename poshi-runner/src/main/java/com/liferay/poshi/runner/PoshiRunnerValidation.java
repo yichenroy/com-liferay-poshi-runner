@@ -55,8 +55,8 @@ public class PoshiRunnerValidation {
 
 		if (PoshiScriptParserException.getExceptionCount() > 0) {
 			throw new RuntimeException(
-				PoshiScriptParserException.getExceptionCount() +
-					" Poshi Script parsing errors found");
+				"Found " + PoshiScriptParserException.getExceptionCount() +
+					" Poshi Script parsing errors");
 		}
 
 		validate();
