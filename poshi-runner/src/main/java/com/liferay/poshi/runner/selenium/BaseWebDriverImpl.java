@@ -3801,6 +3801,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		return point.getY();
 	}
 
+	protected Stack<WebElement> getFrameWebElements() {
+		return _frameWebElements;
+	}
+
 	protected ImageTarget getImageTarget(String image) throws Exception {
 		String filePath =
 			FileUtil.getSeparator() + getSikuliImagesDirName() + image;
