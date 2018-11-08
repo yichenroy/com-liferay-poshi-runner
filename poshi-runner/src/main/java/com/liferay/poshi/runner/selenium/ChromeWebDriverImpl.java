@@ -14,7 +14,10 @@
 
 package com.liferay.poshi.runner.selenium;
 
+import java.util.Stack;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Brian Wing Shun Chan
@@ -48,6 +51,36 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		String text = super.getText(locator, timeout);
 
 		return text.trim();
+	}
+
+	protected WebElement getWebElement(String locator, String timeout) {
+		try {
+			return super.getWebElement(locator, timeout);
+		}
+		catch (RuntimeException re) {
+			Stack<WebElement> frameWebElements = getFrameWebElements();
+
+			if (!frameWebElements.isEmpty()) {
+				if (frameWebElements.peek() instanceof RetryWebElementImpl) {
+					RetryWebElementImpl frameWebElement =
+						(RetryWebElementImpl)frameWebElements.peek();
+
+					String frameWebElementLocator =
+						frameWebElement.getLocator();
+
+					frameWebElements.pop();
+
+					frameWebElements.push(
+						getWebElement(frameWebElementLocator));
+
+					WebDriver.TargetLocator targetLocator = switchTo();
+
+					targetLocator.frame(frameWebElements.peek());
+				}
+			}
+
+			throw re;
+		}
 	}
 
 }
