@@ -5,6 +5,12 @@ Below are the list of properties that are available in [poshi-runner.properties]
 ### accessibility.standards.json
 Sets a JSON string that will determine accessibility rule evaluation while using the _assertAccessible_ Selenium method. See more information for rule formation at: [https://axe-core.org/docs/](https://axe-core.org/docs/)
 
+### browser.chrome.bin.args
+Sets the arguments to be passed to the Chrome binary.
+
+### browser.chrome.bin.file
+Sets the path of a Chrome binary so that a particular binary can be used in WebDriver. Useful if there are multiple Chrome installations on a machine. WebDriver will use this binary file when executing tests.
+
 ### browser.firefox.bin.file
 Sets the path of a Firefox binary so that a particular binary can be used in WebDriver. Useful if there are multiple Firefox installations on a machine. WebDriver will use this binary file when executing tests.
 
