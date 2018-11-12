@@ -144,9 +144,11 @@ public class PoshiRunner {
 	@Before
 	public void setUp() throws Exception {
 		System.out.println();
+		System.out.println();
 		System.out.println("###");
 		System.out.println("### " + _testNamespacedClassCommandName);
 		System.out.println("###");
+		System.out.println();
 		System.out.println();
 
 		PoshiRunnerContext.setTestCaseNamespacedClassCommandName(
