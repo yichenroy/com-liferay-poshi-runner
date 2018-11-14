@@ -60,6 +60,7 @@ public class PoshiRunner {
 	public static List<String> getList() throws Exception {
 		List<String> namespacedClassCommandNames = new ArrayList<>();
 
+
 		List<String> testNames = Arrays.asList(
 			PropsValues.TEST_NAME.split("\\s*,\\s*"));
 
@@ -144,9 +145,11 @@ public class PoshiRunner {
 	@Before
 	public void setUp() throws Exception {
 		System.out.println();
+		System.out.println();
 		System.out.println("###");
 		System.out.println("### " + _testNamespacedClassCommandName);
 		System.out.println("###");
+		System.out.println();
 		System.out.println();
 
 		PoshiRunnerContext.setTestCaseNamespacedClassCommandName(
