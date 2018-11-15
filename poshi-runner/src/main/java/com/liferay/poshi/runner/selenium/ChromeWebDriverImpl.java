@@ -15,8 +15,12 @@
 package com.liferay.poshi.runner.selenium;
 
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -26,6 +30,48 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 
 	public ChromeWebDriverImpl(String browserURL, WebDriver webDriver) {
 		super(browserURL, webDriver);
+	}
+
+	@Override
+	public void click(String locator) {
+		try {
+			super.click(locator);
+		}
+		catch (WebDriverException wde) {
+			String message = wde.getMessage();
+
+			Matcher matcher = _elementNotClickableErrorPattern.matcher(message);
+
+			if (matcher.find()) {
+				javaScriptClick(locator);
+
+				return;
+			}
+
+			throw new ElementNotInteractableException(message, wde);
+		}
+	}
+
+	@Override
+	public void clickAt(
+		String locator, String coordString, boolean scrollIntoView) {
+
+		try {
+			super.clickAt(locator, coordString, scrollIntoView);
+		}
+		catch (WebDriverException wde) {
+			String message = wde.getMessage();
+
+			Matcher matcher = _elementNotClickableErrorPattern.matcher(message);
+
+			if (matcher.find()) {
+				javaScriptClick(locator);
+
+				return;
+			}
+
+			throw new ElementNotInteractableException(message, wde);
+		}
 	}
 
 	@Override
@@ -82,5 +128,10 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 			throw re;
 		}
 	}
+
+	private static final Pattern _elementNotClickableErrorPattern =
+		Pattern.compile(
+			"Element[\\s\\S]*is not clickable at point[\\s\\S]*" +
+				"Other element would receive the click");
 
 }
