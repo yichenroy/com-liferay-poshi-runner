@@ -99,6 +99,28 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		return text.trim();
 	}
 
+	@Override
+	public void typeKeys(String locator, String value) {
+		try {
+			super.typeKeys(locator, value);
+		}
+		catch (WebDriverException wde) {
+			String message = wde.getMessage();
+
+			Matcher matcher = _cannotFocusElementErrorPattern.matcher(message);
+
+			if (matcher.find()) {
+				click(locator);
+
+				super.typeKeys(locator, value);
+
+				return;
+			}
+
+			throw new ElementNotInteractableException(message, wde);
+		}
+	}
+
 	protected WebElement getWebElement(String locator, String timeout) {
 		try {
 			return super.getWebElement(locator, timeout);
@@ -129,6 +151,8 @@ public class ChromeWebDriverImpl extends BaseWebDriverImpl {
 		}
 	}
 
+	private static final Pattern _cannotFocusElementErrorPattern =
+		Pattern.compile("cannot focus element");
 	private static final Pattern _elementNotClickableErrorPattern =
 		Pattern.compile(
 			"Element[\\s\\S]*is not clickable at point[\\s\\S]*" +
