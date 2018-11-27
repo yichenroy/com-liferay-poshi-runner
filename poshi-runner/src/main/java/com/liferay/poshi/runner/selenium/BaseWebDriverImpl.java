@@ -391,12 +391,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			return;
 		}
 
-		String location = getLocation();
-
-		if (!location.contains("localhost")) {
-			return;
-		}
-
 		String pageSource = null;
 
 		try {
