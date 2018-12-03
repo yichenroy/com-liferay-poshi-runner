@@ -1590,7 +1590,7 @@ public class PoshiRunnerContext {
 	private static final Map<String, String> _pathLocators = new HashMap<>();
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
-			"([\\-\\.]\\w+)*)\\-(?<timestamp>\\d+)\\-(?<sha>\\w+)\\.jar.*");
+			"([\\-\\.]\\w+)*)\\-.*?\\.jar.*");
 	private static final Map<String, Element> _rootElements = new HashMap<>();
 	private static final Map<String, List<Element>> _rootVarElements =
 		new HashMap<>();
