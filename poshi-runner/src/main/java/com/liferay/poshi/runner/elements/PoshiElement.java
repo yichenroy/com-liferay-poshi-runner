@@ -29,7 +29,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -392,6 +394,56 @@ public abstract class PoshiElement
 		name = name.replace("property ", "");
 
 		return name.replace("var ", "");
+	}
+
+	protected List<String> getNestedConditions(
+		String poshiScript, String operator) {
+
+		List<String> nestedConditions = new ArrayList<>();
+
+		Set<Integer> tokenIndices = new TreeSet<>();
+
+		int index = poshiScript.indexOf(operator);
+
+		while (index >= 0) {
+			tokenIndices.add(index);
+
+			index = poshiScript.indexOf(operator, index + 1);
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		char[] chars = poshiScript.toCharArray();
+
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
+
+			if (tokenIndices.contains(i)) {
+				if (isBalancedPoshiScript(sb.toString())) {
+					nestedConditions.add(sb.toString());
+
+					sb.setLength(0);
+
+					i++;
+
+					continue;
+				}
+			}
+
+			if (i == (chars.length - 1)) {
+				sb.append(c);
+
+				if (isBalancedPoshiScript(sb.toString()) &&
+					!nestedConditions.isEmpty()) {
+
+					nestedConditions.add(sb.toString());
+				}
+			}
+
+			sb.append(c);
+		}
+
+		return nestedConditions;
 	}
 
 	protected String getPad() {
