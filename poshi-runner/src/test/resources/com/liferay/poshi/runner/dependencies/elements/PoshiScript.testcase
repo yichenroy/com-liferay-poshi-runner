@@ -32,6 +32,10 @@ definition {
 		/*This is a multiline
 			comment.*/
 
+		// End with a ;
+
+		// End with a }
+
 		property portal.release = "false";
 		var specialCharacters = "&quot;\&quot;";
 		var userEmailAddress = "userea@liferay.com";

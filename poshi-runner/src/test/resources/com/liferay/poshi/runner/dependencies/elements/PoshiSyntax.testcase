@@ -29,6 +29,10 @@
 		<!--This is a multiline
 			comment.-->
 
+		<!-- End with a ; -->
+
+		<!-- End with a } -->
+
 		<property name="portal.release" value="false" />
 
 		<var name="specialCharacters" value="&quot;\&quot;" />
