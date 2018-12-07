@@ -218,6 +218,26 @@
 			</then>
 		</if>
 
+		<if>
+			<or>
+				<and>
+					<isset var="A" />
+					<isset var="B" />
+				</and>
+				<and>
+					<not>
+						<isset var="B" />
+					</not>
+					<not>
+						<isset var="A" />
+					</not>
+				</and>
+			</or>
+			<then>
+				<fail message="${failMessage}" />
+			</then>
+		</if>
+
 		<execute macro="TestCase#getSiteName">
 			<return name="siteName" />
 			<var name="siteName" value="${siteName}" />
