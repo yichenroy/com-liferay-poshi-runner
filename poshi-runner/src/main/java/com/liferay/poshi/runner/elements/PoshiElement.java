@@ -979,7 +979,8 @@ public abstract class PoshiElement
 		}
 
 		if (poshiScript.contains("//")) {
-			poshiScript = poshiScript.replaceAll("(?s)\n[\\s]*//.*?\n", "//\n");
+			poshiScript = poshiScript.replaceAll(
+				"(?s)\n[\\s]*//.*?(\n|$)", "//\n");
 		}
 
 		return poshiScript.trim();
