@@ -92,13 +92,26 @@ public abstract class PoshiNodeFactory {
 			"Invalid Poshi Script syntax", poshiScript, parentPoshiNode);
 	}
 
-	public static PoshiNode<?, ?> newPoshiNode(String poshiScript, File file) {
+	public static PoshiNode<?, ?> newPoshiNode(String content, File file) {
 		try {
-			if (_definitionPoshiElement.isBalancedPoshiScript(
-					poshiScript, true)) {
+			content = content.trim();
 
-				return _definitionPoshiElement.clone(poshiScript, file);
+			if (content.startsWith("<definition")) {
+				Document document = Dom4JUtil.parse(content);
+
+				Element rootElement = document.getRootElement();
+
+				return _definitionPoshiElement.clone(rootElement, file);
 			}
+
+			if (_definitionPoshiElement.isBalancedPoshiScript(content, true)) {
+				return _definitionPoshiElement.clone(content, file);
+			}
+		}
+		catch (DocumentException de) {
+			throw new RuntimeException(
+				"Unable to parse Poshi XML file: " + file.getAbsolutePath(),
+				de.getCause());
 		}
 		catch (PoshiScriptParserException pspe) {
 			if (pspe instanceof UnbalancedCodeException) {
@@ -117,21 +130,7 @@ public abstract class PoshiNodeFactory {
 
 			String content = FileUtil.read(file);
 
-			content = content.trim();
-
-			if (content.startsWith("<definition")) {
-				Document document = Dom4JUtil.parse(content);
-
-				Element rootElement = document.getRootElement();
-
-				return _definitionPoshiElement.clone(rootElement, file);
-			}
-
 			return newPoshiNode(content, file);
-		}
-		catch (DocumentException de) {
-			throw new RuntimeException(
-				"Unable to parse Poshi XML file: " + filePath, de.getCause());
 		}
 		catch (IOException ioe) {
 			throw new RuntimeException(
