@@ -105,13 +105,33 @@ public abstract class PoshiNodeFactory {
 			}
 
 			if (_definitionPoshiElement.isBalancedPoshiScript(content, true)) {
-				return _definitionPoshiElement.clone(content, file);
+				PoshiElement poshiElement = _definitionPoshiElement.clone(
+					content, file);
+
+				String poshiXMLString = Dom4JUtil.format(poshiElement);
+
+				PoshiNode newPoshiElement = newPoshiNode(poshiXMLString, file);
+
+				String newPoshiScript = newPoshiElement.toPoshiScript();
+
+				String poshiScript = FileUtil.read(file);
+
+				newPoshiScript = newPoshiScript.replaceAll("\\s+", "");
+				poshiScript = poshiScript.replaceAll("\\s+", "");
+
+				if (!poshiScript.equals(newPoshiScript)) {
+					throw new PoshiScriptParserException(
+						"Data loss has occurred while parsing Poshi Script",
+						newPoshiElement);
+				}
+
+				return poshiElement;
 			}
 		}
-		catch (DocumentException de) {
+		catch (DocumentException | IOException e) {
 			throw new RuntimeException(
 				"Unable to parse Poshi XML file: " + file.getAbsolutePath(),
-				de.getCause());
+				e.getCause());
 		}
 		catch (PoshiScriptParserException pspe) {
 			if (pspe instanceof UnbalancedCodeException) {
