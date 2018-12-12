@@ -108,21 +108,8 @@ public abstract class PoshiNodeFactory {
 				PoshiElement poshiElement = _definitionPoshiElement.clone(
 					content, file);
 
-				String poshiXMLString = Dom4JUtil.format(poshiElement);
-
-				PoshiNode newPoshiElement = newPoshiNode(poshiXMLString, file);
-
-				String newPoshiScript = newPoshiElement.toPoshiScript();
-
-				String poshiScript = FileUtil.read(file);
-
-				newPoshiScript = newPoshiScript.replaceAll("\\s+", "");
-				poshiScript = poshiScript.replaceAll("\\s+", "");
-
-				if (!poshiScript.equals(newPoshiScript)) {
-					throw new PoshiScriptParserException(
-						"Data loss has occurred while parsing Poshi Script",
-						newPoshiElement);
+				if (!hasPoshiScriptParserException(file)) {
+					validatePoshiScriptContent(poshiElement, file);
 				}
 
 				return poshiElement;
@@ -155,6 +142,38 @@ public abstract class PoshiNodeFactory {
 		catch (IOException ioe) {
 			throw new RuntimeException(
 				"Unable to read file: " + filePath, ioe.getCause());
+		}
+	}
+
+	protected static boolean hasPoshiScriptParserException(File file) {
+		List<String> failingFilePaths =
+			PoshiScriptParserException.getFailingFilePaths();
+
+		return failingFilePaths.contains(file.getAbsolutePath());
+	}
+
+	protected static void validatePoshiScriptContent(
+			PoshiElement poshiElement, File file)
+		throws DocumentException, IOException, PoshiScriptParserException {
+
+		String poshiXMLString = Dom4JUtil.format(poshiElement);
+
+		PoshiNode newPoshiElement = newPoshiNode(poshiXMLString, file);
+
+		String newPoshiScript = newPoshiElement.toPoshiScript();
+
+		String poshiScript = FileUtil.read(file);
+
+		poshiScript = poshiScript.replaceAll("\\s+", "");
+
+		if (!poshiScript.equals(newPoshiScript.replaceAll("\\s+", ""))) {
+			PoshiScriptParserException pspe = new PoshiScriptParserException(
+				"Data loss has occurred while parsing Poshi Script",
+				newPoshiElement);
+
+			pspe.setErrorDetails(newPoshiScript);
+
+			throw pspe;
 		}
 	}
 
