@@ -17,19 +17,20 @@ package com.liferay.poshi.runner.script;
 import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.util.StringUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Kenji Heigel
  */
 public class PoshiScriptParserException extends Exception {
 
-	public static int getExceptionCount() {
-		return exceptionCount;
+	public static List<String> getFailingFilePaths() {
+		return failingFilePaths;
 	}
 
 	public PoshiScriptParserException(String msg) {
 		super(msg);
-
-		exceptionCount++;
 	}
 
 	public PoshiScriptParserException(String msg, PoshiNode poshiNode) {
@@ -38,8 +39,6 @@ public class PoshiScriptParserException extends Exception {
 		setErrorDetails(poshiNode.getPoshiScript());
 		setFilePath(poshiNode.getFilePath());
 		setLineNumber(poshiNode.getPoshiScriptLineNumber());
-
-		exceptionCount++;
 	}
 
 	public PoshiScriptParserException(
@@ -62,8 +61,6 @@ public class PoshiScriptParserException extends Exception {
 				StringUtil.count(parentPoshiScript, "\n", index);
 
 		setLineNumber(lineNumber);
-
-		exceptionCount++;
 	}
 
 	public String getErrorDetails() {
@@ -99,13 +96,15 @@ public class PoshiScriptParserException extends Exception {
 
 	public void setFilePath(String filePath) {
 		_filePath = filePath;
+
+		failingFilePaths.add(filePath);
 	}
 
 	public void setLineNumber(int lineNumber) {
 		_lineNumber = lineNumber;
 	}
 
-	protected static int exceptionCount;
+	protected static List<String> failingFilePaths = new ArrayList<>();
 
 	private String _errorDetails = "";
 	private String _filePath = "Unknown file";
