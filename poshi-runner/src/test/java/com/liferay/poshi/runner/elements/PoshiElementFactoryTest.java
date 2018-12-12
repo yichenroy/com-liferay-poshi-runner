@@ -194,6 +194,8 @@ public class PoshiElementFactoryTest {
 
 		String poshiScript = poshiElement.toPoshiScript();
 
+		PoshiNodeFactory.setValidatePoshiScript(false);
+
 		PoshiElement actualElement =
 			(PoshiElement)PoshiNodeFactory.newPoshiNode(
 				poshiScript, _getFile(fileName));
