@@ -1010,23 +1010,22 @@ public class PoshiRunnerContext {
 	}
 
 	private static void _readPoshiFiles() throws Exception {
+		String[] poshiFileIncludes = ArrayUtils.addAll(
+			POSHI_SUPPORT_FILE_INCLUDES, POSHI_TEST_FILE_INCLUDES);
+
+		_readPoshiFilesFromClassPath(poshiFileIncludes, "testFunctional");
+
+		_readPoshiFiles(poshiFileIncludes, _TEST_BASE_DIR_NAME);
+
 		if (Validator.isNotNull(PropsValues.TEST_INCLUDE_DIR_NAMES)) {
 			_readPoshiFiles(
 				POSHI_SUPPORT_FILE_INCLUDES,
 				PropsValues.TEST_INCLUDE_DIR_NAMES);
 		}
 
-		String[] poshiFileIncludes = ArrayUtils.addAll(
-			PoshiRunnerContext.POSHI_SUPPORT_FILE_INCLUDES,
-			PoshiRunnerContext.POSHI_TEST_FILE_INCLUDES);
-
-		_readPoshiFilesFromClassPath(poshiFileIncludes, "testFunctional");
-
 		if (Validator.isNotNull(PropsValues.TEST_SUBREPO_DIRS)) {
 			_readPoshiFiles(poshiFileIncludes, PropsValues.TEST_SUBREPO_DIRS);
 		}
-
-		_readPoshiFiles(poshiFileIncludes, _TEST_BASE_DIR_NAME);
 
 		_initComponentCommandNamesMap();
 
