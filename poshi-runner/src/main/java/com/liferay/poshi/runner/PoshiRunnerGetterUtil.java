@@ -392,7 +392,7 @@ public class PoshiRunnerGetterUtil {
 		String fileContent = FileUtil.read(url);
 		String filePath = url.getFile();
 
-		if (!fileContent.contains("<definition") &&
+		if (fileContent.endsWith("}") &&
 			(filePath.endsWith(".function") || filePath.endsWith(".macro") ||
 			 filePath.endsWith(".testcase"))) {
 
