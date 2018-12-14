@@ -290,7 +290,11 @@ public class PoshiRunnerContext {
 	}
 
 	public static void readFiles() throws Exception {
-		_readPoshiFiles();
+		readFiles(PoshiRunnerContext.POSHI_TEST_FILE_INCLUDES);
+	}
+
+	public static void readFiles(String[] testFileIncludes) throws Exception {
+		_readPoshiFiles(testFileIncludes);
 		_readSeleniumFiles();
 	}
 
@@ -1009,9 +1013,11 @@ public class PoshiRunnerContext {
 		}
 	}
 
-	private static void _readPoshiFiles() throws Exception {
+	private static void _readPoshiFiles(String[] testFileIncludes)
+		throws Exception {
+
 		String[] poshiFileIncludes = ArrayUtils.addAll(
-			POSHI_SUPPORT_FILE_INCLUDES, POSHI_TEST_FILE_INCLUDES);
+			POSHI_SUPPORT_FILE_INCLUDES, testFileIncludes);
 
 		_readPoshiFilesFromClassPath(poshiFileIncludes, "testFunctional");
 
