@@ -164,7 +164,10 @@ JavaScript errors.
 
 ### test.base.dir.name
 
-Sets the path of the directory containing Poshi files used for the test project.
+Sets the path of the main directory containing Poshi files used for the test
+project. Additional directory paths may be set using
+[`test.includes.dir.names`](#testincludedirnames) or
+[`test.subrepo.dirs`](#testsubrepodirs).
 
 ### test.batch.group.ignore.regex
 
@@ -232,7 +235,7 @@ tests.
 ### test.include.dir.names
 
 Sets a comma-delimited list of directory paths to include in the Poshi project
-files.
+files. This does not include *.testcase files.
 
 ### test.name
 
@@ -264,6 +267,11 @@ remotely.
 ### test.skip.tear.down
 
 Sets a boolean for whether the tear down is skipped.
+
+### test.subrepo.dirs
+
+Sets a comma-delimited list of subrepository directory paths to include in the
+Poshi project files. This includes all Poshi file types.
 
 ### timeout.explicit.wait
 
