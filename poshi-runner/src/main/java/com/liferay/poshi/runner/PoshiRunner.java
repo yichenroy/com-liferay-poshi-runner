@@ -19,15 +19,12 @@ import com.liferay.poshi.runner.logger.SummaryLogger;
 import com.liferay.poshi.runner.selenium.LiferaySeleniumHelper;
 import com.liferay.poshi.runner.selenium.SeleniumUtil;
 import com.liferay.poshi.runner.util.PropsValues;
-import com.liferay.poshi.runner.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import org.dom4j.Element;
 
@@ -63,33 +60,7 @@ public class PoshiRunner {
 		List<String> testNames = Arrays.asList(
 			PropsValues.TEST_NAME.split("\\s*,\\s*"));
 
-		String[] poshiTestFileIncludes = ArrayUtils.addAll(
-			PoshiRunnerContext.POSHI_SUPPORT_FILE_INCLUDES,
-			_getTestClassFileIncludes(testNames));
-
-		List<String> baseDirNames = new ArrayList<>();
-
-		if (Validator.isNotNull(PropsValues.TEST_INCLUDE_DIR_NAMES)) {
-			for (String testIncludeDirName :
-					PropsValues.TEST_INCLUDE_DIR_NAMES) {
-
-				baseDirNames.add(
-					PoshiRunnerGetterUtil.getCanonicalPath(testIncludeDirName));
-			}
-		}
-
-		baseDirNames.add(
-			PoshiRunnerGetterUtil.getCanonicalPath(
-				PropsValues.TEST_BASE_DIR_NAME));
-
-		PoshiRunnerContext.readFiles(
-			poshiTestFileIncludes,
-			baseDirNames.toArray(new String[baseDirNames.size()]));
-
-		if (Validator.isNotNull(PropsValues.TEST_SUBREPO_DIRS)) {
-			PoshiRunnerContext.readFiles(
-				poshiTestFileIncludes, PropsValues.TEST_SUBREPO_DIRS);
-		}
+		PoshiRunnerContext.readFiles(_getTestClassFileIncludes(testNames));
 
 		for (String testName : testNames) {
 			PoshiRunnerValidation.validate(testName);
