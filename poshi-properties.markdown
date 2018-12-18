@@ -166,7 +166,7 @@ JavaScript errors.
 
 Sets the path of the main directory containing Poshi files used for the test
 project. Additional directory paths may be set using
-[`test.includes.dir.names`](#testincludedirnames) or
+[`test.include.dir.names`](#testincludedirnames) or
 [`test.subrepo.dirs`](#testsubrepodirs).
 
 ### test.batch.group.ignore.regex
@@ -235,7 +235,7 @@ tests.
 ### test.include.dir.names
 
 Sets a comma-delimited list of directory paths to include in the Poshi project
-files. This does not include *.testcase files.
+files. This does not include `*.testcase` files.
 
 ### test.name
 
@@ -280,3 +280,5 @@ Sets the time (in seconds) before a *wait* function times out.
 ### timeout.implicit.wait
 
 Sets the time (in seconds) before all non-*wait* functions time out.
+
+*This document has been reviewed through commit `39ffa06`.*
