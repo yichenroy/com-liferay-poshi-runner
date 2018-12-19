@@ -19,7 +19,6 @@ import com.liferay.poshi.runner.util.RegexUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -130,24 +129,18 @@ public class ExecutePoshiElement extends PoshiElement {
 			return;
 		}
 
-		List<String> assignments = new ArrayList<>();
+		for (String parameter :
+				getMethodParameters(content, _executeParameterPattern)) {
 
-		Matcher matcher = nestedVarAssignmentPattern.matcher(content);
-
-		while (matcher.find()) {
-			assignments.add(matcher.group());
-		}
-
-		for (String assignment : assignments) {
-			assignment = assignment.trim();
+			parameter = parameter.trim();
 
 			boolean functionAttributeAdded = false;
 
 			for (String functionAttributeName : _FUNCTION_ATTRIBUTE_NAMES) {
-				if (assignment.startsWith(functionAttributeName)) {
-					String name = getNameFromAssignment(assignment);
+				if (parameter.startsWith(functionAttributeName)) {
+					String name = getNameFromAssignment(parameter);
 
-					String value = getDoubleQuotedContent(assignment);
+					String value = getDoubleQuotedContent(parameter);
 
 					value = StringEscapeUtils.unescapeXml(value);
 
@@ -164,9 +157,9 @@ public class ExecutePoshiElement extends PoshiElement {
 			}
 
 			if (executeType.equals("selenium")) {
-				String name = getNameFromAssignment(assignment);
+				String name = getNameFromAssignment(parameter);
 
-				String value = getValueFromAssignment(assignment);
+				String value = getValueFromAssignment(parameter);
 
 				value = getDoubleQuotedContent(value);
 
@@ -175,13 +168,13 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			if (assignment.endsWith(",")) {
-				assignment = assignment.substring(0, assignment.length() - 1);
+			if (parameter.endsWith(",")) {
+				parameter = parameter.substring(0, parameter.length() - 1);
 			}
 
-			assignment = "var " + assignment + ";";
+			parameter = "var " + parameter + ";";
 
-			add(PoshiNodeFactory.newPoshiNode(this, assignment));
+			add(PoshiNodeFactory.newPoshiNode(this, parameter));
 		}
 	}
 
@@ -378,6 +371,10 @@ public class ExecutePoshiElement extends PoshiElement {
 	private static final String _UTILITY_INVOCATION_REGEX =
 		"(echo|fail|takeScreenshot)\\(.*?\\)";
 
+	private static Pattern _executeParameterPattern = Pattern.compile(
+		"^[\\s]*(\\w*\\s*=\\s*\"[ \\t\\S]*?\"|\\w*\\s*=\\s*'''.*?'''|" +
+			"\\w*\\s=\\s*[\\w\\.]*\\(.*?\\))[\\s]*$",
+		Pattern.DOTALL);
 	private static final Pattern _statementPattern = Pattern.compile(
 		"^" + INVOCATION_REGEX + STATEMENT_END_REGEX, Pattern.DOTALL);
 	private static final Pattern _utilityInvocationStatementPattern =
