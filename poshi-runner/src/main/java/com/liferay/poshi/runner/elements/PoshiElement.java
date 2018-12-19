@@ -361,6 +361,20 @@ public abstract class PoshiElement
 	}
 
 	protected List<String> getMethodParameters(String content) {
+		try {
+			return getMethodParameters(content, null);
+		}
+		catch (PoshiScriptParserException pspe) {
+			pspe.printStackTrace();
+
+			return new ArrayList<>();
+		}
+	}
+
+	protected List<String> getMethodParameters(
+			String content, Pattern parameterPattern)
+		throws PoshiScriptParserException {
+
 		List<String> methodParameters = new ArrayList<>();
 
 		StringBuilder sb = new StringBuilder();
@@ -369,7 +383,17 @@ public abstract class PoshiElement
 
 		for (char c : content.toCharArray()) {
 			if ((c == ',') && isBalancedPoshiScript(methodParameter)) {
-				methodParameters.add(methodParameter.trim());
+				if (parameterPattern != null) {
+					Matcher matcher = parameterPattern.matcher(methodParameter);
+
+					if (!matcher.matches()) {
+						sb.append(c);
+
+						continue;
+					}
+				}
+
+				methodParameters.add(methodParameter);
 
 				sb.setLength(0);
 
@@ -381,7 +405,16 @@ public abstract class PoshiElement
 			methodParameter = sb.toString();
 		}
 
-		methodParameters.add(methodParameter.trim());
+		if (parameterPattern != null) {
+			Matcher matcher = parameterPattern.matcher(methodParameter);
+
+			if (!matcher.matches()) {
+				throw new PoshiScriptParserException(
+					"Invalid Poshi Script parameter syntax", this);
+			}
+		}
+
+		methodParameters.add(methodParameter);
 
 		return methodParameters;
 	}
