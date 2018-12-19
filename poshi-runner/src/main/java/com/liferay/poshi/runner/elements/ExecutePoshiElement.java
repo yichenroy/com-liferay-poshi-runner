@@ -156,22 +156,6 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			if (executeType.equals("selenium")) {
-				String name = getNameFromAssignment(parameter);
-
-				String value = getValueFromAssignment(parameter);
-
-				value = getDoubleQuotedContent(value);
-
-				addAttribute(name, value);
-
-				continue;
-			}
-
-			if (parameter.endsWith(",")) {
-				parameter = parameter.substring(0, parameter.length() - 1);
-			}
-
 			parameter = "var " + parameter + ";";
 
 			add(PoshiNodeFactory.newPoshiNode(this, parameter));
