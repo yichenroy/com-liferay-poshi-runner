@@ -377,6 +377,10 @@ public abstract class PoshiElement
 
 		List<String> methodParameters = new ArrayList<>();
 
+		if (content.length() == 0) {
+			return methodParameters;
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		String methodParameter = sb.toString();
