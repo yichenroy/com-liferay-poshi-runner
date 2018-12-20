@@ -748,16 +748,6 @@ public abstract class PoshiElement
 		return false;
 	}
 
-	protected boolean isMultilinePoshiScriptComment(String poshiScript) {
-		poshiScript = poshiScript.trim();
-
-		if (poshiScript.endsWith("*/") && poshiScript.startsWith("/*")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	protected boolean isValidFunctionFileName(String poshiScriptInvocation) {
 		for (String functionFileName :
 				PoshiRunnerContext.getFunctionFileNames()) {
@@ -978,14 +968,8 @@ public abstract class PoshiElement
 	protected static final String VAR_NAME_REGEX =
 		"(static[\\s]*|)var([\\s]*[A-Z][\\w]*|)[\\s]*[\\w]*";
 
-	protected static final Pattern nestedVarAssignmentPattern = Pattern.compile(
-		"(\\w*\\s*=\\s*\".*?\"|\\w*\\s*=\\s*'''.*?'''|" +
-			"\\w*\\s=\\s*[\\w\\.]*\\(.*?\\))($|\\s|,)",
-		Pattern.DOTALL);
 	protected static final Pattern poshiScriptAnnotationPattern =
 		Pattern.compile("@[\\w-]*[\\s]*?=[\\s]\".*?\"", Pattern.DOTALL);
-	protected static final Pattern poshiScriptBlockNamePattern =
-		Pattern.compile("[\\s\\S]*");
 	protected static final Pattern poshiScriptBlockPattern = Pattern.compile(
 		"^[^{]*\\{[\\s\\S]*\\}$");
 
