@@ -84,10 +84,11 @@ public class ExecutePoshiElement extends PoshiElement {
 			addAttribute("class", getClassName(poshiScript));
 			addAttribute("method", getCommandName(poshiScript));
 
-			for (String parameter :
-					getMethodParameters(poshiScriptParentheticalContent)) {
+			List<String> methodParameters = getMethodParameters(
+				poshiScriptParentheticalContent);
 
-				add(PoshiNodeFactory.newPoshiNode(this, parameter));
+			for (String methodParameter : methodParameters) {
+				add(PoshiNodeFactory.newPoshiNode(this, methodParameter));
 			}
 
 			return;
