@@ -1119,10 +1119,10 @@ task ("Add a blogs entry called 'Blogs Entry1 Title' with content 'Blogs Entry1 
 ### How to run Poshi Script validation
 
 Syntax validation for Poshi Script is built into the existing Poshi validation
-logic. In order to run normal validation, use the script that has been
-configured to run Poshi validation in your project. This can be performed by
-running `gradlew validatePoshi` from a build.gradle file, or `ant -f
-build-test.xml run-poshi-validation` in liferay-portal branches.
+logic. To run normal validation, use your project's script that has been
+configured to run Poshi validation. This can be performed by running `gradlew
+validatePoshi` from a `build.gradle` file, or `ant -f build-test.xml
+run-poshi-validation` in liferay-portal branches.
 
 If you need help identifying the error, please use the #poshi Slack channel or
 contact @kenjiheigel for help.
@@ -1131,63 +1131,61 @@ contact @kenjiheigel for help.
 
 #### Data Loss
 
-This is the standard error message that is displayed when the invalid syntax
-cannot be specifically identified. Usually, this means that a more specific
-error should be caught, and @kenjiheigel should be notified to create a more
-helpful error message.
+This is the standard error message that is displayed when invalid syntax cannot
+be specifically identified. Usually, this means that a more specific error
+should be caught, and @kenjiheigel should be notified to create a more helpful
+error message.
 
 *Example:*
 
 ```
-     [exec] Data loss has occurred while parsing Poshi Script at:
-     [exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:1
+[exec] Data loss has occurred while parsing Poshi Script at:
+[exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:1
 ```
 
 #### Unbalanced Code
 
-This error occurs when a bracket (`{`, `}`, `[`, `]`, `(` `)`) is not properly
-balanced within the file. Usually, the easiest way to deal with these errors is
-to slowly remove chunks of code. Sometimes, the exception will identify the
-exact location of the issue.
+This error occurs when a bracket (`{`, `}`, `[`, `]`, `(`, `)`) is not properly
+balanced within the file. Usually, these errors are resolved by slowly removing
+chunks of code. Sometimes, the exception will identify the exact location of the
+issue.
 
-*Example:*
-
-```
-     [exec] Unexpected closing boundary at:
-     [exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:319
-     [exec]             ); ]
-     [exec]                ^
-```
-
-*Example:*
+*Examples:*
 
 ```
-     [exec] Unmatched opening boundary at:
-     [exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:2
-     [exec] definition {
-     [exec]            ^
+[exec] Unexpected closing boundary at:
+[exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:319
+[exec]             ); ]
+[exec]                ^
+```
+
+```
+[exec] Unmatched opening boundary at:
+[exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:2
+[exec] definition {
+[exec]            ^
 ```
 
 #### Invalid Poshi Script syntax
 
-This error reports the approximate line number of the syntax error and will
-print out the corresponding snippet of Poshi Script. Exact messaging and column
-number are not currently available, but will be made available in the future.
+This error reports the syntax error's approximate line number and prints out the
+corresponding snippet of Poshi Script. Exact messaging and column number are not
+currently available, but will be made available in the future.
 
 *Example:*
 
 ```
-     [exec] Invalid Poshi Script syntax at:
-     [exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:313
-     [exec]
-     [exec]
-     [exec]         task ("Click away from the header so the popover will disappear") {
-     [exec]             Click(
-     [exec]                 locator1 = "PageEditor#EMPTY_MESSAGE"
-     [exec]             )
-     [exec]
-     [exec]             AssertElementNotPresent(
-     [exec]                 locator1 = "PageEditor#CONTENT_PAGE_DISABLED_POPOVER"
-     [exec]             );
-     [exec]         }
+[exec] Invalid Poshi Script syntax at:
+[exec] /Users/kenji/Projects/github/liferay-portal/master/portal-web/test/functional/com/liferay/portalweb/tests/enduser/wem/pages/contentpages/ContentPages.testcase:313
+[exec]
+[exec]
+[exec]         task ("Click away from the header so the popover will disappear") {
+[exec]             Click(
+[exec]                 locator1 = "PageEditor#EMPTY_MESSAGE"
+[exec]             )
+[exec]
+[exec]             AssertElementNotPresent(
+[exec]                 locator1 = "PageEditor#CONTENT_PAGE_DISABLED_POPOVER"
+[exec]             );
+[exec]         }
 ```
