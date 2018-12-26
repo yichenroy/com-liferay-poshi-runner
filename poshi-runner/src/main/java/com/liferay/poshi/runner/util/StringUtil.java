@@ -145,8 +145,7 @@ public class StringUtil {
 	}
 
 	public static int countStartingNewLines(String s) {
-		String[] snippets = s.split(
-			System.getProperty("line.separator") + "\\h*", -1);
+		String[] snippets = s.split("\n\\h*", -1);
 
 		if (snippets.length == 1) {
 			return 0;
