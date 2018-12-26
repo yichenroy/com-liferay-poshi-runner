@@ -168,7 +168,7 @@ public class FileUtil {
 	}
 
 	public static String read(File file) throws IOException {
-		return FileUtils.readFileToString(file);
+		return read(getURL(file));
 	}
 
 	public static String read(String fileName) throws IOException {
