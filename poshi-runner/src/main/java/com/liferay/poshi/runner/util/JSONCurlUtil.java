@@ -326,6 +326,8 @@ public class JSONCurlUtil {
 
 					optionValue = jsonObject.toString();
 				}
+				catch (JSONException jsone) {
+				}
 				finally {
 					sb.append("\"");
 
