@@ -332,8 +332,7 @@ public class JSONCurlUtil {
 				optionValue = optionValue.replaceAll(
 					"\\\\\"", "\\\\\\\\\\\\\\\"");
 
-				optionValue = optionValue.replaceAll(
-					"(?<!\\\\)\"", "\\\\\\\"");
+				optionValue = optionValue.replaceAll("(?<!\\\\)\"", "\\\\\\\"");
 
 				optionValue = optionValue.replace("&", "^&");
 
@@ -383,7 +382,7 @@ public class JSONCurlUtil {
 
 				return true;
 			}
-			catch (JSONException e) {
+			catch (JSONException jsone) {
 				return false;
 			}
 		}
