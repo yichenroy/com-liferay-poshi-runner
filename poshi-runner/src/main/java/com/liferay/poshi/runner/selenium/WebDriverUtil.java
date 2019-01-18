@@ -126,6 +126,8 @@ public class WebDriverUtil extends PropsValues {
 			outputDirName = file.getCanonicalPath();
 		}
 		catch (IOException ioe) {
+			System.out.println(
+				"Unable to get canonical path for " + outputDirName);
 		}
 
 		if (OSDetector.isWindows()) {
