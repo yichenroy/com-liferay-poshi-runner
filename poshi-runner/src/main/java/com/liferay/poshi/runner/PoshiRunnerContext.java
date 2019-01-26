@@ -177,6 +177,10 @@ public class PoshiRunnerContext {
 		return getDefaultNamespace();
 	}
 
+	public static List<String> getNamespaces() {
+		return _namespaces;
+	}
+
 	public static String getOverrideClassName(String namespacedClassName) {
 		return _overrideClassNames.get(namespacedClassName);
 	}
@@ -1430,6 +1434,9 @@ public class PoshiRunnerContext {
 
 				if (fileName.endsWith(".function")) {
 					_functionFileNames.add(fileName.replace(".function", ""));
+
+					_functionFileNames.add(
+						namespace + "." + fileName.replace(".function", ""));
 				}
 			}
 		}

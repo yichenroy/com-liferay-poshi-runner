@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner.elements;
 
+import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
 import com.liferay.poshi.runner.util.RegexUtil;
 
@@ -97,7 +98,31 @@ public class ExecutePoshiElement extends PoshiElement {
 		String executeCommandName = RegexUtil.getGroup(
 			poshiScript, "([^\\s]*?)\\(", 1);
 
-		executeCommandName = executeCommandName.replace(".", "#");
+		boolean namespacedCommandName = false;
+
+		for (String namespace : PoshiRunnerContext.getNamespaces()) {
+			if (executeCommandName.startsWith(namespace + ".")) {
+				namespacedCommandName = true;
+
+				break;
+			}
+		}
+
+		if (namespacedCommandName) {
+			int index = executeCommandName.indexOf(".");
+
+			String namespace = executeCommandName.substring(0, index);
+
+			executeCommandName = executeCommandName.replace(
+				namespace + ".", "");
+
+			executeCommandName = executeCommandName.replace(".", "#");
+
+			executeCommandName = namespace + "." + executeCommandName;
+		}
+		else {
+			executeCommandName = executeCommandName.replace(".", "#");
+		}
 
 		if (fileExtension.equals("function") ||
 			isValidFunctionFileName(poshiScript)) {
