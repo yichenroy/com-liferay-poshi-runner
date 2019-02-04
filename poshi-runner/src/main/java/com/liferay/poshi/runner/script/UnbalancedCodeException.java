@@ -44,7 +44,7 @@ public class UnbalancedCodeException extends PoshiScriptParserException {
 			}
 		}
 
-		setLineNumber(lineNumber);
+		setErrorLineNumber(lineNumber);
 
 		int column = 1;
 
@@ -69,7 +69,7 @@ public class UnbalancedCodeException extends PoshiScriptParserException {
 
 		sb.append("^");
 
-		setErrorDetails(sb.toString());
+		setPoshiScriptSnippet(sb.toString());
 	}
 
 }
