@@ -88,7 +88,7 @@ public class PoshiScriptParserException extends Exception {
 		sb.append(":");
 		sb.append(getErrorLineNumber());
 		sb.append("\n");
-		sb.append(getPoshiScriptSnippet());
+		sb.append(createErrorSnippet());
 
 		return sb.toString();
 	}
@@ -117,6 +117,43 @@ public class PoshiScriptParserException extends Exception {
 
 	public void setStartingLineNumber(int startingLineNumber) {
 		_startingLineNumber = startingLineNumber;
+	}
+
+	protected String createErrorSnippet() {
+		StringBuilder sb = new StringBuilder();
+
+		String poshiScript = getPoshiScriptSnippet();
+
+		int startingLineNumber = getStartingLineNumber();
+
+		String lineNumberString = String.valueOf(
+			startingLineNumber + StringUtil.count(poshiScript, "\n"));
+
+		int pad = lineNumberString.length() + 2;
+
+		for (String line : poshiScript.split("\n")) {
+			StringBuilder prefix = new StringBuilder();
+
+			if (startingLineNumber == getErrorLineNumber()) {
+				prefix.append(">");
+			}
+			else {
+				prefix.append(" ");
+			}
+
+			prefix.append(" ");
+
+			prefix.append(startingLineNumber);
+
+			sb.append(String.format("%" + pad + "s", prefix.toString()));
+			sb.append(" |");
+			sb.append(line.replace("\t", "    "));
+			sb.append("\n");
+
+			startingLineNumber++;
+		}
+
+		return sb.toString();
 	}
 
 	protected static List<String> failingFilePaths = new ArrayList<>();
