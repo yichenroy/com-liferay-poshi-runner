@@ -117,10 +117,6 @@ public class ThenPoshiElement extends PoshiElement {
 		return "then";
 	}
 
-	protected int getDefaultPoshiScriptLineNumber() {
-		return super.getPoshiScriptLineNumber();
-	}
-
 	private boolean _isElementType(
 		PoshiElement parentPoshiElement, String poshiScript) {
 

@@ -72,6 +72,10 @@ public abstract class PoshiElement
 		return clone(null, poshiScript);
 	}
 
+	public int getDefaultPoshiScriptLineNumber() {
+		return getPoshiScriptLineNumber();
+	}
+
 	public String getPoshiLogDescriptor() {
 		return getPoshiScript();
 	}
