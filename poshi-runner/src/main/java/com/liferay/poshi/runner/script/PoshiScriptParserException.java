@@ -101,7 +101,7 @@ public class PoshiScriptParserException extends Exception {
 		sb.append(":");
 		sb.append(getErrorLineNumber());
 		sb.append("\n");
-		sb.append(createErrorSnippet());
+		sb.append(getErrorSnippet());
 
 		return sb.toString();
 	}
@@ -132,7 +132,7 @@ public class PoshiScriptParserException extends Exception {
 		_startingLineNumber = startingLineNumber;
 	}
 
-	protected String createErrorSnippet() {
+	public String getErrorSnippet() {
 		StringBuilder sb = new StringBuilder();
 
 		String poshiScript = getPoshiScriptSnippet();

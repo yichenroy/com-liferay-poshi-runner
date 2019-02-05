@@ -25,17 +25,13 @@ public class UnbalancedCodeException extends PoshiScriptParserException {
 		_processLine(index, code);
 	}
 
+	@Override
 	public String getErrorSnippet() {
 		return _errorSnippet;
 	}
 
 	public void setErrorSnippet(String errorSnippet) {
 		_errorSnippet = errorSnippet;
-	}
-
-	@Override
-	protected String createErrorSnippet() {
-		return getErrorSnippet();
 	}
 
 	private static String _getLine(int lineNumber, String code) {
