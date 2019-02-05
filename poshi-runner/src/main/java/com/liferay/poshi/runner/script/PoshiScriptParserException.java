@@ -87,6 +87,43 @@ public class PoshiScriptParserException extends Exception {
 		return _errorLineNumber;
 	}
 
+	public String getErrorSnippet() {
+		StringBuilder sb = new StringBuilder();
+
+		String poshiScript = getPoshiScriptSnippet();
+
+		int startingLineNumber = getStartingLineNumber();
+
+		String lineNumberString = String.valueOf(
+			startingLineNumber + StringUtil.count(poshiScript, "\n"));
+
+		int pad = lineNumberString.length() + 2;
+
+		for (String line : poshiScript.split("\n")) {
+			StringBuilder prefix = new StringBuilder();
+
+			if (startingLineNumber == getErrorLineNumber()) {
+				prefix.append(">");
+			}
+			else {
+				prefix.append(" ");
+			}
+
+			prefix.append(" ");
+
+			prefix.append(startingLineNumber);
+
+			sb.append(String.format("%" + pad + "s", prefix.toString()));
+			sb.append(" |");
+			sb.append(line.replace("\t", "    "));
+			sb.append("\n");
+
+			startingLineNumber++;
+		}
+
+		return sb.toString();
+	}
+
 	public String getFilePath() {
 		return _filePath;
 	}
@@ -130,43 +167,6 @@ public class PoshiScriptParserException extends Exception {
 
 	public void setStartingLineNumber(int startingLineNumber) {
 		_startingLineNumber = startingLineNumber;
-	}
-
-	public String getErrorSnippet() {
-		StringBuilder sb = new StringBuilder();
-
-		String poshiScript = getPoshiScriptSnippet();
-
-		int startingLineNumber = getStartingLineNumber();
-
-		String lineNumberString = String.valueOf(
-			startingLineNumber + StringUtil.count(poshiScript, "\n"));
-
-		int pad = lineNumberString.length() + 2;
-
-		for (String line : poshiScript.split("\n")) {
-			StringBuilder prefix = new StringBuilder();
-
-			if (startingLineNumber == getErrorLineNumber()) {
-				prefix.append(">");
-			}
-			else {
-				prefix.append(" ");
-			}
-
-			prefix.append(" ");
-
-			prefix.append(startingLineNumber);
-
-			sb.append(String.format("%" + pad + "s", prefix.toString()));
-			sb.append(" |");
-			sb.append(line.replace("\t", "    "));
-			sb.append("\n");
-
-			startingLineNumber++;
-		}
-
-		return sb.toString();
 	}
 
 	protected static List<String> failingFilePaths = new ArrayList<>();
