@@ -881,17 +881,7 @@ public class PoshiRunnerValidation {
 			if (requiredPropertyNames.contains(propertyName)) {
 				requiredPropertyNames.remove(propertyName);
 
-				String testCaseAvailablePropertyValues = PropsUtil.get(
-					"test.case.available.property.values[" + propertyName +
-						"]");
-
-				if (Validator.isNotNull(testCaseAvailablePropertyValues)) {
-					List<String> possiblePropertyValues = Arrays.asList(
-						StringUtil.split(testCaseAvailablePropertyValues));
-
-					validatePossiblePropertyValues(
-						propertyElement, possiblePropertyValues, filePath);
-				}
+				validatePossiblePropertyValues(propertyElement, filePath);
 			}
 		}
 
@@ -1326,17 +1316,27 @@ public class PoshiRunnerValidation {
 	}
 
 	protected static void validatePossiblePropertyValues(
-		Element element, List<String> possiblePropertyValues, String filePath) {
+		Element propertyElement, String filePath) {
 
-		List<String> propertyValues = Arrays.asList(
-			StringUtil.split(element.attributeValue("value")));
+		String propertyName = propertyElement.attributeValue("name");
 
-		for (String propertyValue : propertyValues) {
-			if (!possiblePropertyValues.contains(propertyValue.trim())) {
-				_exceptions.add(
-					new ValidationException(
-						element, "Invalid ", propertyValue.trim(),
-						" property value\n", filePath));
+		String testCaseAvailablePropertyValues = PropsUtil.get(
+			"test.case.available.property.values[" + propertyName + "]");
+
+		if (Validator.isNotNull(testCaseAvailablePropertyValues)) {
+			List<String> possiblePropertyValues = Arrays.asList(
+				StringUtil.split(testCaseAvailablePropertyValues));
+
+			List<String> propertyValues = Arrays.asList(
+				StringUtil.split(propertyElement.attributeValue("value")));
+
+			for (String propertyValue : propertyValues) {
+				if (!possiblePropertyValues.contains(propertyValue.trim())) {
+					_exceptions.add(
+						new ValidationException(
+							propertyElement, "Invalid ", propertyValue.trim(),
+							" property value\n", filePath));
+				}
 			}
 		}
 	}
