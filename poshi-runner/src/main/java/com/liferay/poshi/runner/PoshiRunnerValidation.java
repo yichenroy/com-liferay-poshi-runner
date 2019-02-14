@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -885,11 +886,33 @@ public class PoshiRunnerValidation {
 			}
 		}
 
-		if (!requiredPropertyNames.isEmpty()) {
-			_exceptions.add(
-				new ValidationException(
-					"Missing required properties ",
-					requiredPropertyNames.toString(), "\n", filePath));
+		if (requiredPropertyNames.isEmpty()) {
+			return;
+		}
+
+		String namespace = PoshiRunnerContext.getNamespaceFromFilePath(
+			filePath);
+
+		String className = PoshiRunnerGetterUtil.getClassNameFromFilePath(
+			filePath);
+
+		String commandName = element.attributeValue("name");
+
+		String namespacedClassCommandName =
+			namespace + "." + className + "#" + commandName;
+
+		Properties properties =
+			PoshiRunnerContext.getNamespacedClassCommandNameProperties(
+				namespacedClassCommandName);
+
+		for (String requiredPropertyName : requiredPropertyNames) {
+			if (!properties.containsKey(requiredPropertyName)) {
+				_exceptions.add(
+					new ValidationException(
+						className + "#" + commandName +
+							" is missing required properties ",
+						requiredPropertyNames.toString(), "\n", filePath));
+			}
 		}
 	}
 
@@ -1478,8 +1501,6 @@ public class PoshiRunnerValidation {
 			validateRequiredChildElementName(element, "command", filePath);
 		}
 
-		validateHasRequiredPropertyElements(element, filePath);
-
 		List<String> possibleTagElementNames = Arrays.asList(
 			"command", "property", "set-up", "tear-down", "var");
 
@@ -1505,6 +1526,7 @@ public class PoshiRunnerValidation {
 					childElement, possibleAttributeNames, filePath);
 				validateRequiredAttributeNames(
 					childElement, Arrays.asList("name"), filePath);
+				validateHasRequiredPropertyElements(childElement, filePath);
 
 				parseElements(childElement, filePath);
 			}
