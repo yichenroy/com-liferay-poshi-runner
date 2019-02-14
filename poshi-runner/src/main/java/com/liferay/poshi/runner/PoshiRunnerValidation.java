@@ -876,8 +876,6 @@ public class PoshiRunnerValidation {
 		List<Element> propertyElements = element.elements("property");
 
 		for (Element propertyElement : propertyElements) {
-			validatePropertyElement(propertyElement, filePath);
-
 			String propertyName = propertyElement.attributeValue("name");
 
 			if (requiredPropertyNames.contains(propertyName)) {
