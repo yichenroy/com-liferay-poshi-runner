@@ -1357,8 +1357,9 @@ public class PoshiRunnerValidation {
 				if (!possiblePropertyValues.contains(propertyValue.trim())) {
 					_exceptions.add(
 						new ValidationException(
-							propertyElement, "Invalid ", propertyValue.trim(),
-							" property value\n", filePath));
+							propertyElement, "Invalid property value '",
+							propertyValue.trim(), "' for property name '",
+							propertyName.trim(), "'\n", filePath));
 				}
 			}
 		}
