@@ -317,6 +317,13 @@ public class PoshiRunnerContext {
 			testCaseNamespacedClassCommandName;
 	}
 
+	protected static Properties getNamespacedClassCommandNameProperties(
+		String testCaseNamespacedClassCommandName) {
+
+		return _namespacedClassCommandNamePropertiesMap.get(
+			testCaseNamespacedClassCommandName);
+	}
+
 	private static int _getAllocatedTestGroupSize(int testCount) {
 		int groupCount = MathUtil.quotient(
 			testCount, PropsValues.TEST_BATCH_MAX_GROUP_SIZE, true);
