@@ -1522,6 +1522,13 @@ public class PoshiRunnerValidation {
 							childElement, "Duplicate property name ",
 							propertyName, "\n", filePath));
 				}
+
+				List<String> requiredPropertyNames = new ArrayList(
+					PoshiRunnerContext.getTestCaseRequiredPropertyNames());
+
+				if (requiredPropertyNames.contains(propertyName)) {
+					validatePossiblePropertyValues(childElement, filePath);
+				}
 			}
 			else if (childElementName.equals("set-up") ||
 					 childElementName.equals("tear-down")) {
