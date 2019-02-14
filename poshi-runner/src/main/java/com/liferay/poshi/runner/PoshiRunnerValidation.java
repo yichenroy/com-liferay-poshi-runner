@@ -877,12 +877,12 @@ public class PoshiRunnerValidation {
 		List<Element> propertyElements = element.elements("property");
 
 		for (Element propertyElement : propertyElements) {
+			validatePropertyElement(propertyElement, filePath);
+
 			String propertyName = propertyElement.attributeValue("name");
 
 			if (requiredPropertyNames.contains(propertyName)) {
 				requiredPropertyNames.remove(propertyName);
-
-				validatePossiblePropertyValues(propertyElement, filePath);
 			}
 		}
 
@@ -1385,6 +1385,8 @@ public class PoshiRunnerValidation {
 					element, "Invalid property name ", propertyName, "\n",
 					filePath));
 		}
+
+		validatePossiblePropertyValues(element, filePath);
 	}
 
 	protected static void validateRequiredAttributeNames(
@@ -1543,13 +1545,6 @@ public class PoshiRunnerValidation {
 						new ValidationException(
 							childElement, "Duplicate property name ",
 							propertyName, "\n", filePath));
-				}
-
-				List<String> requiredPropertyNames = new ArrayList(
-					PoshiRunnerContext.getTestCaseRequiredPropertyNames());
-
-				if (requiredPropertyNames.contains(propertyName)) {
-					validatePossiblePropertyValues(childElement, filePath);
 				}
 			}
 			else if (childElementName.equals("set-up") ||
