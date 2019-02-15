@@ -1525,11 +1525,11 @@ public class PoshiRunnerValidation {
 					"name", "priority");
 
 				validateHasChildElements(childElement, filePath);
+				validateHasRequiredPropertyElements(childElement, filePath);
 				validatePossibleAttributeNames(
 					childElement, possibleAttributeNames, filePath);
 				validateRequiredAttributeNames(
 					childElement, Arrays.asList("name"), filePath);
-				validateHasRequiredPropertyElements(childElement, filePath);
 
 				parseElements(childElement, filePath);
 			}
