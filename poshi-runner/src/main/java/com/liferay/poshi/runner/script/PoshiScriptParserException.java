@@ -48,7 +48,7 @@ public class PoshiScriptParserException extends Exception {
 				poshiElement.getDefaultPoshiScriptLineNumber());
 		}
 		else {
-			poshiNode.getPoshiScriptLineNumber();
+			setStartingLineNumber(poshiNode.getPoshiScriptLineNumber());
 		}
 	}
 
