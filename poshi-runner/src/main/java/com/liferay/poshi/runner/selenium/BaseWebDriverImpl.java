@@ -639,8 +639,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			String text = getText(locator);
 
 			throw new Exception(
-				"\"" + text + "\" does not contain \"" + pattern + "\" at \"" +
-					locator + "\"");
+				"Actual text \"" + text +
+					"\" does not contain expected text \"" + pattern +
+						"\" at \"" + locator + "\"");
 		}
 	}
 
@@ -654,8 +655,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			String text = getTextAceEditor(locator);
 
 			throw new Exception(
-				"\"" + text + "\" does not contain \"" + pattern + "\" at \"" +
-					locator + "\"");
+				"Actual text \"" + text +
+					"\" does not contain expected text \"" + pattern +
+						"\" at \"" + locator + "\"");
 		}
 	}
 
