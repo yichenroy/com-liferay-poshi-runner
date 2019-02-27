@@ -662,6 +662,22 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void assertPartialTextCaseInsensitive(String locator, String pattern)
+		throws Exception {
+
+		assertElementPresent(locator);
+
+		if (!isPartialTextCaseInsensitive(locator, pattern)) {
+			String text = getText(locator);
+
+			throw new Exception(
+				"Actual text \"" + text +
+					"\" does not contain expected text (case-insensitive) \"" +
+						text + "\" at \"" + locator + "\"");
+		}
+	}
+
+	@Override
 	public void assertPrompt(String pattern, String value) throws Exception {
 		String confirmation = getConfirmation(value);
 
@@ -1685,6 +1701,17 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		text = text.replace("\n", "");
 
 		return text.contains(value);
+	}
+
+	@Override
+	public boolean isPartialTextCaseInsensitive(String locator, String value)
+		throws Exception {
+
+		String actual = StringUtil.toUpperCase(getText(locator));
+
+		value = StringUtil.toUpperCase(value);
+
+		return actual.contains(value);
 	}
 
 	@Override
@@ -3338,6 +3365,30 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			try {
 				if (isPartialTextAceEditor(locator, value)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForPartialTextCaseInsensitive(
+			String locator, String pattern)
+		throws Exception {
+
+		pattern = RuntimeVariables.replace(pattern);
+
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertPartialTextCaseInsensitive(locator, pattern);
+			}
+
+			try {
+				if (isPartialTextCaseInsensitive(locator, pattern)) {
 					break;
 				}
 			}
