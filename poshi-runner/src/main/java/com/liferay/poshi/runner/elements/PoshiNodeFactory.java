@@ -305,8 +305,8 @@ public abstract class PoshiNodeFactory {
 
 			_definitionPoshiElement = _getDefinitionPoshiElement();
 		}
-		catch (IllegalAccessException | InstantiationException |
-			   IOException e) {
+		catch (IllegalAccessException | InstantiationException | IOException
+					e) {
 
 			throw new RuntimeException(e);
 		}
