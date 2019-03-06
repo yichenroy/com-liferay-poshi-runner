@@ -29,7 +29,7 @@ Here are some example properties that you can use:
 * testray.component.names
 * ...
 
-For a comprehensive list within 'portal' please see look for the '[test.case.available.property.names](https://github.com/liferay/liferay-portal/blob/3c7b0ce/test.properties#L1016-L1080)' within 'test.properties'.
+For a comprehensive list within 'portal' please see look for the property 'test.case.available.property.names' in [test.properties](https://github.com/liferay/liferay-portal/blob/master/test.properties).
 
 **Operator**
 
