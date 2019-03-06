@@ -13,18 +13,6 @@ Credits
 
 Poshi Query Language (PQL) is a query language that is used to select Poshi tests. PQL is modeled on [JIRA Query Language (JQL)](https://confluence.atlassian.com/jirasoftwarecloud/advanced-searching-764478330.html).
 
-In order to leverage PQL to create a subset of tests you will need to set a 'test.batch.property.query[XXX]' within 'test.properties'.
-
-See the below example:
-
-```
-test.batch.run.property.query[subrepository-functional-tomcat80-mysql56-jdk8]=\
-		(portal.acceptance == "true") AND \
-		(testray.main.component.name ~ "Web Content")
-```
-
-The above query will group all test commands (i.e. PortalSmoke#Smoke) that have the poshi properties of 'portal.acceptance' set to 'true', and have the 'testray.main.component.name' of 'Web Content Display' or 'Web Content Administration' into a list of test commands to be ran for a particular Jenkins job.
-
 ## PQL Components
 When 'poshi properties' are mentioned that is in reference to the properties set within the 'testcase' files.
 
@@ -82,17 +70,29 @@ The currently existing keywords that we have are...
 
 If we need more 'keywords' please make a request to QA Engineering.
 
+## Defining PQL
+In order to leverage PQL to create a subset of tests you will need to set a 'test.batch.property.query[XXX]' within 'test.properties'.
+
+See the below example:
+
+```
+test.batch.run.property.query[subrepository-functional-tomcat80-mysql56-jdk8]=\
+		(portal.acceptance == "true") AND \
+		(testray.main.component.name ~ "Web Content")
+```
+
+The above query will group all test commands (i.e. PortalSmoke#Smoke) that have the poshi properties of 'portal.acceptance' set to 'true', and have the 'testray.main.component.name' of 'Web Content Display' or 'Web Content Administration' into a list of test commands to be ran for a particular Jenkins job.
+
 ## Test Queries
 In order to test a query do the following within your 'liferay-portal' repository.
 
-1. Add the property 'test.batch.property.query' to your 'test.${COMPUTERNAME}.properties':
+1. (Optional) Add the property 'test.batch.property.query' to your 'test.${COMPUTERNAME}.properties':
 
 	```
 	test.batch.property.query=\
 		(portal.acceptance == "true") AND \
 		(testray.main.component.name ~ "Web Content")
 	test.batch.max.group.size=1
-	test.batch.run.type=single
 	```
 
 1. Open a command line and run the following command within your 'liferay-portal' repository:
@@ -101,35 +101,39 @@ In order to test a query do the following within your 'liferay-portal' repositor
 	ant -f build-test.xml record-test-case-method-names
 	```
 
+	Alternatively you can pass in both properties from the command line, make sure to wrap the PQL property with single quote `'` and escape any `"`, `(`, `)`:
+
+	```
+	ant -f build-test.xml record-test-case-method-names -Dtest.batch.max.group.size=1 -Dtest.batch.property.query='\(portal.acceptance == \"true\"\) AND \(testray.main.component.name ~ \"Web Content\"\)'
+	```
+
 1. This will give a result that looks something like this:
 
 	```
-	[exec] The following query returned 9 test class command names:
-	[exec] (portal.acceptance == "true") AND (testray.main.component.name ~ "Web Content") AND (test.run.environment == "CE" OR test.run.environment == null)
-	[exec]
-	[exec] BUILD SUCCESSFUL
-	[exec]
-	[exec] Total time: 6.239 secs
-	[exec]
-	[move] Moving 1 file to /Users/vicnate5/Liferay/liferay-portal-master
-	[echo]
-	[echo] ##
-	[echo] ## test.case.method.names.properties
-	[echo] ##
-	[echo]
-	[echo]
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0=0_0 0_1 0_2 0_3 0_4 0_5 0_6 0_7 0_8
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_0=CPWebcontent#AddFolder
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_1=CPWebcontent#AddTemplateWithStructure
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_2=CPWebcontent#AddWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_3=CPWebcontent#DeleteWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_4=CPWebcontent#EditWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_5=CPWebcontent#SearchWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_6=PGWebcontentdisplay#AddWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_7=PGWebcontentdisplay#RemoveWCDPortletSite
-	[echo] RUN_TEST_CASE_METHOD_GROUP_0_8=PGWebcontentdisplay#SelectWebContent
-	[echo] RUN_TEST_CASE_METHOD_GROUPS=0
-	[echo]
+     [exec] The following query returned 8 test class command names:
+     [exec] ((portal.acceptance == "true") AND (testray.main.component.name ~ "Web Content")) AND (ignored != true) AND (test.run.environment == "CE" OR test.run.environment == null)
+     [exec]
+     [exec]
+     [exec] BUILD SUCCESSFUL in 25s
+     [exec] 1 actionable task: 1 executed
+     [move] Moving 1 file to /opt/dev/projects/github/liferay-portal
+     [echo]
+     [echo] ##
+     [echo] ## test.case.method.names.properties
+     [echo] ##
+     [echo]
+     [echo]
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0=0_0 0_1 0_2 0_3 0_4 0_5 0_6 0_7
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_0=LocalFile.LocalizationWithWebContentUI#AddWCWithTranslation
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_1=LocalFile.WebContentTemplates#AddTemplateWithStructure
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_2=LocalFile.WebContent#EditWebContentViaArticleTitle
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_3=LocalFile.WebContentDisplay#AddAudioViaWebContent
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_4=LocalFile.WebContentDisplay#AddWebContent
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_5=LocalFile.WebContentDisplay#AddWithStructure
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_6=LocalFile.WebContentDisplay#RemoveWCDPortletSite
+     [echo] RUN_TEST_CASE_METHOD_GROUP_0_7=LocalFile.WebContentDisplay#SelectWebContent
+     [echo] RUN_TEST_CASE_METHOD_GROUPS=0
+     [echo]
 	```
 
 ## Include even more tests
