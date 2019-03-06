@@ -16,7 +16,11 @@ Poshi Query Language (PQL) is a query language that is used to select Poshi test
 ## PQL Components
 When 'poshi properties' are mentioned that is in reference to the properties set within the 'testcase' files.
 
-**Field - Operator - Value + Keyword**
+A simple PQL query consists of a `field`, an `operator`, and a `value`.
+
+A complex PQL query consists of two or more simple PQL linked together by the use of `keyword`.
+
+Definition for `field`, `operator`, `value`, and `keyword` can be found below:
 
 **Field**
 
