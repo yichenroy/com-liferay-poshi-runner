@@ -26,14 +26,14 @@ Definition for `field`, `operator`, `value`, and `keyword` can be found below:
 
 The 'field' is representative of the poshi properties attributed to each individual 'testcase command'.
 
-Here are some example properties that you can use:
+Here are some example properties that can be used:
 
 * portal.acceptance
 * testray.main.component.name
 * testray.component.names
 * ...
 
-For a comprehensive list within 'portal' please see look for the property 'test.case.available.property.names' in [test.properties](https://github.com/liferay/liferay-portal/blob/master/test.properties).
+For the most recent comprehensive list within 'liferay-portal' please see look for the property 'test.case.available.property.names' in [test.properties](https://github.com/liferay/liferay-portal/blob/master/test.properties).
 
 **Operator**
 
@@ -42,10 +42,10 @@ The 'operator' is used to relate the 'field' value to the 'value' declared in th
 Currently the available 'operators' are..
 
 * `Equals (==) | Not Equals (!=)`
-	* If a 'test command' has a 'poshi property name' matches the query 'field', and 'poshi property value' matches (does not match) the query 'value' specified that 'test command' will be added to the test set.
+	* If a 'test command' has a 'poshi property name' that matches the query 'field', and 'poshi property value' matches(==) or does not match (!=) the query 'value' specified then that 'test command' will be added to the test set.
 	* This 'operator' works with any value.
 * `Contains (~) | Not Contains (!~)`
-	* If a 'test command' has a 'poshi property name' matches the query 'field', and 'poshi property value' contains (does not contain) the query 'value' specified that 'test command' will be added to the test set.
+	* If a 'test command' has a 'poshi property name' matches the query 'field', and 'poshi property value' contains(~) or does not contain(!~) the query 'value' specified then that 'test command' will be added to the test set.
 	* This 'operator' only works with string values.
 * `Greater Than (>) | Greater Than Or Equal To (>=)`
 	* If a 'test command' has a 'poshi property name' matches the query 'field', and 'poshi property value' is greater than (or equal to) 'value' specified, then that 'test command' will be added to the test set.
@@ -53,29 +53,29 @@ Currently the available 'operators' are..
 * `Less Than (<) | Less Than Or Equal To (<=)`
 	* If a 'test command' has a 'poshi property name' matches the query 'field', and 'poshi property value' is less than (or equal to) 'value' specified, then that 'test command' will be added to the test set.
 	* This 'operator' only works with numeric values.
-If we need more **'operators'** please make a request to QA Engineering.
+If There is a need for more **'operators'** please make a request to QA Engineering.
 
 **Value**
 
-The 'value' is representative of the value set within your 'test commands'. This will be used to compare within the query.
+The 'value' is representative of the value set within 'test commands'. This will be used to be compared when the query is executed.
 
 **Keyword**
 
 The 'keyword' is used in a similar way that '[conditional operators](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)' are used within java. They allow for more complex queries to include or exclude a certain set of tests.
 
-The currently existing keywords that we have are...
+Currently there are three existing keywords:
 
 * AND
-	* This will act as a logical 'and', meaning if you have 2 conditionals connected by an 'AND' both of those conditions must evaluate as 'true' in order for a test to be included within a set of tests.
+	* This will act as a logical 'and', meaning the two conditionals connected by an 'AND' must both evaluate to 'true' in order for a test to be included within a set of tests.
 * OR
-	* This will act as a logical 'or', meaning if you have 2 conditionals connected by an 'OR' as long as one of those conditions have been evaluate as 'true' the test will be included within a set of tests.
+	* This will act as a logical 'or', meaning at least one of the conditionals connected by an 'OR' must evaluate to 'true' for the test to be included within a set of tests.
 * NOT
-	* This will act as a logical 'not', meaning if you have a conditional preceded by a 'NOT' then it will flip the result. Basically, it will turn a 'true' to a 'false'.
+	* This will act as a logical 'not', meaning a conditional preceded by a 'NOT' will negate the result (i.e 'true' will evaluate to 'false' instead and vice versa).
 
-If we need more 'keywords' please make a request to QA Engineering.
+If there is a need for more 'keywords' please make a request to QA Engineering.
 
 ## Defining PQL
-In order to leverage PQL to create a subset of tests you will need to set a 'test.batch.property.query[XXX]' within 'test.properties'.
+In order to leverage PQL to create a subset of tests a 'test.batch.property.query[XXX]' property will need to be set within '[test.properties](https://github.com/liferay/liferay-portal/blob/master/test.properties)'.
 
 See the below example:
 
@@ -87,10 +87,10 @@ test.batch.run.property.query[subrepository-functional-tomcat80-mysql56-jdk8]=\
 
 The above query will group all test commands (i.e. PortalSmoke#Smoke) that have the poshi properties of 'portal.acceptance' set to 'true', and have the 'testray.main.component.name' of 'Web Content Display' or 'Web Content Administration' into a list of test commands to be ran for a particular Jenkins job.
 
-## Test Queries
-In order to test a query do the following within your 'liferay-portal' repository.
+## Testing Queries
+In order to test a query do the following within the root directory of a local 'liferay-portal' repository.
 
-1. (Optional) Add the property 'test.batch.property.query' to your 'test.${COMPUTERNAME}.properties':
+1. (Optional) Add the property 'test.batch.property.query' to a 'test.${COMPUTERNAME}.properties':
 
 	```
 	test.batch.property.query=\
@@ -99,19 +99,19 @@ In order to test a query do the following within your 'liferay-portal' repositor
 	test.batch.max.group.size=1
 	```
 
-1. Open a command line and run the following command within your 'liferay-portal' repository:
+1. Open a command line terminal and run the following command within the root directory of the 'liferay-portal' repository:
 
 	```
 	ant -f build-test.xml record-test-case-method-names
 	```
 
-	Alternatively you can pass in both properties from the command line, make sure to wrap the PQL property with single quote `'` and escape any `"`, `(`, `)`:
+	Alternatively pass in both properties from the command line, make sure to wrap the PQL property with single quote `'` and escape any `"`, `(`, `)`:
 
 	```
 	ant -f build-test.xml record-test-case-method-names -Dtest.batch.max.group.size=1 -Dtest.batch.property.query='\(portal.acceptance == \"true\"\) AND \(testray.main.component.name ~ \"Web Content\"\)'
 	```
 
-1. This will give a result that looks something like this:
+1. The result should look like this:
 
 	```
      [exec] The following query returned 8 test class command names:
@@ -140,9 +140,13 @@ In order to test a query do the following within your 'liferay-portal' repositor
      [echo]
 	```
 
-## Include even more tests
+	More queries may be appended as seen in the console output, this is normal behavior.
 
-You can use even more complex queries to include additional tests or get more specific. Here is an example of a query used for a component that touches many other components:
+## Include Tests From Different Components
+
+More complex queries can be used to include additional tests or get more specific.
+
+Below is an example of a query used for a component that touches many other components:
 
 ```
 test.batch.run.property.query[subrepository-functional-tomcat80-mysql56-jdk8]=\
@@ -155,4 +159,4 @@ test.batch.run.property.query[subrepository-functional-tomcat80-mysql56-jdk8]=\
 	)
 ```
 
-Here, we are checking for sub-components(testray.component.names) so then we can include tests that are part of another main component without including all tests from that main component.
+This query will include tests that set the property 'portal.acceptance' to 'true' and satisfies at least one of the conditions linked together by the 'OR' keyword.
