@@ -288,7 +288,7 @@ public class PoshiRunnerContext {
 	public static void main(String[] args) throws Exception {
 		readFiles();
 
-		PoshiRunnerValidation.validate();
+		//PoshiRunnerValidation.validate();
 
 		_writeTestCaseMethodNamesProperties();
 		_writeTestCSVReportFile();
