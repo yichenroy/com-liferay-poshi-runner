@@ -89,6 +89,31 @@ public class PoshiRunnerContext {
 		_seleniumParameterCounts.clear();
 	}
 
+	public static void executePQLQuery() throws Exception {
+		readFiles();
+
+		String propertyQuery = PropsValues.TEST_BATCH_PROPERTY_QUERY;
+
+		List<String> namespacedClassCommandNames = _executePQLQuery(
+			propertyQuery);
+
+		int numCommandsFound = namespacedClassCommandNames.size();
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("The following query returned ");
+		sb.append(numCommandsFound);
+		sb.append(" test class command names:\n");
+		sb.append(propertyQuery);
+
+		if (numCommandsFound > 0) {
+			sb.append("\n\n");
+			sb.append(String.join(",", namespacedClassCommandNames));
+		}
+
+		System.out.println(sb.toString());
+	}
+
 	public static String getDefaultNamespace() {
 		return _DEFAULT_NAMESPACE;
 	}
@@ -326,6 +351,32 @@ public class PoshiRunnerContext {
 			testCaseNamespacedClassCommandName);
 	}
 
+	private static List<String> _executePQLQuery(String query)
+		throws Exception {
+
+		List<String> namespacedClassCommandNames = new ArrayList<>();
+
+		PQLEntity pqlEntity = PQLEntityFactory.newPQLEntity(query);
+
+		for (String testCaseNamespacedClassCommandName :
+				_testCaseNamespacedClassCommandNames) {
+
+			Properties properties =
+				_namespacedClassCommandNamePropertiesMap.get(
+					testCaseNamespacedClassCommandName);
+
+			Boolean pqlResultBoolean = (Boolean)pqlEntity.getPQLResult(
+				properties);
+
+			if (pqlResultBoolean) {
+				namespacedClassCommandNames.add(
+					testCaseNamespacedClassCommandName);
+			}
+		}
+
+		return namespacedClassCommandNames;
+	}
+
 	private static int _getAllocatedTestGroupSize(int testCount) {
 		int groupCount = MathUtil.quotient(
 			testCount, PropsValues.TEST_BATCH_MAX_GROUP_SIZE, true);
@@ -482,30 +533,14 @@ public class PoshiRunnerContext {
 			propertyQuery = sb.toString();
 		}
 
-		List<String> namespacedClassCommandNames = new ArrayList<>();
-
-		PQLEntity pqlEntity = PQLEntityFactory.newPQLEntity(propertyQuery);
-
-		for (String testCaseNamespacedClassCommandName :
-				_testCaseNamespacedClassCommandNames) {
-
-			Properties properties =
-				_namespacedClassCommandNamePropertiesMap.get(
-					testCaseNamespacedClassCommandName);
-
-			Boolean pqlResultBoolean = (Boolean)pqlEntity.getPQLResult(
-				properties);
-
-			if (pqlResultBoolean) {
-				namespacedClassCommandNames.add(
-					testCaseNamespacedClassCommandName);
-			}
-		}
+		List<String> namespacedClassCommandNames = _executePQLQuery(
+			propertyQuery);
 
 		System.out.println(
 			"The following query returned " +
 				namespacedClassCommandNames.size() +
 					" test class command names:");
+
 		System.out.println(propertyQuery);
 
 		if (PropsValues.TEST_BATCH_RUN_TYPE.equals("sequential")) {
