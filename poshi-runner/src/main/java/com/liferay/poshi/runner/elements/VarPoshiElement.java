@@ -421,7 +421,7 @@ public class VarPoshiElement extends PoshiElement {
 
 	private static final Pattern _statementPattern = Pattern.compile(
 		"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + _VAR_VALUE_REGEX +
-			STATEMENT_END_REGEX,
+			VAR_STATEMENT_END_REGEX,
 		Pattern.DOTALL);
 
 }

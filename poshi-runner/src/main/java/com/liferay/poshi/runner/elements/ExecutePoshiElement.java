@@ -173,8 +173,6 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			parameter = "var " + parameter + ";";
-
 			add(PoshiNodeFactory.newPoshiNode(this, parameter));
 		}
 	}

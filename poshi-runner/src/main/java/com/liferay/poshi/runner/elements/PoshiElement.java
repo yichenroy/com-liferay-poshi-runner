@@ -980,7 +980,9 @@ public abstract class PoshiElement
 	protected static final String STATEMENT_END_REGEX = ";$";
 
 	protected static final String VAR_NAME_REGEX =
-		"(static[\\s]*|)var([\\s]*[A-Z][\\w]*|)[\\s]*[\\w]*";
+		"((static[\\s]*|)var|)([\\s]*[A-Z][\\w]*|)[\\s]*[\\w]*";
+
+	protected static final String VAR_STATEMENT_END_REGEX = "(;|)$";
 
 	protected static final Pattern poshiScriptAnnotationPattern =
 		Pattern.compile("@[\\w-]*[\\s]*?=[\\s]\".*?\"", Pattern.DOTALL);
@@ -1040,7 +1042,7 @@ public abstract class PoshiElement
 
 		_varInvocationAssignmentStatementPattern = Pattern.compile(
 			"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + INVOCATION_REGEX +
-				STATEMENT_END_REGEX,
+				VAR_STATEMENT_END_REGEX,
 			Pattern.DOTALL);
 	}
 
