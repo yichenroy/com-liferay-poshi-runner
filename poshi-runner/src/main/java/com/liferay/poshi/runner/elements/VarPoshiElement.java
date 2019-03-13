@@ -37,6 +37,17 @@ import org.dom4j.Node;
 public class VarPoshiElement extends PoshiElement {
 
 	@Override
+	public Element addAttribute(String name, String value) {
+		if (name.equals("from") || name.equals("method") ||
+			name.equals("value")) {
+
+			valueAttributeName = name;
+		}
+
+		return super.addAttribute(name, value);
+	}
+
+	@Override
 	public PoshiElement clone(Element element) {
 		if (isElementType(_ELEMENT_NAME, element)) {
 			return new VarPoshiElement(element);
