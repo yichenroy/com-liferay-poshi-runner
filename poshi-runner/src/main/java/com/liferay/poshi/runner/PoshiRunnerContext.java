@@ -397,6 +397,10 @@ public class PoshiRunnerContext {
 			String propertyValue = propertyElement.attributeValue("value");
 
 			properties.setProperty(propertyName, propertyValue);
+
+			if (!_testCaseAvailablePropertyNames.contains(propertyName)) {
+				_testCaseAvailablePropertyNames.add(propertyName);
+			}
 		}
 
 		List<Element> commandPropertyElements = commandElement.elements(
@@ -407,6 +411,10 @@ public class PoshiRunnerContext {
 			String propertyValue = propertyElement.attributeValue("value");
 
 			properties.setProperty(propertyName, propertyValue);
+
+			if (!_testCaseAvailablePropertyNames.contains(propertyName)) {
+				_testCaseAvailablePropertyNames.add(propertyName);
+			}
 		}
 
 		if (Validator.isNotNull(
