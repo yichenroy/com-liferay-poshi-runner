@@ -31,10 +31,6 @@ public abstract class PoshiComment
 
 	@Override
 	public String getPoshiScript() {
-		if (_poshiScript == null) {
-			return toPoshiScript();
-		}
-
 		return _poshiScript;
 	}
 

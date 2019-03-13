@@ -78,10 +78,6 @@ public abstract class PoshiElement
 
 	@Override
 	public String getPoshiScript() {
-		if (_poshiScript == null) {
-			return toPoshiScript();
-		}
-
 		return _poshiScript;
 	}
 
