@@ -113,7 +113,7 @@ public class VarPoshiElement extends PoshiElement {
 		String value = getValueFromAssignment(poshiScript);
 
 		if (value.startsWith("\'\'\'")) {
-			addCDATA(getPoshiScriptEscapedContent(value));
+			add(new PoshiCDATA(getPoshiScriptEscapedContent(value)));
 
 			return;
 		}
@@ -342,12 +342,8 @@ public class VarPoshiElement extends PoshiElement {
 			return;
 		}
 
-		for (Node node : Dom4JUtil.toNodeList(element.content())) {
-			if (node instanceof CDATA) {
-				add((CDATA)node.clone());
-
-				return;
-			}
+		if (getText() != null) {
+			return;
 		}
 
 		try {

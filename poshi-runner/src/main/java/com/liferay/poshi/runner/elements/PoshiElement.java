@@ -36,6 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Attribute;
+import org.dom4j.CDATA;
 import org.dom4j.Comment;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -60,6 +61,17 @@ public abstract class PoshiElement
 		}
 
 		super.add(new PoshiElementAttribute(attribute));
+	}
+
+	@Override
+	public void add(CDATA cdata) {
+		if (cdata instanceof PoshiCDATA) {
+			super.add(cdata);
+
+			return;
+		}
+
+		super.add(new PoshiCDATA(cdata));
 	}
 
 	public abstract PoshiElement clone(
@@ -112,6 +124,21 @@ public abstract class PoshiElement
 
 			if (poshiElementAttribute == attribute) {
 				return super.remove(poshiElementAttribute);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean remove(CDATA cdata) {
+		if (cdata instanceof PoshiCDATA) {
+			return super.remove(cdata);
+		}
+
+		for (PoshiNode poshiNode : toPoshiNodes(content())) {
+			if (poshiNode == cdata) {
+				return super.remove(poshiNode);
 			}
 		}
 
@@ -997,6 +1024,10 @@ public abstract class PoshiElement
 		for (Node node : Dom4JUtil.toNodeList(element.content())) {
 			if (node instanceof Comment || node instanceof Element) {
 				add(PoshiNodeFactory.newPoshiNode(node));
+			}
+
+			if (node instanceof CDATA) {
+				add(new PoshiCDATA((CDATA)node.clone()));
 			}
 		}
 	}
