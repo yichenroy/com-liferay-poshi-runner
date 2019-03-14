@@ -1387,19 +1387,6 @@ public class PoshiRunnerValidation {
 		validateHasNoChildElements(element, filePath);
 		validatePossibleAttributeNames(element, attributeNames, filePath);
 		validateRequiredAttributeNames(element, attributeNames, filePath);
-
-		List<String> testCaseAvailablePropertyNames =
-			PoshiRunnerContext.getTestCaseAvailablePropertyNames();
-
-		String propertyName = element.attributeValue("name");
-
-		if (!testCaseAvailablePropertyNames.contains(propertyName)) {
-			_exceptions.add(
-				new ValidationException(
-					element, "Invalid property name ", propertyName, "\n",
-					filePath));
-		}
-
 		validatePossiblePropertyValues(element, filePath);
 	}
 
