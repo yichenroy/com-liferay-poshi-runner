@@ -262,6 +262,8 @@ public abstract class PoshiElement
 
 		try {
 			parsePoshiScript(poshiScript.trim());
+
+			validatePoshiScript();
 		}
 		catch (PoshiScriptParserException pspe) {
 			System.out.println(pspe.getMessage());

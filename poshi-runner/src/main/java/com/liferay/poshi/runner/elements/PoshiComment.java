@@ -53,6 +53,8 @@ public abstract class PoshiComment
 		setPoshiScript(poshiScript);
 
 		parsePoshiScript(poshiScript.trim());
+
+		validatePoshiScript();
 	}
 
 	private String _poshiScript;
