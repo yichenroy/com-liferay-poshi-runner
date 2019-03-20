@@ -91,21 +91,7 @@ public class PoshiElementAttribute
 			return;
 		}
 
-		String originalPoshiScript = getPoshiScript();
-		String generatedPoshiScript = toPoshiScript();
-
-		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
-
-		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
-
-		if (!originalPoshiScript.equals(generatedPoshiScript)) {
-			PoshiScriptParserException pspe = new PoshiScriptParserException(
-				"Data loss has occurred while parsing Poshi Script", this);
-
-			pspe.setPoshiScriptSnippet(getPoshiScript());
-
-			throw pspe;
-		}
+		PoshiNode.super.validatePoshiScript();
 	}
 
 	private String _poshiScript;
