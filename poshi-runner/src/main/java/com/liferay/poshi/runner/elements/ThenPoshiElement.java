@@ -70,6 +70,10 @@ public class ThenPoshiElement extends PoshiElement {
 		}
 	}
 
+	@Override
+	public void validatePoshiScript() throws PoshiScriptParserException {
+	}
+
 	protected ThenPoshiElement() {
 	}
 
