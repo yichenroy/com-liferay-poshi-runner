@@ -144,7 +144,7 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 
 		if (!originalPoshiScript.equals(generatedPoshiScript)) {
 			PoshiScriptParserException pspe = new PoshiScriptParserException(
-				"Data loss has occurred while parsing Poshi Script", this);
+				PoshiScriptParserException.TRANSLATION_LOSS_MESSAGE, this);
 
 			throw pspe;
 		}

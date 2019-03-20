@@ -27,6 +27,9 @@ import java.util.List;
  */
 public class PoshiScriptParserException extends Exception {
 
+	public static final String TRANSLATION_LOSS_MESSAGE =
+		"Poshi Script syntax is not preserved in translation";
+
 	public static List<String> getFailingFilePaths() {
 		return failingFilePaths;
 	}
