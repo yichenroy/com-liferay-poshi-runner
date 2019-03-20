@@ -170,6 +170,43 @@ public abstract class PoshiElement
 		return sb.toString();
 	}
 
+	public void validatePoshiScript() throws PoshiScriptParserException {
+		for (PoshiElementAttribute poshiElementAttribute :
+				toPoshiElementAttributes(attributeList())) {
+
+			poshiElementAttribute.validatePoshiScript();
+		}
+
+		String originalPoshiScript = getPoshiScript();
+		String generatedPoshiScript = toPoshiScript();
+
+		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
+
+		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
+
+		if (elements().size() == 0) {
+			if (!originalPoshiScript.equals(generatedPoshiScript)) {
+				PoshiScriptParserException pspe =
+					new PoshiScriptParserException(
+						"Data loss has occurred while parsing Poshi Script",
+						this);
+
+				pspe.setPoshiScriptSnippet(getPoshiScript());
+
+				throw pspe;
+			}
+		}
+
+		if (originalPoshiScript.length() != generatedPoshiScript.length()) {
+			PoshiScriptParserException pspe = new PoshiScriptParserException(
+				"Data loss has occurred while parsing Poshi Script", this);
+
+			pspe.setPoshiScriptSnippet(getPoshiScript());
+
+			throw pspe;
+		}
+	}
+
 	protected PoshiElement(String name, Element element) {
 		super(name);
 

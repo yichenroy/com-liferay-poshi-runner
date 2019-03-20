@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
+import com.liferay.poshi.runner.util.Validator;
 
 import org.dom4j.Attribute;
 import org.dom4j.tree.DefaultAttribute;
@@ -82,6 +83,29 @@ public class PoshiElementAttribute
 		sb.append("\"");
 
 		return sb.toString();
+	}
+
+	@Override
+	public void validatePoshiScript() throws PoshiScriptParserException {
+		if (Validator.isNull(getPoshiScript())) {
+			return;
+		}
+
+		String originalPoshiScript = getPoshiScript();
+		String generatedPoshiScript = toPoshiScript();
+
+		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
+
+		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
+
+		if (!originalPoshiScript.equals(generatedPoshiScript)) {
+			PoshiScriptParserException pspe = new PoshiScriptParserException(
+				"Data loss has occurred while parsing Poshi Script", this);
+
+			pspe.setPoshiScriptSnippet(getPoshiScript());
+
+			throw pspe;
+		}
 	}
 
 	private String _poshiScript;

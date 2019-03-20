@@ -132,4 +132,6 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 
 	public String toPoshiScript();
 
+	public void validatePoshiScript() throws PoshiScriptParserException;
+
 }
