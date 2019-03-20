@@ -41,16 +41,6 @@ public class PoshiScriptParserException extends Exception {
 		setErrorLineNumber(poshiNode.getPoshiScriptLineNumber());
 		setFilePath(poshiNode.getFilePath());
 		setPoshiNode(poshiNode);
-		setPoshiScriptSnippet(poshiNode.getPoshiScript());
-
-		if (poshiNode instanceof PoshiElement) {
-			PoshiElement poshiElement = (PoshiElement)poshiNode;
-
-			setStartingLineNumber(poshiElement.getPoshiScriptLineNumber(true));
-		}
-		else {
-			setStartingLineNumber(poshiNode.getPoshiScriptLineNumber());
-		}
 	}
 
 	public PoshiScriptParserException(
@@ -66,8 +56,6 @@ public class PoshiScriptParserException extends Exception {
 
 		parentPoshiScript = parentPoshiScript.replaceFirst("^[\\n\\r]*", "");
 
-		setPoshiScriptSnippet(parentPoshiScript);
-
 		int startingLineNumber = parentPoshiNode.getPoshiScriptLineNumber();
 
 		if (parentPoshiNode instanceof PoshiElement) {
@@ -76,8 +64,6 @@ public class PoshiScriptParserException extends Exception {
 			startingLineNumber = parentPoshiElement.getPoshiScriptLineNumber(
 				true);
 		}
-
-		setStartingLineNumber(startingLineNumber);
 
 		int index = parentPoshiScript.indexOf(poshiScript.trim());
 
@@ -166,10 +152,6 @@ public class PoshiScriptParserException extends Exception {
 		return sb.toString();
 	}
 
-	public String getPoshiScriptSnippet() {
-		return _poshiScriptSnippet;
-	}
-
 	public PoshiNode getPoshiNode() {
 		return _poshiNode;
 	}
@@ -183,10 +165,6 @@ public class PoshiScriptParserException extends Exception {
 		}
 
 		return (PoshiElement)poshiNode;
-	}
-
-	public int getStartingLineNumber() {
-		return _startingLineNumber;
 	}
 
 	public void setErrorLineNumber(int errorLineNumber) {
@@ -203,20 +181,10 @@ public class PoshiScriptParserException extends Exception {
 		_poshiNode = poshiNode;
 	}
 
-	public void setPoshiScriptSnippet(String poshiScriptSnippet) {
-		_poshiScriptSnippet = poshiScriptSnippet;
-	}
-
-	public void setStartingLineNumber(int startingLineNumber) {
-		_startingLineNumber = startingLineNumber;
-	}
-
 	protected static List<String> failingFilePaths = new ArrayList<>();
 
 	private int _errorLineNumber;
 	private String _filePath = "Unknown file";
 	private PoshiNode _poshiNode;
-	private String _poshiScriptSnippet = "";
-	private int _startingLineNumber;
 
 }

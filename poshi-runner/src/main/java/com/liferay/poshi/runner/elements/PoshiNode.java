@@ -146,8 +146,6 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 			PoshiScriptParserException pspe = new PoshiScriptParserException(
 				"Data loss has occurred while parsing Poshi Script", this);
 
-			pspe.setPoshiScriptSnippet(getPoshiScript());
-
 			throw pspe;
 		}
 	}

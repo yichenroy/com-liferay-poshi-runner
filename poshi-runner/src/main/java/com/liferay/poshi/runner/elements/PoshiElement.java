@@ -191,8 +191,6 @@ public abstract class PoshiElement
 						"Data loss has occurred while parsing Poshi Script",
 						this);
 
-				pspe.setPoshiScriptSnippet(getPoshiScript());
-
 				throw pspe;
 			}
 		}
@@ -200,8 +198,6 @@ public abstract class PoshiElement
 		if (originalPoshiScript.length() != generatedPoshiScript.length()) {
 			PoshiScriptParserException pspe = new PoshiScriptParserException(
 				"Data loss has occurred while parsing Poshi Script", this);
-
-			pspe.setPoshiScriptSnippet(getPoshiScript());
 
 			throw pspe;
 		}

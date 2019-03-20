@@ -178,8 +178,6 @@ public abstract class PoshiNodeFactory {
 				"Data loss has occurred while parsing Poshi Script",
 				newPoshiElement);
 
-			pspe.setPoshiScriptSnippet(newPoshiScript);
-
 			throw pspe;
 		}
 	}
