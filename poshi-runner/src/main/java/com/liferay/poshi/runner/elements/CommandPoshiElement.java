@@ -103,12 +103,13 @@ public class CommandPoshiElement extends PoshiElement {
 
 		sb.append("\n");
 
-		for (PoshiElement poshiElement :
-				toPoshiElements(elements("description"))) {
+		DescriptionPoshiElement descriptionPoshiElement =
+			(DescriptionPoshiElement)element("description");
 
-			sb.append("\n\t@description = \"");
-			sb.append(poshiElement.attributeValue("message"));
-			sb.append("\"");
+		if (descriptionPoshiElement != null) {
+			sb.append("\n\t");
+
+			sb.append(descriptionPoshiElement.toPoshiScript());
 		}
 
 		for (PoshiElementAttribute poshiElementAttribute :
