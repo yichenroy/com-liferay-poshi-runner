@@ -161,7 +161,7 @@ public class ExecutePoshiElement extends PoshiElement {
 
 					value = StringEscapeUtils.unescapeXml(value);
 
-					addAttribute(name, value);
+					add(new PoshiElementAttribute(name, value, parameter));
 
 					functionAttributeAdded = true;
 

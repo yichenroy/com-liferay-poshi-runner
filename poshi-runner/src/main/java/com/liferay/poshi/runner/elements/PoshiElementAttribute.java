@@ -32,6 +32,14 @@ public class PoshiElementAttribute
 			attribute.getNamespace());
 	}
 
+	public PoshiElementAttribute(
+		String name, String value, String poshiScript) {
+
+		super(name, value);
+
+		setPoshiScript(poshiScript);
+	}
+
 	@Override
 	public PoshiElementAttribute clone(Attribute attribute) {
 		return null;
