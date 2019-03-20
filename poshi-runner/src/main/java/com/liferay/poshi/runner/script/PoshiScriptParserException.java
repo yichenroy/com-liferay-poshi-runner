@@ -91,21 +91,37 @@ public class PoshiScriptParserException extends Exception {
 	}
 
 	public String getErrorSnippet() {
+		PoshiElement rootPoshiElement = getRootPoshiElement(getPoshiNode());
+
+		int startingLineNumber = 1;
+		int errorLineNumber = getErrorLineNumber();
+
+		if (errorLineNumber > 10) {
+			startingLineNumber = errorLineNumber - 10;
+		}
+
+		String poshiScript = rootPoshiElement.getPoshiScript();
+
+		String[] lines = poshiScript.split("\n");
+
+		int endingLineNumber = lines.length;
+
+		if ((errorLineNumber + 10) < endingLineNumber) {
+			endingLineNumber = errorLineNumber + 10;
+		}
+
 		StringBuilder sb = new StringBuilder();
 
-		String poshiScript = getPoshiScriptSnippet();
+		int currentLineNumber = startingLineNumber;
 
-		int startingLineNumber = getStartingLineNumber();
-
-		String lineNumberString = String.valueOf(
-			startingLineNumber + StringUtil.count(poshiScript, "\n"));
+		String lineNumberString = String.valueOf(errorLineNumber);
 
 		int pad = lineNumberString.length() + 2;
 
-		for (String line : poshiScript.split("\n")) {
+		while (currentLineNumber <= endingLineNumber) {
 			StringBuilder prefix = new StringBuilder();
 
-			if (startingLineNumber == getErrorLineNumber()) {
+			if (currentLineNumber == errorLineNumber) {
 				prefix.append(">");
 			}
 			else {
@@ -114,14 +130,18 @@ public class PoshiScriptParserException extends Exception {
 
 			prefix.append(" ");
 
-			prefix.append(startingLineNumber);
+			prefix.append(currentLineNumber);
 
 			sb.append(String.format("%" + pad + "s", prefix.toString()));
 			sb.append(" |");
+
+			String line = lines[currentLineNumber - 1];
+
 			sb.append(line.replace("\t", "    "));
+
 			sb.append("\n");
 
-			startingLineNumber++;
+			currentLineNumber++;
 		}
 
 		return sb.toString();
