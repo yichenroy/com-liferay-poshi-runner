@@ -64,6 +64,23 @@ public class DescriptionPoshiElement extends PoshiElement {
 		addAttribute("message", message);
 	}
 
+	@Override
+	public String toPoshiScript() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("@");
+
+		sb.append(_ELEMENT_NAME);
+
+		sb.append(" = \"");
+
+		sb.append(attributeValue("message"));
+
+		sb.append("\"");
+
+		return sb.toString();
+	}
+
 	protected DescriptionPoshiElement() {
 	}
 
