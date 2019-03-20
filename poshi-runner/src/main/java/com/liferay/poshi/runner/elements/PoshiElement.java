@@ -19,6 +19,7 @@ import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
 import com.liferay.poshi.runner.script.UnbalancedCodeException;
 import com.liferay.poshi.runner.util.Dom4JUtil;
+import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.RegexUtil;
 import com.liferay.poshi.runner.util.StringUtil;
 
@@ -263,7 +264,9 @@ public abstract class PoshiElement
 		try {
 			parsePoshiScript(poshiScript.trim());
 
-			validatePoshiScript();
+			if (PropsValues.TEST_POSHI_SCRIPT_VALIDATION) {
+				validatePoshiScript();
+			}
 		}
 		catch (PoshiScriptParserException pspe) {
 			System.out.println(pspe.getMessage());

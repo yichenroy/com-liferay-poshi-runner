@@ -15,6 +15,7 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
+import com.liferay.poshi.runner.util.PropsValues;
 
 import org.dom4j.Comment;
 import org.dom4j.tree.DefaultComment;
@@ -54,7 +55,9 @@ public abstract class PoshiComment
 
 		parsePoshiScript(poshiScript.trim());
 
-		validatePoshiScript();
+		if (PropsValues.TEST_POSHI_SCRIPT_VALIDATION) {
+			validatePoshiScript();
+		}
 	}
 
 	private String _poshiScript;
