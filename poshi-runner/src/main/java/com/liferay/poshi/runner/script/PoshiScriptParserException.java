@@ -17,6 +17,7 @@ package com.liferay.poshi.runner.script;
 import com.liferay.poshi.runner.elements.PoshiElement;
 import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.util.StringUtil;
+import com.liferay.poshi.runner.util.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class PoshiScriptParserException extends Exception {
 
 		setErrorLineNumber(poshiNode.getPoshiScriptLineNumber());
 		setFilePath(poshiNode.getFilePath());
+		setPoshiNode(poshiNode);
 		setPoshiScriptSnippet(poshiNode.getPoshiScript());
 
 		if (poshiNode instanceof PoshiElement) {
@@ -57,6 +59,8 @@ public class PoshiScriptParserException extends Exception {
 		super(msg);
 
 		setFilePath(parentPoshiNode.getFilePath());
+
+		setPoshiNode(parentPoshiNode);
 
 		String parentPoshiScript = parentPoshiNode.getPoshiScript();
 
@@ -146,6 +150,21 @@ public class PoshiScriptParserException extends Exception {
 		return _poshiScriptSnippet;
 	}
 
+	public PoshiNode getPoshiNode() {
+		return _poshiNode;
+	}
+
+	public PoshiElement getRootPoshiElement(PoshiNode poshiNode) {
+		if (Validator.isNotNull(poshiNode.getParent())) {
+			PoshiElement parentPoshiElement =
+				(PoshiElement)poshiNode.getParent();
+
+			return getRootPoshiElement(parentPoshiElement);
+		}
+
+		return (PoshiElement)poshiNode;
+	}
+
 	public int getStartingLineNumber() {
 		return _startingLineNumber;
 	}
@@ -160,6 +179,10 @@ public class PoshiScriptParserException extends Exception {
 		failingFilePaths.add(filePath);
 	}
 
+	public void setPoshiNode(PoshiNode poshiNode) {
+		_poshiNode = poshiNode;
+	}
+
 	public void setPoshiScriptSnippet(String poshiScriptSnippet) {
 		_poshiScriptSnippet = poshiScriptSnippet;
 	}
@@ -172,6 +195,7 @@ public class PoshiScriptParserException extends Exception {
 
 	private int _errorLineNumber;
 	private String _filePath = "Unknown file";
+	private PoshiNode _poshiNode;
 	private String _poshiScriptSnippet = "";
 	private int _startingLineNumber;
 
