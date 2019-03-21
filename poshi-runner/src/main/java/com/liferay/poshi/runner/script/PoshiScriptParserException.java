@@ -85,9 +85,8 @@ public class PoshiScriptParserException extends Exception {
 		int startingLineNumber = 1;
 		int errorLineNumber = getErrorLineNumber();
 
-		if (errorLineNumber > _ERROR_SNIPPET_PREFIX_SIZE) {
-			startingLineNumber = errorLineNumber - _ERROR_SNIPPET_PREFIX_SIZE;
-		}
+		startingLineNumber = Math.max(
+			errorLineNumber - _ERROR_SNIPPET_PREFIX_SIZE, 0);
 
 		String poshiScript = rootPoshiElement.getPoshiScript();
 
@@ -95,11 +94,8 @@ public class PoshiScriptParserException extends Exception {
 
 		int endingLineNumber = lines.length;
 
-		if ((errorLineNumber + _ERROR_SNIPPET_POSTFIX_SIZE) <
-				endingLineNumber) {
-
-			endingLineNumber = errorLineNumber + _ERROR_SNIPPET_POSTFIX_SIZE;
-		}
+		endingLineNumber = Math.min(
+			errorLineNumber + _ERROR_SNIPPET_POSTFIX_SIZE, endingLineNumber);
 
 		StringBuilder sb = new StringBuilder();
 
