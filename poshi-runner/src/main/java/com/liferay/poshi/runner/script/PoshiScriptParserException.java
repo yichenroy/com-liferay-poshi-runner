@@ -85,8 +85,8 @@ public class PoshiScriptParserException extends Exception {
 		int startingLineNumber = 1;
 		int errorLineNumber = getErrorLineNumber();
 
-		if (errorLineNumber > 10) {
-			startingLineNumber = errorLineNumber - 10;
+		if (errorLineNumber > _ERROR_SNIPPET_PREFIX_SIZE) {
+			startingLineNumber = errorLineNumber - _ERROR_SNIPPET_PREFIX_SIZE;
 		}
 
 		String poshiScript = rootPoshiElement.getPoshiScript();
@@ -95,8 +95,10 @@ public class PoshiScriptParserException extends Exception {
 
 		int endingLineNumber = lines.length;
 
-		if ((errorLineNumber + 10) < endingLineNumber) {
-			endingLineNumber = errorLineNumber + 10;
+		if ((errorLineNumber + _ERROR_SNIPPET_POSTFIX_SIZE) <
+				endingLineNumber) {
+
+			endingLineNumber = errorLineNumber + _ERROR_SNIPPET_POSTFIX_SIZE;
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -185,6 +187,10 @@ public class PoshiScriptParserException extends Exception {
 	}
 
 	protected static List<String> failingFilePaths = new ArrayList<>();
+
+	private static final int _ERROR_SNIPPET_POSTFIX_SIZE = 10;
+
+	private static final int _ERROR_SNIPPET_PREFIX_SIZE = 10;
 
 	private int _errorLineNumber;
 	private String _filePath = "Unknown file";
