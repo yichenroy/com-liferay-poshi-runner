@@ -2813,9 +2813,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		String fileName = PropsValues.TCAT_ADMIN_REPOSITORY + "/" + value;
 
-		if (OSDetector.isWindows()) {
-			fileName = StringUtil.replace(fileName, "/", "\\");
-		}
+		fileName = FileUtil.fixFilePath(fileName);
 
 		sikuliType(image, fileName);
 
@@ -2842,9 +2840,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		String fileName = getOutputDirName() + "/" + value;
 
-		if (OSDetector.isWindows()) {
-			fileName = StringUtil.replace(fileName, "/", "\\");
-		}
+		fileName = FileUtil.fixFilePath(fileName);
 
 		sikuliType(image, fileName);
 
@@ -3062,9 +3058,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		filePath = LiferaySeleniumHelper.getSourceDirFilePath(filePath);
 
-		if (OSDetector.isWindows()) {
-			filePath = StringUtil.replace(filePath, "/", "\\");
-		}
+		filePath = FileUtil.fixFilePath(filePath);
 
 		uploadFile(location, filePath);
 	}
@@ -3075,16 +3069,14 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		WebElement webElement = getWebElement(location);
 
-		webElement.sendKeys(value);
+		webElement.sendKeys(FileUtil.getCanonicalPath(value));
 	}
 
 	@Override
 	public void uploadTempFile(String location, String value) {
 		String filePath = _outputDirName + FileUtil.getSeparator() + value;
 
-		if (OSDetector.isWindows()) {
-			filePath = StringUtil.replace(filePath, "/", "\\");
-		}
+		filePath = FileUtil.fixFilePath(filePath);
 
 		uploadFile(location, filePath);
 	}
