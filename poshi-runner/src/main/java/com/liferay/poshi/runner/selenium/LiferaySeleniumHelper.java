@@ -14,7 +14,6 @@
 
 package com.liferay.poshi.runner.selenium;
 
-import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.util.EmailCommands;
 import com.liferay.poshi.runner.util.FileUtil;
@@ -387,7 +386,7 @@ public class LiferaySeleniumHelper {
 		}
 
 		for (String baseDirName : baseDirNames) {
-			String filePath = PoshiRunnerGetterUtil.getCanonicalPath(
+			String filePath = FileUtil.getCanonicalPath(
 				baseDirName + FileUtil.getSeparator() + fileName);
 
 			if (FileUtil.exists(filePath)) {

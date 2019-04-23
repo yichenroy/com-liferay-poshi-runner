@@ -4143,8 +4143,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		_navigationBarHeight = navigationBarHeight;
 	}
 
-	private static final String _CURRENT_DIR_NAME =
-		PoshiRunnerGetterUtil.getCanonicalPath(".");
+	private static final String _CURRENT_DIR_NAME = FileUtil.getCanonicalPath(
+		".");
 
 	private static final String _OUTPUT_DIR_NAME = PropsValues.OUTPUT_DIR_NAME;
 

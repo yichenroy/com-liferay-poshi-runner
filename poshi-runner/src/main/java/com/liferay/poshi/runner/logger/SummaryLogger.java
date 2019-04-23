@@ -72,7 +72,7 @@ public final class SummaryLogger {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(PoshiRunnerGetterUtil.getCanonicalPath("."));
+		sb.append(FileUtil.getCanonicalPath("."));
 		sb.append("/test-results/");
 		sb.append(
 			StringUtil.replace(

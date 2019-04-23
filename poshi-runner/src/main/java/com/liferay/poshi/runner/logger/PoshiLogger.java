@@ -59,7 +59,7 @@ public class PoshiLogger {
 				"></ul>",
 			_syntaxLogger.getSyntaxLogText());
 
-		String currentDirName = PoshiRunnerGetterUtil.getCanonicalPath(".");
+		String currentDirName = FileUtil.getCanonicalPath(".");
 
 		if (PropsValues.TEST_RUN_LOCALLY) {
 			FileUtil.copyFileFromResource(

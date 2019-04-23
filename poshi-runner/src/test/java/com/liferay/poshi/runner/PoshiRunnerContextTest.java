@@ -14,6 +14,8 @@
 
 package com.liferay.poshi.runner;
 
+import com.liferay.poshi.runner.util.FileUtil;
+
 import java.io.File;
 
 import junit.framework.TestCase;
@@ -57,7 +59,7 @@ public class PoshiRunnerContextTest extends TestCase {
 		String actualFilePath = PoshiRunnerContext.getFilePathFromFileName(
 			"Action2.action", PoshiRunnerContext.getDefaultNamespace());
 
-		String baseDirName = PoshiRunnerGetterUtil.getCanonicalPath(
+		String baseDirName = FileUtil.getCanonicalPath(
 			"src/test/resources/com/liferay/poshi/runner/");
 
 		File file = new File(baseDirName, "/dependencies/test/Action2.action");

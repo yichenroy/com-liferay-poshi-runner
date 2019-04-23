@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner;
 
+import com.liferay.poshi.runner.util.FileUtil;
 import com.liferay.poshi.runner.util.OSDetector;
 import com.liferay.poshi.runner.util.PropsValues;
 
@@ -1486,7 +1487,7 @@ public class PoshiRunnerValidationTest extends TestCase {
 	}
 
 	protected String getFilePath(String fileName) {
-		String filePath = PoshiRunnerGetterUtil.getCanonicalPath(
+		String filePath = FileUtil.getCanonicalPath(
 			PropsValues.TEST_BASE_DIR_NAME +
 				"resources/com/liferay/poshi/runner/dependencies/validation/" +
 					fileName);
