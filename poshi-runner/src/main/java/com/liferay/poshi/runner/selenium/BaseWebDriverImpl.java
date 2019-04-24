@@ -20,6 +20,7 @@ import com.liferay.poshi.runner.PoshiRunnerContext;
 import com.liferay.poshi.runner.PoshiRunnerGetterUtil;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.util.AntCommands;
+import com.liferay.poshi.runner.util.ArchiveUtil;
 import com.liferay.poshi.runner.util.CharPool;
 import com.liferay.poshi.runner.util.EmailCommands;
 import com.liferay.poshi.runner.util.FileUtil;
@@ -3059,6 +3060,23 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		filePath = LiferaySeleniumHelper.getSourceDirFilePath(filePath);
 
 		filePath = FileUtil.fixFilePath(filePath);
+
+		if (value.endsWith(".jar") || value.endsWith(".war") ||
+			value.endsWith(".zip")) {
+
+			File file = new File(filePath);
+
+			if (file.isDirectory()) {
+				String archiveFilePath =
+					_outputDirName + FileUtil.getSeparator() + file.getName();
+
+				archiveFilePath = FileUtil.getCanonicalPath(archiveFilePath);
+
+				ArchiveUtil.archive(filePath, archiveFilePath);
+
+				filePath = archiveFilePath;
+			}
+		}
 
 		uploadFile(location, filePath);
 	}
