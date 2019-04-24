@@ -6,5 +6,6 @@
 		<suppress checks="JavaStylingCheck" files="poshi-runner/src/test/java/com/liferay/poshi/runner/pql/PQLEntityFactoryTest\.java" />
 		<suppress checks="JavaStylingCheck" files="poshi-runner/src/test/java/com/liferay/poshi/runner/pql/PQLQueryTest\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files=".*" />
+		<suppress checks="LocaleUtilCheck" files="poshi-runner/src/main/java/com/liferay/poshi/runner/util/LocaleUtil\.java" />
 	</source-check>
 </suppressions>
