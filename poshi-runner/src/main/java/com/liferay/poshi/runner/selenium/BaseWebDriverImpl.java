@@ -1320,10 +1320,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			thread.start();
 
 			try {
-				String location = futureTask.get(
+				return futureTask.get(
 					PropsValues.GET_LOCATION_TIMEOUT, TimeUnit.SECONDS);
-
-				return location;
 			}
 			catch (CancellationException ce) {
 				exceptions.add(ce);

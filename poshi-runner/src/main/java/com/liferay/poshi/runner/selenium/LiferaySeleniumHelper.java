@@ -699,9 +699,7 @@ public class LiferaySeleniumHelper {
 		InputStreamReader inputStreamReader = new InputStreamReader(
 			process.getInputStream());
 
-		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-		return bufferedReader;
+		return new BufferedReader(inputStreamReader);
 	}
 
 	private static final List<String> _errorTimestamps = new ArrayList<>();

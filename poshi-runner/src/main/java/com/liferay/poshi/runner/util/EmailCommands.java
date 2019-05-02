@@ -89,9 +89,7 @@ public class EmailCommands {
 	public static String getEmailSubject(int index) throws Exception {
 		Message message = _imapFolder.getMessage(index);
 
-		String subject = message.getSubject();
-
-		return subject;
+		return message.getSubject();
 	}
 
 	public static void replyToEmail(String to, String body) throws Exception {

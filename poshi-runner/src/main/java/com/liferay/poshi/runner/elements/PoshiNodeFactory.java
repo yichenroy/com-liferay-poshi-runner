@@ -106,10 +106,7 @@ public abstract class PoshiNodeFactory {
 			}
 
 			if (_definitionPoshiElement.isBalancedPoshiScript(content, true)) {
-				PoshiElement poshiElement = _definitionPoshiElement.clone(
-					content, url);
-
-				return poshiElement;
+				return _definitionPoshiElement.clone(content, url);
 			}
 		}
 		catch (DocumentException de) {

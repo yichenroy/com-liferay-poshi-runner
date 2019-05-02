@@ -497,9 +497,7 @@ public class PoshiRunnerGetterUtil {
 				de.getMessage() + "\nInvalid syntax in " + filePath, de);
 		}
 
-		Element rootElement = document.getRootElement();
-
-		return rootElement;
+		return document.getRootElement();
 	}
 
 	public static String getUtilityClassName(String simpleClassName) {
