@@ -3165,7 +3165,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				assertEditable(locator);
 			}
 
- 			try {
+			try {
 				if (isEditable(locator)) {
 					break;
 				}
@@ -3173,26 +3173,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			catch (Exception e) {
 			}
 
- 			Thread.sleep(1000);
-		}
-	}
-
- 	@Override
-	public void waitForNotEditable(String locator) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertNotEditable(locator);
-			}
-
- 			try {
-				if (isNotEditable(locator)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
- 			Thread.sleep(1000);
+			Thread.sleep(1000);
 		}
 	}
 
@@ -3224,6 +3205,25 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			try {
 				if (isElementPresent(locator)) {
+					break;
+				}
+			}
+			catch (Exception e) {
+			}
+
+			Thread.sleep(1000);
+		}
+	}
+
+	@Override
+	public void waitForNotEditable(String locator) throws Exception {
+		for (int second = 0;; second++) {
+			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+				assertNotEditable(locator);
+			}
+
+			try {
+				if (isNotEditable(locator)) {
 					break;
 				}
 			}

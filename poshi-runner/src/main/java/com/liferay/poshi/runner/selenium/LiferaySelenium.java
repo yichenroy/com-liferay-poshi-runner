@@ -471,11 +471,11 @@ public interface LiferaySelenium {
 
 	public void waitForEditable(String locator) throws Exception;
 
- 	public void waitForNotEditable(String locator) throws Exception;
-
 	public void waitForElementNotPresent(String locator) throws Exception;
 
 	public void waitForElementPresent(String locator) throws Exception;
+
+	public void waitForNotEditable(String locator) throws Exception;
 
 	public void waitForNotPartialText(String locator, String value)
 		throws Exception;
