@@ -505,13 +505,13 @@ public class StringUtil {
 	public static String regexReplaceAll(
 		String s, String regex, String replacement) {
 
-		return s.replaceAll(regex,replacement);
+		return s.replaceAll(regex, replacement);
 	}
 
 	public static String regexReplaceFirst(
 		String s, String regex, String replacement) {
 
-		return s.replaceFirst(regex,replacement);
+		return s.replaceFirst(regex, replacement);
 	}
 
 	public static String removeSpaces(String s) {
