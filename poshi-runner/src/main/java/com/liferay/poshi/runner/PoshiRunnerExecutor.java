@@ -33,12 +33,20 @@ import groovy.lang.Binding;
 
 import groovy.util.GroovyScriptEngine;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1147,36 +1155,58 @@ public class PoshiRunnerExecutor {
 
 		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
 
-		try {
-			return method.invoke(liferaySelenium, args);
-		}
-		catch (InvocationTargetException ite) {
-			Throwable throwable = ite.getCause();
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-			if (throwable instanceof StaleElementReferenceException) {
-				StringBuilder sb = new StringBuilder();
+		Callable<Object> task = new Callable<Object>() {
 
-				sb.append("\nElement turned stale while running ");
-				sb.append(method.getName());
-				sb.append(". Retrying in ");
-				sb.append(PropsValues.TEST_RETRY_COMMAND_WAIT_TIME);
-				sb.append("seconds.");
-
-				System.out.println(sb.toString());
-
+			public Object call() throws Exception {
 				try {
 					return method.invoke(liferaySelenium, args);
 				}
-				catch (Exception e) {
-					throwable = e.getCause();
+				catch (InvocationTargetException ite) {
+					Throwable throwable = ite.getCause();
 
-					throw new Exception(throwable.getMessage(), e);
+					if (throwable instanceof StaleElementReferenceException) {
+						StringBuilder sb = new StringBuilder();
+
+						sb.append("\nElement turned stale while running ");
+						sb.append(method.getName());
+						sb.append(". Retrying in ");
+						sb.append(PropsValues.TEST_RETRY_COMMAND_WAIT_TIME);
+						sb.append("seconds.");
+
+						System.out.println(sb.toString());
+
+						try {
+							return method.invoke(liferaySelenium, args);
+						}
+						catch (Exception e) {
+							throwable = e.getCause();
+
+							throw new Exception(throwable.getMessage(), e);
+						}
+					}
+					else {
+						throw new Exception(throwable.getMessage(), ite);
+					}
 				}
 			}
-			else {
-				throw new Exception(throwable.getMessage(), ite);
+
+		};
+
+		Future<Object> future = executorService.submit(task);
+
+		try {
+			return future.get(
+				PropsValues.TIMEOUT_EXPLICIT_WAIT, TimeUnit.SECONDS);
+		}
+		catch (ExecutionException | InterruptedException | TimeoutException e) {
+			if (e instanceof TimeoutException) {
+				throw e;
 			}
 		}
+
+		throw new Exception("Unable to invoke method: " + method.getName());
 	}
 
 	private Object _getVarValue(Element element) throws Exception {
