@@ -1025,43 +1025,9 @@ public class PoshiRunnerExecutor {
 			throw e;
 		}
 
-		try {
-			_returnObject = method.invoke(
-				liferaySelenium,
-				arguments.toArray(new String[arguments.size()]));
-		}
-		catch (IllegalAccessException | IllegalArgumentException e) {
-			throw e;
-		}
-		catch (InvocationTargetException ite) {
-			Throwable throwable = ite.getCause();
-
-			if (throwable instanceof StaleElementReferenceException) {
-				StringBuilder sb = new StringBuilder();
-
-				sb.append("\nElement turned stale while running ");
-				sb.append(selenium);
-				sb.append(". Retrying in ");
-				sb.append(PropsValues.TEST_RETRY_COMMAND_WAIT_TIME);
-				sb.append("seconds.");
-
-				System.out.println(sb.toString());
-
-				try {
-					_returnObject = method.invoke(
-						liferaySelenium,
-						arguments.toArray(new String[arguments.size()]));
-				}
-				catch (Exception e) {
-					throwable = e.getCause();
-
-					throw new Exception(throwable.getMessage(), e);
-				}
-			}
-			else {
-				throw new Exception(throwable.getMessage(), ite);
-			}
-		}
+		_returnObject = invokeLiferaySeleniumMethod(
+			method,
+			arguments.toArray(new String[arguments.size()]));
 	}
 
 	public void runTaskElement(Element element) throws Exception {
