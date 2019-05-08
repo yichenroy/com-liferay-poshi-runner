@@ -1176,6 +1176,43 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	protected Object invokeLiferaySeleniumMethod(Method method, Object... args)
+		throws Exception {
+
+		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
+
+		try {
+			return method.invoke(liferaySelenium, args);
+		}
+		catch (InvocationTargetException ite) {
+			Throwable throwable = ite.getCause();
+
+			if (throwable instanceof StaleElementReferenceException) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("\nElement turned stale while running ");
+				sb.append(method.getName());
+				sb.append(". Retrying in ");
+				sb.append(PropsValues.TEST_RETRY_COMMAND_WAIT_TIME);
+				sb.append("seconds.");
+
+				System.out.println(sb.toString());
+
+				try {
+					return method.invoke(liferaySelenium, args);
+				}
+				catch (Exception e) {
+					throwable = e.getCause();
+
+					throw new Exception(throwable.getMessage(), e);
+				}
+			}
+			else {
+				throw new Exception(throwable.getMessage(), ite);
+			}
+		}
+	}
+
 	private Object _getVarValue(Element element) throws Exception {
 		Object varValue = element.attributeValue("value");
 
