@@ -14,6 +14,7 @@
 
 package com.liferay.poshi.runner;
 
+import com.liferay.poshi.runner.exception.PoshiRunnerLoggerException;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.logger.PoshiLogger;
 import com.liferay.poshi.runner.logger.SummaryLogger;
@@ -1001,23 +1002,39 @@ public class PoshiRunnerExecutor {
 			parameterClasses.add(String.class);
 		}
 
-		_poshiLogger.logSeleniumCommand(executeElement, arguments);
+		try {
+			_poshiLogger.logSeleniumCommand(executeElement, arguments);
+		}
+		catch (PoshiRunnerLoggerException prle) {
+			throw prle;
+		}
 
 		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
 
 		Class<?> clazz = liferaySelenium.getClass();
 
-		Method method = clazz.getMethod(
-			selenium,
-			parameterClasses.toArray(new Class<?>[parameterClasses.size()]));
+		Method method = null;
+
+		try {
+			method = clazz.getMethod(
+				selenium,
+				parameterClasses.toArray(
+					new Class<?>[parameterClasses.size()]));
+		}
+		catch (NoSuchMethodException | SecurityException e) {
+			throw e;
+		}
 
 		try {
 			_returnObject = method.invoke(
 				liferaySelenium,
 				arguments.toArray(new String[arguments.size()]));
 		}
-		catch (Exception e1) {
-			Throwable throwable = e1.getCause();
+		catch (IllegalAccessException | IllegalArgumentException e) {
+			throw e;
+		}
+		catch (InvocationTargetException ite) {
+			Throwable throwable = ite.getCause();
 
 			if (throwable instanceof StaleElementReferenceException) {
 				StringBuilder sb = new StringBuilder();
@@ -1035,14 +1052,14 @@ public class PoshiRunnerExecutor {
 						liferaySelenium,
 						arguments.toArray(new String[arguments.size()]));
 				}
-				catch (Exception e2) {
-					throwable = e2.getCause();
+				catch (Exception e) {
+					throwable = e.getCause();
 
-					throw new Exception(throwable.getMessage(), e2);
+					throw new Exception(throwable.getMessage(), e);
 				}
 			}
 			else {
-				throw new Exception(throwable.getMessage(), e1);
+				throw new Exception(throwable.getMessage(), ite);
 			}
 		}
 	}
