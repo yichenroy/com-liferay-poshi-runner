@@ -1157,6 +1157,8 @@ public class PoshiRunnerExecutor {
 
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+		String methodName = method.getName();
+
 		Callable<Object> task = new Callable<Object>() {
 
 			public Object call() throws Exception {
@@ -1170,7 +1172,7 @@ public class PoshiRunnerExecutor {
 						StringBuilder sb = new StringBuilder();
 
 						sb.append("\nElement turned stale while running ");
-						sb.append(method.getName());
+						sb.append(methodName);
 						sb.append(". Retrying in ");
 						sb.append(PropsValues.TEST_RETRY_COMMAND_WAIT_TIME);
 						sb.append("seconds.");
@@ -1204,18 +1206,34 @@ public class PoshiRunnerExecutor {
 
 		Future<Object> future = executorService.submit(task);
 
-		try {
-			return future.get(
-				Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 5L,
-				TimeUnit.SECONDS);
-		}
-		catch (ExecutionException | InterruptedException | TimeoutException e) {
-			if (e instanceof TimeoutException) {
-				throw e;
-			}
+		Long timeout = Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 10L;
+
+		if (methodName.equals("antCommand") | methodName.equals("pause")) {
+			timeout = 3600L;
 		}
 
-		throw new Exception("Unable to invoke method: " + method.getName());
+		try {
+			return future.get(timeout, TimeUnit.SECONDS);
+		}
+		catch (ExecutionException ee) {
+			if (PropsValues.DEBUG_STACKTRACE) {
+				throw ee;
+			}
+
+			throw (Exception)ee.getCause();
+		}
+		catch (InterruptedException | TimeoutException e) {
+			future.cancel(true);
+
+			if (e instanceof TimeoutException) {
+				System.out.println(
+					"Timed out after " + timeout +
+						" seconds while executing: " + methodName);
+			}
+
+			throw new Exception(
+				"An error occurred while executing: " + methodName, e);
+		}
 	}
 
 	private Object _getVarValue(Element element) throws Exception {
