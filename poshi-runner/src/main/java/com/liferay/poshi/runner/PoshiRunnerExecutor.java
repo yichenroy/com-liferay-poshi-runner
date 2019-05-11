@@ -615,8 +615,7 @@ public class PoshiRunnerExecutor {
 						executeArgElement.attributeValue("value")));
 			}
 
-			binding.setVariable(
-				"args", arguments.toArray(new String[arguments.size()]));
+			binding.setVariable("args", arguments.toArray(new String[0]));
 		}
 
 		String status = "fail";
@@ -1034,8 +1033,7 @@ public class PoshiRunnerExecutor {
 		}
 
 		_returnObject = invokeLiferaySeleniumMethod(
-			method,
-			arguments.toArray(new String[arguments.size()]));
+			method, arguments.toArray(new String[0]));
 	}
 
 	public void runTaskElement(Element element) throws Exception {
