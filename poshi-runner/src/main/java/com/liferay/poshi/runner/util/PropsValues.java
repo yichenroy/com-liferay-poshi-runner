@@ -36,6 +36,9 @@ public class PropsValues {
 	public static final String BROWSER_VERSION = PropsUtil.get(
 		"browser.version");
 
+	public static final Boolean DEBUG_STACKTRACE = GetterUtil.getBoolean(
+		PropsUtil.get("debug.stacktrace"));
+
 	public static final int GET_LOCATION_MAX_RETRIES = GetterUtil.getInteger(
 		PropsUtil.get("get.location.max.retries"));
 

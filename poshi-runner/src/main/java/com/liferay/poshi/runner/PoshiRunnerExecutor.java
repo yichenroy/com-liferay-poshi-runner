@@ -1183,11 +1183,19 @@ public class PoshiRunnerExecutor {
 						catch (Exception e) {
 							throwable = e.getCause();
 
-							throw new Exception(throwable.getMessage(), e);
+							if (PropsValues.DEBUG_STACKTRACE) {
+								throw new Exception(throwable.getMessage(), e);
+							}
+
+							throw (Exception)throwable;
 						}
 					}
 					else {
-						throw new Exception(throwable.getMessage(), ite);
+						if (PropsValues.DEBUG_STACKTRACE) {
+							throw new Exception(throwable.getMessage(), ite);
+						}
+
+						throw (Exception)throwable;
 					}
 				}
 			}
@@ -1198,7 +1206,8 @@ public class PoshiRunnerExecutor {
 
 		try {
 			return future.get(
-				PropsValues.TIMEOUT_EXPLICIT_WAIT, TimeUnit.SECONDS);
+				Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 5L,
+				TimeUnit.SECONDS);
 		}
 		catch (ExecutionException | InterruptedException | TimeoutException e) {
 			if (e instanceof TimeoutException) {
