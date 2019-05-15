@@ -1018,7 +1018,7 @@ public class PoshiRunnerExecutor {
 
 		method = clazz.getMethod(
 			selenium,
-			parameterClasses.toArray(new Class<?>[parameterClasses.size()]));
+			parameterClasses.toArray(new Class<?>[0]));
 
 		_returnObject = invokeLiferaySeleniumMethod(
 			method, arguments.toArray(new String[0]));
