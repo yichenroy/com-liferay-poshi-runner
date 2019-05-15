@@ -1204,7 +1204,7 @@ public class PoshiRunnerExecutor {
 
 		Future<Object> future = executorService.submit(task);
 
-		Long timeout = Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 10L;
+		Long timeout = Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 60L;
 
 		if (methodName.equals("antCommand") | methodName.equals("pause")) {
 			timeout = 3600L;
