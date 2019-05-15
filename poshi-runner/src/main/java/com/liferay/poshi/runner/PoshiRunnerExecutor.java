@@ -14,7 +14,6 @@
 
 package com.liferay.poshi.runner;
 
-import com.liferay.poshi.runner.exception.PoshiRunnerLoggerException;
 import com.liferay.poshi.runner.exception.PoshiRunnerWarningException;
 import com.liferay.poshi.runner.logger.PoshiLogger;
 import com.liferay.poshi.runner.logger.SummaryLogger;
@@ -1009,12 +1008,7 @@ public class PoshiRunnerExecutor {
 			parameterClasses.add(String.class);
 		}
 
-		try {
-			_poshiLogger.logSeleniumCommand(executeElement, arguments);
-		}
-		catch (PoshiRunnerLoggerException prle) {
-			throw prle;
-		}
+		_poshiLogger.logSeleniumCommand(executeElement, arguments);
 
 		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
 
@@ -1022,15 +1016,9 @@ public class PoshiRunnerExecutor {
 
 		Method method = null;
 
-		try {
-			method = clazz.getMethod(
-				selenium,
-				parameterClasses.toArray(
-					new Class<?>[parameterClasses.size()]));
-		}
-		catch (NoSuchMethodException | SecurityException e) {
-			throw e;
-		}
+		method = clazz.getMethod(
+			selenium,
+			parameterClasses.toArray(new Class<?>[parameterClasses.size()]));
 
 		_returnObject = invokeLiferaySeleniumMethod(
 			method, arguments.toArray(new String[0]));
