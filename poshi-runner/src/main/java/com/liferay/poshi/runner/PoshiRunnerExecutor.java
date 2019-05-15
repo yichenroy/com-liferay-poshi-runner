@@ -1148,12 +1148,42 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	protected Object callWithTimeout(
+			Callable<?> callable, String description, long timeoutSeconds)
+		throws Exception {
+
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		Future<?> future = executorService.submit(callable);
+
+		try {
+			return future.get(timeoutSeconds, TimeUnit.SECONDS);
+		}
+		catch (ExecutionException ee) {
+			if (PropsValues.DEBUG_STACKTRACE) {
+				throw ee;
+			}
+
+			throw (Exception)ee.getCause();
+		}
+		catch (InterruptedException | TimeoutException e) {
+			future.cancel(true);
+
+			if (e instanceof TimeoutException) {
+				System.out.println(
+					"Timed out after " + timeoutSeconds +
+						" seconds while executing " + description);
+			}
+
+			throw new Exception(
+				"An error occurred while executing " + description, e);
+		}
+	}
+
 	protected Object invokeLiferaySeleniumMethod(Method method, Object... args)
 		throws Exception {
 
 		LiferaySelenium liferaySelenium = SeleniumUtil.getSelenium();
-
-		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 		String methodName = method.getName();
 
@@ -1202,36 +1232,13 @@ public class PoshiRunnerExecutor {
 
 		};
 
-		Future<Object> future = executorService.submit(task);
-
 		Long timeout = Long.valueOf(PropsValues.TIMEOUT_EXPLICIT_WAIT) + 60L;
 
 		if (methodName.equals("antCommand") | methodName.equals("pause")) {
 			timeout = 3600L;
 		}
 
-		try {
-			return future.get(timeout, TimeUnit.SECONDS);
-		}
-		catch (ExecutionException ee) {
-			if (PropsValues.DEBUG_STACKTRACE) {
-				throw ee;
-			}
-
-			throw (Exception)ee.getCause();
-		}
-		catch (InterruptedException | TimeoutException e) {
-			future.cancel(true);
-
-			if (e instanceof TimeoutException) {
-				System.out.println(
-					"Timed out after " + timeout +
-						" seconds while executing: " + methodName);
-			}
-
-			throw new Exception(
-				"An error occurred while executing: " + methodName, e);
-		}
+		return callWithTimeout(task, methodName, timeout);
 	}
 
 	private Object _getVarValue(Element element) throws Exception {
