@@ -2883,41 +2883,62 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void typeAceEditor(String locator, String value) {
 		WebElement webElement = getWebElement(locator);
 
-		webElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+		if (locator.endsWith("/textarea")) {
+			webElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 
-		webElement.sendKeys(Keys.DELETE);
+			webElement.sendKeys(Keys.DELETE);
 
-		Matcher matcher = _aceEditorPattern.matcher(value);
+			Matcher matcher = _aceEditorPattern.matcher(value);
 
-		int x = 0;
+			int x = 0;
 
-		while (matcher.find()) {
-			int y = matcher.start();
+			while (matcher.find()) {
+				int y = matcher.start();
 
-			String line = value.substring(x, y);
+				String line = value.substring(x, y);
+
+				webElement.sendKeys(line.trim());
+
+				String specialCharacter = matcher.group();
+
+				if (specialCharacter.equals("(")) {
+					webElement.sendKeys("(");
+				}
+				else if (specialCharacter.equals("${line.separator}")) {
+					keyPress(locator, "\\SPACE");
+					keyPress(locator, "\\RETURN");
+				}
+
+				x = y + specialCharacter.length();
+			}
+
+			String line = value.substring(x);
 
 			webElement.sendKeys(line.trim());
 
-			String specialCharacter = matcher.group();
+			webElement.sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END));
 
-			if (specialCharacter.equals("(")) {
-				webElement.sendKeys("(");
-			}
-			else if (specialCharacter.equals("${line.separator}")) {
-				keyPress(locator, "\\SPACE");
-				keyPress(locator, "\\RETURN");
-			}
+			webElement.sendKeys(Keys.DELETE);
 
-			x = y + specialCharacter.length();
+			return;
 		}
 
-		String line = value.substring(x);
+		WrapsDriver wrapsDriver = (WrapsDriver)webElement;
 
-		webElement.sendKeys(line.trim());
+		WebDriver wrappedWebDriver = wrapsDriver.getWrappedDriver();
 
-		webElement.sendKeys(Keys.chord(Keys.CONTROL, Keys.SHIFT, Keys.END));
+		JavascriptExecutor javascriptExecutor =
+			(JavascriptExecutor)wrappedWebDriver;
 
-		webElement.sendKeys(Keys.DELETE);
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("ace.edit(");
+		sb.append(getAttribute(locator + "@id"));
+		sb.append(").setValue(\"");
+		sb.append(HtmlUtil.escapeJS(value.replace("\\", "\\\\")));
+		sb.append("\");");
+
+		javascriptExecutor.executeScript(sb.toString());
 	}
 
 	@Override
