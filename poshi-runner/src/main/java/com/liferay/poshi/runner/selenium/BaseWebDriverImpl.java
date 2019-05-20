@@ -2883,7 +2883,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void typeAceEditor(String locator, String value) {
 		WebElement webElement = getWebElement(locator);
 
-		if (locator.endsWith("/textarea")) {
+		String webElementTagName = webElement.getTagName();
+
+		if (webElementTagName.equals("textarea")) {
 			webElement.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 
 			webElement.sendKeys(Keys.DELETE);
