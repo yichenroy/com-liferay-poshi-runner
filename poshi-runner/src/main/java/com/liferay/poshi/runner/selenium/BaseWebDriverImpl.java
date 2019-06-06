@@ -109,8 +109,7 @@ import org.sikuli.api.robot.Mouse;
 import org.sikuli.api.robot.desktop.DesktopKeyboard;
 import org.sikuli.api.robot.desktop.DesktopMouse;
 import org.sikuli.api.visual.Canvas;
-import org.sikuli.api.visual.CanvasBuilder.ElementAdder;
-import org.sikuli.api.visual.CanvasBuilder.ElementAreaSetter;
+import org.sikuli.api.visual.CanvasBuilder;
 import org.sikuli.api.visual.DesktopCanvas;
 
 import org.w3c.dom.Document;
@@ -2633,9 +2632,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		Canvas canvas = new DesktopCanvas();
 
-		ElementAdder elementAdder = canvas.add();
+		CanvasBuilder.ElementAdder elementAdder = canvas.add();
 
-		ElementAreaSetter elementAreaSetter = elementAdder.box();
+		CanvasBuilder.ElementAreaSetter elementAreaSetter = elementAdder.box();
 
 		elementAreaSetter.around(screenRegion);
 
