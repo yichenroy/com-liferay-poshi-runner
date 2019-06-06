@@ -1254,9 +1254,8 @@ public class PoshiRunnerExecutor {
 
 						throw new Exception(throwable.getMessage(), e);
 					}
-					else {
-						throw e;
-					}
+
+					throw e;
 				}
 			}
 			else if (element.attributeValue("type") != null) {
