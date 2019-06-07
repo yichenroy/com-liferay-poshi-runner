@@ -1294,12 +1294,13 @@ public class PoshiRunnerExecutor {
 					element.attributeValue("from"));
 
 				if (element.attributeValue("hash") != null) {
-					LinkedHashMap varFromMap = (LinkedHashMap)varFrom;
+					LinkedHashMap<?, ?> varFromMap =
+						(LinkedHashMap<?, ?>)varFrom;
 
 					varValue = varFromMap.get(element.attributeValue("hash"));
 				}
 				else if (element.attributeValue("index") != null) {
-					List varFromList = (List)varFrom;
+					List<?> varFromList = (List<?>)varFrom;
 
 					varValue = varFromList.get(
 						GetterUtil.getInteger(element.attributeValue("index")));
