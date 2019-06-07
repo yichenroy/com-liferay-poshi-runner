@@ -1096,8 +1096,6 @@ public class PoshiRunnerValidation {
 				new ValidationException(
 					element, "Unable to find method ", className, "#",
 					methodName, "\n", filePath));
-
-			return;
 		}
 	}
 
