@@ -1836,7 +1836,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		StringBuilder sb = new StringBuilder();
 
 		String simulateJSContent = ResourceUtil.read(
-			"com/liferay/poshi/runner/dependencies/simulate-drag-and-drop.js");
+			"com/liferay/poshi/runner/dependencies/simulate_drag_and_drop.js");
 
 		sb.append(simulateJSContent);
 
