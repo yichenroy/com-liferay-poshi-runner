@@ -450,10 +450,10 @@ public class PoshiRunnerContext {
 			return commandElement.attributeValue("summary");
 		}
 
-		if (classType.equals("function")) {
-			if (Validator.isNotNull(rootElement.attributeValue("summary"))) {
-				return rootElement.attributeValue("summary");
-			}
+		if (classType.equals("function") &&
+			Validator.isNotNull(rootElement.attributeValue("summary"))) {
+
+			return rootElement.attributeValue("summary");
 		}
 
 		return classCommandName;

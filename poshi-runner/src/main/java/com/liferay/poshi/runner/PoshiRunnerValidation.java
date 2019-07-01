@@ -1657,12 +1657,12 @@ public class PoshiRunnerValidation {
 			minimumAttributeSize = 1;
 		}
 
-		if (attributes.size() <= minimumAttributeSize) {
-			if (Validator.isNull(element.getText())) {
-				_exceptions.add(
-					new ValidationException(
-						element, "Missing value attribute\n", filePath));
-			}
+		if ((attributes.size() <= minimumAttributeSize) &&
+			Validator.isNull(element.getText())) {
+
+			_exceptions.add(
+				new ValidationException(
+					element, "Missing value attribute\n", filePath));
 		}
 
 		List<String> possibleAttributeNames = new ArrayList<>();
