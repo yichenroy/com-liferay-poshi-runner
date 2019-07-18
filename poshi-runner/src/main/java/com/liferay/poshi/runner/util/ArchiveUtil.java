@@ -37,6 +37,7 @@ public class ArchiveUtil {
 		String targetFileName = targetFile.getName();
 
 		if (!(targetFileName.endsWith(".jar") ||
+			  targetFileName.endsWith(".lar") ||
 			  targetFileName.endsWith(".war") ||
 			  targetFileName.endsWith(".zip"))) {
 
