@@ -250,15 +250,6 @@ public class PoshiRunner {
 		}
 	}
 
-	private void _runSetUp() throws Exception {
-		_poshiLogger.logNamespacedClassCommandName(
-			_testNamespacedClassName + "#set-up");
-
-		SummaryLogger.startMajorSteps();
-
-		_runNamespacedClassCommandName(_testNamespacedClassName + "#set-up");
-	}
-
 	private void _runTearDown() throws Exception {
 		_poshiLogger.logNamespacedClassCommandName(
 			_testNamespacedClassName + "#tear-down");
@@ -266,6 +257,15 @@ public class PoshiRunner {
 		SummaryLogger.startMajorSteps();
 
 		_runNamespacedClassCommandName(_testNamespacedClassName + "#tear-down");
+	}
+
+	private void _runSetUp() throws Exception {
+		_poshiLogger.logNamespacedClassCommandName(
+			_testNamespacedClassName + "#set-up");
+
+		SummaryLogger.startMajorSteps();
+
+		_runNamespacedClassCommandName(_testNamespacedClassName + "#set-up");
 	}
 
 	private final PoshiLogger _poshiLogger;
