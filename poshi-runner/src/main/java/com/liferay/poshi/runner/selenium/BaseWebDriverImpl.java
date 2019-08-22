@@ -405,9 +405,12 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			pageSource = getPageSource();
 		}
 
-		if (pageSource.contains(
-				"html id=\"feedHandler\" xmlns=" +
-					"\"http://www.w3.org/1999/xhtml\"")) {
+		if (pageSource == null) {
+			System.out.println("Unable to obtain HTML source");
+		}
+		else if (pageSource.contains(
+					"html id=\"feedHandler\" xmlns=" +
+						"\"http://www.w3.org/1999/xhtml\"")) {
 
 			return;
 		}
