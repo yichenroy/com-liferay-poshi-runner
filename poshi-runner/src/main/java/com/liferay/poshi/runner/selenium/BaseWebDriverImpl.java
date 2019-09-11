@@ -29,7 +29,6 @@ import com.liferay.poshi.runner.util.HtmlUtil;
 import com.liferay.poshi.runner.util.OSDetector;
 import com.liferay.poshi.runner.util.PropsValues;
 import com.liferay.poshi.runner.util.ResourceUtil;
-import com.liferay.poshi.runner.util.RuntimeVariables;
 import com.liferay.poshi.runner.util.StringPool;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
@@ -3269,8 +3268,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForNotPartialText(String locator, String value)
 		throws Exception {
 
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertNotPartialText(locator, value);
@@ -3311,8 +3308,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForNotText(String locator, String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertNotText(locator, value);
@@ -3332,8 +3327,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForNotValue(String locator, String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertNotValue(locator, value);
@@ -3412,8 +3405,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForPartialText(String locator, String value)
 		throws Exception {
 
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertPartialText(locator, value);
@@ -3434,8 +3425,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	@Override
 	public void waitForPartialTextAceEditor(String locator, String value)
 		throws Exception {
-
-		value = RuntimeVariables.replace(value);
 
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
@@ -3458,8 +3447,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForPartialTextCaseInsensitive(
 			String locator, String pattern)
 		throws Exception {
-
-		pattern = RuntimeVariables.replace(pattern);
 
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
@@ -3558,8 +3545,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForText(String locator, String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertText(locator, value);
@@ -3581,8 +3566,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForTextCaseInsensitive(String locator, String pattern)
 		throws Exception {
 
-		pattern = RuntimeVariables.replace(pattern);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertTextCaseInsensitive(locator, pattern);
@@ -3602,8 +3585,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForTextNotPresent(String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertTextNotPresent(value);
@@ -3623,8 +3604,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForTextPresent(String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertTextPresent(value);
@@ -3644,8 +3623,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForValue(String locator, String value) throws Exception {
-		value = RuntimeVariables.replace(value);
-
 		for (int second = 0;; second++) {
 			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
 				assertValue(locator, value);
