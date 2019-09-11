@@ -4195,6 +4195,46 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		_navigationBarHeight = navigationBarHeight;
 	}
 
+	protected abstract class Condition {
+
+		public Condition() {
+			this("");
+		}
+
+		public Condition(String message) {
+			_message = message;
+		}
+
+		public void affirm() throws Exception {
+			if (!evaluate()) {
+				throw new Exception(_message);
+			}
+		}
+
+		public abstract boolean evaluate() throws Exception;
+
+		public void waitFor() throws Exception {
+			for (int second = 0;; second++) {
+				if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
+					affirm();
+				}
+
+				try {
+					if (evaluate()) {
+						break;
+					}
+				}
+				catch (Exception e) {
+				}
+
+				Thread.sleep(1000);
+			}
+		}
+
+		private final String _message;
+
+	}
+
 	private static final String _CURRENT_DIR_NAME = FileUtil.getCanonicalPath(
 		".");
 
