@@ -289,13 +289,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertConfirmation(String pattern) throws Exception {
-		String confirmation = getConfirmation();
+		Condition confirmation = confirmation(pattern);
 
-		if (!pattern.equals(confirmation)) {
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + confirmation + "\"");
-		}
+		confirmation.affirm();
 	}
 
 	@Override
@@ -1554,8 +1550,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isConfirmation(String pattern) {
-		return pattern.equals(getConfirmation());
+	public boolean isConfirmation(String pattern) throws Exception {
+		Condition confirmation = confirmation(pattern);
+
+		return confirmation.evaluate();
 	}
 
 	@Override
@@ -3126,23 +3124,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForConfirmation(String pattern) throws Exception {
-		int timeout =
-			PropsValues.TIMEOUT_EXPLICIT_WAIT /
-				PropsValues.TIMEOUT_IMPLICIT_WAIT;
+		Condition confirmation = confirmation(pattern);
 
-		for (int second = 0;; second++) {
-			if (second >= timeout) {
-				assertConfirmation(pattern);
-			}
-
-			try {
-				if (isConfirmation(pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-		}
+		confirmation.waitFor();
 	}
 
 	@Override
@@ -3530,6 +3514,29 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Alert alert = targetLocator.alert();
 
 		alert.accept();
+	}
+
+	protected Condition confirmation(String pattern) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Expected text \"", pattern,
+						"\" does not match actual text \"", getConfirmation(),
+						"\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return pattern.equals(getConfirmation());
+			}
+
+		};
 	}
 
 	protected Condition consoleTextNotPresent(String text) {

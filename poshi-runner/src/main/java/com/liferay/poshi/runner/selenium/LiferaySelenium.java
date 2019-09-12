@@ -234,7 +234,7 @@ public interface LiferaySelenium {
 
 	public boolean isChecked(String locator);
 
-	public boolean isConfirmation(String pattern);
+	public boolean isConfirmation(String pattern) throws Exception;
 
 	public boolean isConsoleTextNotPresent(String text) throws Exception;
 
