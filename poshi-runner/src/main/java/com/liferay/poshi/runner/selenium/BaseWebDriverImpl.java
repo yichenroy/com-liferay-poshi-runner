@@ -535,13 +535,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(selectLocator);
 
-		if (isSelectedLabel(selectLocator, pattern)) {
-			String text = getSelectedLabel(selectLocator);
+		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
 
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + text + "\" at \"" +
-					selectLocator + "\"");
-		}
+		notSelectedLabel.affirm();
 	}
 
 	@Override
@@ -663,14 +659,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(selectLocator);
 
-		if (isNotSelectedLabel(selectLocator, pattern)) {
-			String text = getSelectedLabel(selectLocator);
+		Condition selectedLabel = selectedLabel(selectLocator, pattern);
 
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + text + "\" at \"" +
-						selectLocator + "\"");
-		}
+		selectedLabel.affirm();
 	}
 
 	@Override
@@ -1603,15 +1594,12 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isNotSelectedLabel(String selectLocator, String pattern) {
-		if (isElementNotPresent(selectLocator)) {
-			return false;
-		}
+	public boolean isNotSelectedLabel(String selectLocator, String pattern)
+		throws Exception {
 
-		List<String> selectedLabelsList = Arrays.asList(
-			getSelectedLabels(selectLocator));
+		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
 
-		return !selectedLabelsList.contains(pattern);
+		return notSelectedLabel.evaluate();
 	}
 
 	@Override
@@ -1668,12 +1656,12 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isSelectedLabel(String selectLocator, String pattern) {
-		if (isElementNotPresent(selectLocator)) {
-			return false;
-		}
+	public boolean isSelectedLabel(String selectLocator, String pattern)
+		throws Exception {
 
-		return pattern.equals(getSelectedLabel(selectLocator));
+		Condition selectedLabel = selectedLabel(selectLocator, pattern);
+
+		return selectedLabel.evaluate();
 	}
 
 	@Override
@@ -3146,21 +3134,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForNotSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertNotSelectedLabel(selectLocator, pattern);
-			}
+		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
 
-			try {
-				if (isNotSelectedLabel(selectLocator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		notSelectedLabel.waitFor();
 	}
 
 	@Override
@@ -3288,21 +3264,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertSelectedLabel(selectLocator, pattern);
-			}
+		Condition selectedLabel = selectedLabel(selectLocator, pattern);
 
-			try {
-				if (isSelectedLabel(selectLocator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		selectedLabel.waitFor();
 	}
 
 	@Override
@@ -3901,6 +3865,36 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
+	protected Condition notSelectedLabel(String selectLocator, String pattern) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (isSelectedLabel(selectLocator, pattern)) {
+					String message = StringUtil.combine(
+						"Pattern \"", pattern, "\" matches \"",
+						getSelectedLabel(selectLocator), "\" at \"",
+						selectLocator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				if (isElementNotPresent(selectLocator)) {
+					return false;
+				}
+
+				List<String> selectedLabelsList = Arrays.asList(
+					getSelectedLabels(selectLocator));
+
+				return !selectedLabelsList.contains(pattern);
+			}
+
+		};
+	}
+
 	protected Condition notText(String locator, String value) {
 		return new Condition() {
 
@@ -4145,6 +4139,34 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		}
 
 		select.selectByIndex(index);
+	}
+
+	protected Condition selectedLabel(String selectLocator, String pattern) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (isNotSelectedLabel(selectLocator, pattern)) {
+					String message = StringUtil.combine(
+						"Expected text \"", pattern,
+						"\" does not match actual text \"",
+						getSelectedLabel(selectLocator), "\" at \"",
+						selectLocator + "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				if (isElementNotPresent(selectLocator)) {
+					return false;
+				}
+
+				return pattern.equals(getSelectedLabel(selectLocator));
+			}
+
+		};
 	}
 
 	protected void setDefaultWindowHandle(String defaultWindowHandle) {

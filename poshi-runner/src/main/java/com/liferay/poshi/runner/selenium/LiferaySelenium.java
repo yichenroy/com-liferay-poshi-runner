@@ -260,7 +260,8 @@ public interface LiferaySelenium {
 	public boolean isNotPartialTextAceEditor(String locator, String value)
 		throws Exception;
 
-	public boolean isNotSelectedLabel(String selectLocator, String pattern);
+	public boolean isNotSelectedLabel(String selectLocator, String pattern)
+		throws Exception;
 
 	public boolean isNotText(String locator, String value) throws Exception;
 
@@ -280,7 +281,8 @@ public interface LiferaySelenium {
 	public boolean isPartialTextCaseInsensitive(String locator, String value)
 		throws Exception;
 
-	public boolean isSelectedLabel(String selectLocator, String pattern);
+	public boolean isSelectedLabel(String selectLocator, String pattern)
+		throws Exception;
 
 	public boolean isSikuliImagePresent(String image) throws Exception;
 
