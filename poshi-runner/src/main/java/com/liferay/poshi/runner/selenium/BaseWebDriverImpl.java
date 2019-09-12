@@ -305,9 +305,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertConsoleTextNotPresent(String text) throws Exception {
-		if (isConsoleTextPresent(text)) {
-			throw new Exception("\"" + text + "\" is present in console");
-		}
+		Condition consoleTextNotPresent = consoleTextNotPresent(text);
+
+		consoleTextNotPresent.affirm();
 	}
 
 	@Override
@@ -1567,7 +1567,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isConsoleTextNotPresent(String text) throws Exception {
-		return !LiferaySeleniumHelper.isConsoleTextPresent(text);
+		Condition consoleTextNotPresent = consoleTextNotPresent(text);
+
+		return consoleTextNotPresent.evaluate();
 	}
 
 	@Override
@@ -3152,21 +3154,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForConsoleTextNotPresent(String text) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertConsoleTextNotPresent(text);
-			}
+		Condition consoleTextNotPresent = consoleTextNotPresent(text);
 
-			try {
-				if (isConsoleTextNotPresent(text)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		consoleTextNotPresent.waitFor();
 	}
 
 	@Override
@@ -3703,6 +3693,19 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Alert alert = targetLocator.alert();
 
 		alert.accept();
+	}
+
+	protected Condition consoleTextNotPresent(String text) {
+		String message = "\"" + text + "\" is present in console";
+
+		return new Condition(message) {
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return !LiferaySeleniumHelper.isConsoleTextPresent(text);
+			}
+
+		};
 	}
 
 	protected void executeJavaScriptEvent(
