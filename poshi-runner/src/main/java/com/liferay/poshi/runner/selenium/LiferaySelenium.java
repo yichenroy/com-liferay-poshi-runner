@@ -240,11 +240,11 @@ public interface LiferaySelenium {
 
 	public boolean isConsoleTextPresent(String text) throws Exception;
 
-	public boolean isEditable(String locator);
+	public boolean isEditable(String locator) throws Exception;
 
-	public boolean isElementNotPresent(String locator);
+	public boolean isElementNotPresent(String locator) throws Exception;
 
-	public boolean isElementPresent(String locator);
+	public boolean isElementPresent(String locator) throws Exception;
 
 	public boolean isElementPresentAfterWait(String locator) throws Exception;
 
@@ -252,7 +252,7 @@ public interface LiferaySelenium {
 
 	public boolean isNotChecked(String locator);
 
-	public boolean isNotEditable(String locator);
+	public boolean isNotEditable(String locator) throws Exception;
 
 	public boolean isNotPartialText(String locator, String value);
 
@@ -264,11 +264,11 @@ public interface LiferaySelenium {
 
 	public boolean isNotValue(String locator, String value) throws Exception;
 
-	public boolean isNotVisible(String locator);
+	public boolean isNotVisible(String locator) throws Exception;
 
-	public boolean isNotVisibleInPage(String locator);
+	public boolean isNotVisibleInPage(String locator) throws Exception;
 
-	public boolean isNotVisibleInViewport(String locator);
+	public boolean isNotVisibleInViewport(String locator) throws Exception;
 
 	public boolean isPartialText(String locator, String value);
 
@@ -290,17 +290,17 @@ public interface LiferaySelenium {
 	public boolean isTextCaseInsensitive(String locator, String value)
 		throws Exception;
 
-	public boolean isTextNotPresent(String pattern);
+	public boolean isTextNotPresent(String pattern) throws Exception;
 
-	public boolean isTextPresent(String pattern);
+	public boolean isTextPresent(String pattern) throws Exception;
 
 	public boolean isValue(String locator, String value) throws Exception;
 
-	public boolean isVisible(String locator);
+	public boolean isVisible(String locator) throws Exception;
 
-	public boolean isVisibleInPage(String locator);
+	public boolean isVisibleInPage(String locator) throws Exception;
 
-	public boolean isVisibleInViewport(String locator);
+	public boolean isVisibleInViewport(String locator) throws Exception;
 
 	public void javaScriptClick(String locator);
 
