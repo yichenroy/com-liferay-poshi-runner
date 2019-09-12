@@ -524,13 +524,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		if (isPartialText(locator, pattern)) {
-			String text = getText(locator);
+		Condition notPartialText = notPartialText(locator, pattern);
 
-			throw new Exception(
-				"\"" + text + "\" contains \"" + pattern + "\" at \"" +
-					locator + "\"");
-		}
+		notPartialText.affirm();
 	}
 
 	@Override
@@ -552,13 +548,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void assertNotText(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		if (isText(locator, pattern)) {
-			String text = getText(locator);
+		Condition notText = notText(locator, pattern);
 
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + text + "\" at \"" +
-					locator + "\"");
-		}
+		notText.affirm();
 	}
 
 	@Override
@@ -567,13 +559,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		if (isValue(locator, pattern)) {
-			String value = getElementValue(locator);
+		Condition notValue = notValue(locator, pattern);
 
-			throw new Exception(
-				"Pattern \"" + pattern + "\" matches \"" + value + "\" at \"" +
-					locator + "\"");
-		}
+		notValue.affirm();
 	}
 
 	@Override
@@ -630,14 +618,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		if (isNotPartialText(locator, pattern)) {
-			String text = getText(locator);
+		Condition partialText = partialText(locator, pattern);
 
-			throw new Exception(
-				"Actual text \"" + text +
-					"\" does not contain expected text \"" + pattern +
-						"\" at \"" + locator + "\"");
-		}
+		partialText.affirm();
 	}
 
 	@Override
@@ -646,14 +629,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		if (isNotPartialTextAceEditor(locator, pattern)) {
-			String text = getTextAceEditor(locator);
+		Condition partialTextAceEditor = partialTextAceEditor(locator, pattern);
 
-			throw new Exception(
-				"Actual text \"" + text +
-					"\" does not contain expected text \"" + pattern +
-						"\" at \"" + locator + "\"");
-		}
+		partialTextAceEditor.affirm();
 	}
 
 	@Override
@@ -662,14 +640,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		if (!isPartialTextCaseInsensitive(locator, pattern)) {
-			String text = getText(locator);
+		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+			locator, pattern);
 
-			throw new Exception(
-				"Actual text \"" + text +
-					"\" does not contain expected text (case insensitive) \"" +
-						pattern + "\" at \"" + locator + "\"");
-		}
+		partialTextCaseInsensitive.affirm();
 	}
 
 	@Override
@@ -703,28 +677,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void assertText(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		if (isNotText(locator, pattern)) {
-			String text = getText(locator);
+		Condition text = text(locator, pattern);
 
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + text + "\" at \"" +
-						locator + "\"");
-		}
+		text.affirm();
 	}
 
 	@Override
 	public void assertTextCaseInsensitive(String locator, String pattern)
 		throws Exception {
 
-		if (!isTextCaseInsensitive(locator, pattern)) {
-			String text = getText(locator);
+		Condition textCaseInsensitive = textCaseInsensitive(locator, pattern);
 
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text (case insensitive) \"" +
-						text + "\" at \"" + locator + "\"");
-		}
+		textCaseInsensitive.affirm();
 	}
 
 	@Override
@@ -745,14 +709,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void assertValue(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		if (isNotValue(locator, pattern)) {
-			String value = getElementValue(locator);
+		Condition value = value(locator, pattern);
 
-			throw new Exception(
-				"Expected text \"" + pattern +
-					"\" does not match actual text \"" + value + "\" at \"" +
-						locator + "\"");
-		}
+		value.affirm();
 	}
 
 	@Override
@@ -1630,12 +1589,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isNotPartialText(String locator, String value) {
+	public boolean isNotPartialText(String locator, String value)
+		throws Exception {
+
 		return !isPartialText(locator, value);
 	}
 
 	@Override
-	public boolean isNotPartialTextAceEditor(String locator, String value) {
+	public boolean isNotPartialTextAceEditor(String locator, String value)
+		throws Exception {
+
 		return !isPartialTextAceEditor(locator, value);
 	}
 
@@ -1677,34 +1640,31 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public boolean isPartialText(String locator, String value) {
-		WebElement webElement = getWebElement(locator);
+	public boolean isPartialText(String locator, String value)
+		throws Exception {
 
-		String text = webElement.getText();
+		Condition partialText = partialText(locator, value);
 
-		return text.contains(value);
+		return partialText.evaluate();
 	}
 
 	@Override
-	public boolean isPartialTextAceEditor(String locator, String value) {
-		WebElement webElement = getWebElement(locator);
+	public boolean isPartialTextAceEditor(String locator, String value)
+		throws Exception {
 
-		String text = webElement.getText();
+		Condition partialTextAceEditor = partialTextAceEditor(locator, value);
 
-		text = text.replace("\n", "");
-
-		return text.contains(value);
+		return partialTextAceEditor.evaluate();
 	}
 
 	@Override
 	public boolean isPartialTextCaseInsensitive(String locator, String value)
 		throws Exception {
 
-		String actual = StringUtil.toUpperCase(getText(locator));
+		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+			locator, value);
 
-		value = StringUtil.toUpperCase(value);
-
-		return actual.contains(value);
+		return partialTextCaseInsensitive.evaluate();
 	}
 
 	@Override
@@ -1751,18 +1711,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isText(String locator, String value) throws Exception {
-		return value.equals(getText(locator));
+		Condition text = text(locator, value);
+
+		return text.evaluate();
 	}
 
 	@Override
 	public boolean isTextCaseInsensitive(String locator, String value)
 		throws Exception {
 
-		String actual = StringUtil.toUpperCase(getText(locator));
+		Condition textCaseInsensitive = textCaseInsensitive(locator, value);
 
-		value = StringUtil.toUpperCase(value);
-
-		return value.equals(actual);
+		return textCaseInsensitive.evaluate();
 	}
 
 	@Override
@@ -1779,7 +1739,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isValue(String locator, String value) throws Exception {
-		return value.equals(getElementValue(locator));
+		Condition valueCondition = value(locator, value);
+
+		return valueCondition.evaluate();
 	}
 
 	@Override
@@ -3175,21 +3137,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForNotPartialText(String locator, String value)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertNotPartialText(locator, value);
-			}
+		Condition notPartialText = notPartialText(locator, value);
 
-			try {
-				if (isNotPartialText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		notPartialText.waitFor();
 	}
 
 	@Override
@@ -3215,40 +3165,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForNotText(String locator, String value) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertNotText(locator, value);
-			}
+		Condition notText = notText(locator, value);
 
-			try {
-				if (isNotText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		notText.waitFor();
 	}
 
 	@Override
 	public void waitForNotValue(String locator, String value) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertNotValue(locator, value);
-			}
+		Condition notValue = notValue(locator, value);
 
-			try {
-				if (isNotValue(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		notValue.waitFor();
 	}
 
 	@Override
@@ -3276,42 +3202,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForPartialText(String locator, String value)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertPartialText(locator, value);
-			}
+		Condition partialText = partialText(locator, value);
 
-			try {
-				if (isPartialText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		partialText.waitFor();
 	}
 
 	@Override
 	public void waitForPartialTextAceEditor(String locator, String value)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertPartialTextAceEditor(locator, value);
-			}
+		Condition partialTextAceEditor = partialTextAceEditor(locator, value);
 
-			try {
-				if (isPartialTextAceEditor(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		partialTextAceEditor.waitFor();
 	}
 
 	@Override
@@ -3319,21 +3221,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			String locator, String pattern)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertPartialTextCaseInsensitive(locator, pattern);
-			}
+		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+			locator, pattern);
 
-			try {
-				if (isPartialTextCaseInsensitive(locator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		partialTextCaseInsensitive.waitFor();
 	}
 
 	@Override
@@ -3416,42 +3307,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForText(String locator, String value) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertText(locator, value);
-			}
+		Condition text = text(locator, value);
 
-			try {
-				if (isText(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		text.waitFor();
 	}
 
 	@Override
 	public void waitForTextCaseInsensitive(String locator, String pattern)
 		throws Exception {
 
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertTextCaseInsensitive(locator, pattern);
-			}
+		Condition textCaseInsensitive = textCaseInsensitive(locator, pattern);
 
-			try {
-				if (isTextCaseInsensitive(locator, pattern)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		textCaseInsensitive.waitFor();
 	}
 
 	@Override
@@ -3470,21 +3337,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForValue(String locator, String value) throws Exception {
-		for (int second = 0;; second++) {
-			if (second >= PropsValues.TIMEOUT_EXPLICIT_WAIT) {
-				assertValue(locator, value);
-			}
+		Condition valueCondition = value(locator, value);
 
-			try {
-				if (isValue(locator, value)) {
-					break;
-				}
-			}
-			catch (Exception e) {
-			}
-
-			Thread.sleep(1000);
-		}
+		valueCondition.waitFor();
 	}
 
 	@Override
@@ -4024,6 +3879,72 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
+	protected Condition notPartialText(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"\"", getText(locator), "\" contains \"", value,
+						"\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return !isPartialText(locator, value);
+			}
+
+		};
+	}
+
+	protected Condition notText(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Pattern \"", value, "\" matches \"", getText(locator),
+						"\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return !isText(locator, value);
+			}
+
+		};
+	}
+
+	protected Condition notValue(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Pattern \"", value, "\" matches \"",
+						getElementValue(locator), "\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return !isValue(locator, value);
+			}
+
+		};
+	}
+
 	protected Condition notVisible(String locator) {
 		String message = "Element is visible at \"" + locator + "\"";
 
@@ -4059,6 +3980,89 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			@Override
 			public boolean evaluate() throws Exception {
 				return !isVisibleInViewport(locator);
+			}
+
+		};
+	}
+
+	protected Condition partialText(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Actual text \"", getText(locator),
+						"\" does not contain expected text \"", value,
+						"\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				WebElement webElement = getWebElement(locator);
+
+				String text = webElement.getText();
+
+				return text.contains(value);
+			}
+
+		};
+	}
+
+	protected Condition partialTextAceEditor(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Actual text \"", getTextAceEditor(locator),
+						"\" does not contain expected text \"", value,
+						"\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				WebElement webElement = getWebElement(locator);
+
+				String text = webElement.getText();
+
+				text = text.replace("\n", "");
+
+				return text.contains(value);
+			}
+
+		};
+	}
+
+	protected Condition partialTextCaseInsensitive(
+		String locator, String value) {
+
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Actual text \"", getText(locator),
+						"\" does not contain expected text (case insensitive) ",
+						"\"", value, "\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				String actual = StringUtil.toUpperCase(getText(locator));
+
+				return actual.contains(StringUtil.toUpperCase(value));
 			}
 
 		};
@@ -4151,6 +4155,54 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		_navigationBarHeight = navigationBarHeight;
 	}
 
+	protected Condition text(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Expected text \"", value,
+						"\" does not match actual text \"", getText(locator),
+						"\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return value.equals(getText(locator));
+			}
+
+		};
+	}
+
+	protected Condition textCaseInsensitive(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Expected text \"", value,
+						"\" does not match actual text (case insensitive) \"",
+						getText(locator), "\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				String actual = StringUtil.toUpperCase(getText(locator));
+
+				return actual.equals(StringUtil.toUpperCase(value));
+			}
+
+		};
+	}
+
 	protected Condition textNotPresent(String pattern) {
 		String message = "\"" + pattern + "\" is present";
 
@@ -4176,6 +4228,29 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				String text = webElement.getText();
 
 				return text.contains(pattern);
+			}
+
+		};
+	}
+
+	protected Condition value(String locator, String value) {
+		return new Condition() {
+
+			@Override
+			public void affirm() throws Exception {
+				if (!evaluate()) {
+					String message = StringUtil.combine(
+						"Expected text \"", value,
+						"\" does not match actual text \"",
+						getElementValue(locator), "\" at \"", locator, "\"");
+
+					throw new Exception(message);
+				}
+			}
+
+			@Override
+			public boolean evaluate() throws Exception {
+				return value.equals(getElementValue(locator));
 			}
 
 		};

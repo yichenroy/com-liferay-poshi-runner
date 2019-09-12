@@ -254,9 +254,11 @@ public interface LiferaySelenium {
 
 	public boolean isNotEditable(String locator) throws Exception;
 
-	public boolean isNotPartialText(String locator, String value);
+	public boolean isNotPartialText(String locator, String value)
+		throws Exception;
 
-	public boolean isNotPartialTextAceEditor(String locator, String value);
+	public boolean isNotPartialTextAceEditor(String locator, String value)
+		throws Exception;
 
 	public boolean isNotSelectedLabel(String selectLocator, String pattern);
 
@@ -270,9 +272,10 @@ public interface LiferaySelenium {
 
 	public boolean isNotVisibleInViewport(String locator) throws Exception;
 
-	public boolean isPartialText(String locator, String value);
+	public boolean isPartialText(String locator, String value) throws Exception;
 
-	public boolean isPartialTextAceEditor(String locator, String value);
+	public boolean isPartialTextAceEditor(String locator, String value)
+		throws Exception;
 
 	public boolean isPartialTextCaseInsensitive(String locator, String value)
 		throws Exception;
