@@ -289,9 +289,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertConfirmation(String pattern) throws Exception {
-		Condition confirmation = confirmation(pattern);
+		Condition confirmationCondition = getConfirmationCondition(pattern);
 
-		confirmation.assertTrue();
+		confirmationCondition.assertTrue();
 	}
 
 	@Override
@@ -301,16 +301,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertConsoleTextNotPresent(String text) throws Exception {
-		Condition consoleTextNotPresent = consoleTextNotPresent(text);
+		Condition consoleTextNotPresentCondition = getConsoleTextNotPresentCondition(text);
 
-		consoleTextNotPresent.assertTrue();
+		consoleTextNotPresentCondition.assertTrue();
 	}
 
 	@Override
 	public void assertConsoleTextPresent(String text) throws Exception {
-		Condition consoleTextPresent = consoleTextPresent(text);
+		Condition consoleTextPresentCondition = getConsoleTextPresentCondition(text);
 
-		consoleTextPresent.assertTrue();
+		consoleTextPresentCondition.assertTrue();
 	}
 
 	@Override
@@ -330,23 +330,23 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertEditable(String locator) throws Exception {
-		Condition editable = editable(locator);
+		Condition editableCondition = getEditableCondition(locator);
 
-		editable.assertTrue();
+		editableCondition.assertTrue();
 	}
 
 	@Override
 	public void assertElementNotPresent(String locator) throws Exception {
-		Condition elementNotPresent = elementNotPresent(locator);
+		Condition elementNotPresentCondition = getElementNotPresentCondition(locator);
 
-		elementNotPresent.assertTrue();
+		elementNotPresentCondition.assertTrue();
 	}
 
 	@Override
 	public void assertElementPresent(String locator) throws Exception {
-		Condition elementPresent = elementPresent(locator);
+		Condition elementPresentCondition = getElementPresentCondition(locator);
 
-		elementPresent.assertTrue();
+		elementPresentCondition.assertTrue();
 	}
 
 	@Override
@@ -508,7 +508,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertNotEditable(String locator) throws Exception {
-		Condition notEditable = notEditable(locator);
+		Condition notEditable = getNotEditableCondition(locator);
 
 		notEditable.assertTrue();
 	}
@@ -524,7 +524,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		Condition notPartialText = notPartialText(locator, pattern);
+		Condition notPartialText = getNotPartialTextCondition(locator, pattern);
 
 		notPartialText.assertTrue();
 	}
@@ -535,18 +535,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(selectLocator);
 
-		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
+		Condition notSelectedLabelCondition = getNotSelectedLabelCondition(selectLocator, pattern);
 
-		notSelectedLabel.assertTrue();
+		notSelectedLabelCondition.assertTrue();
 	}
 
 	@Override
 	public void assertNotText(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		Condition notText = notText(locator, pattern);
+		Condition notTextCondition = getNotTextCondition(locator, pattern);
 
-		notText.assertTrue();
+		notTextCondition.assertTrue();
 	}
 
 	@Override
@@ -555,36 +555,36 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		Condition notValue = notValue(locator, pattern);
+		Condition notValueCondition = getNotValueCondition(locator, pattern);
 
-		notValue.assertTrue();
+		notValueCondition.assertTrue();
 	}
 
 	@Override
 	public void assertNotVisible(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition notVisible = notVisible(locator);
+		Condition notVisibleCondition = getNotVisibleCondition(locator);
 
-		notVisible.assertTrue();
+		notVisibleCondition.assertTrue();
 	}
 
 	@Override
 	public void assertNotVisibleInPage(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition notVisibleInPage = notVisibleInPage(locator);
+		Condition notVisibleInPageCondition = getNotVisibleInPageCondition(locator);
 
-		notVisibleInPage.assertTrue();
+		notVisibleInPageCondition.assertTrue();
 	}
 
 	@Override
 	public void assertNotVisibleInViewport(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition notVisibleInViewport = notVisibleInViewport(locator);
+		Condition notVisibleInViewportCondition = getNotVisibleInViewportCondition(locator);
 
-		notVisibleInViewport.assertTrue();
+		notVisibleInViewportCondition.assertTrue();
 	}
 
 	@Override
@@ -614,9 +614,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		Condition partialText = partialText(locator, pattern);
+		Condition partialTextCondition = getPartialTextCondition(locator, pattern);
 
-		partialText.assertTrue();
+		partialTextCondition.assertTrue();
 	}
 
 	@Override
@@ -625,9 +625,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		Condition partialTextAceEditor = partialTextAceEditor(locator, pattern);
+		Condition partialTextAceEditorCondition = getPartialTextAceEditorCondition(locator, pattern);
 
-		partialTextAceEditor.assertTrue();
+		partialTextAceEditorCondition.assertTrue();
 	}
 
 	@Override
@@ -636,10 +636,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(locator);
 
-		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+		Condition partialTextCaseInsensitiveCondition = getPartialTextCaseInsensitiveCondition(
 			locator, pattern);
 
-		partialTextCaseInsensitive.assertTrue();
+		partialTextCaseInsensitiveCondition.assertTrue();
 	}
 
 	@Override
@@ -659,77 +659,77 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		assertElementPresent(selectLocator);
 
-		Condition selectedLabel = selectedLabel(selectLocator, pattern);
+		Condition selectedLabelCondition = getSelectedLabelCondition(selectLocator, pattern);
 
-		selectedLabel.assertTrue();
+		selectedLabelCondition.assertTrue();
 	}
 
 	@Override
 	public void assertText(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		Condition text = text(locator, pattern);
+		Condition textCondition = getTextCondition(locator, pattern);
 
-		text.assertTrue();
+		textCondition.assertTrue();
 	}
 
 	@Override
 	public void assertTextCaseInsensitive(String locator, String pattern)
 		throws Exception {
 
-		Condition textCaseInsensitive = textCaseInsensitive(locator, pattern);
+		Condition textCaseInsensitiveCondition = getTextCaseInsensitiveCondition(locator, pattern);
 
-		textCaseInsensitive.assertTrue();
+		textCaseInsensitiveCondition.assertTrue();
 	}
 
 	@Override
 	public void assertTextNotPresent(String pattern) throws Exception {
-		Condition textNotPresent = textNotPresent(pattern);
+		Condition textNotPresentCondition = getTextNotPresentCondition(pattern);
 
-		textNotPresent.assertTrue();
+		textNotPresentCondition.assertTrue();
 	}
 
 	@Override
 	public void assertTextPresent(String pattern) throws Exception {
-		Condition textPresent = textPresent(pattern);
+		Condition textPresentCondition = getTextPresentCondition(pattern);
 
-		textPresent.assertTrue();
+		textPresentCondition.assertTrue();
 	}
 
 	@Override
 	public void assertValue(String locator, String pattern) throws Exception {
 		assertElementPresent(locator);
 
-		Condition value = value(locator, pattern);
+		Condition valueCondition = getValueCondition(locator, pattern);
 
-		value.assertTrue();
+		valueCondition.assertTrue();
 	}
 
 	@Override
 	public void assertVisible(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition visible = visible(locator);
+		Condition visibleCondition = getVisibleCondition(locator);
 
-		visible.assertTrue();
+		visibleCondition.assertTrue();
 	}
 
 	@Override
 	public void assertVisibleInPage(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition visibleInPage = visibleInPage(locator);
+		Condition visibleInPageCondition = getVisibleInPageCondition(locator);
 
-		visibleInPage.assertTrue();
+		visibleInPageCondition.assertTrue();
 	}
 
 	@Override
 	public void assertVisibleInViewport(String locator) throws Exception {
 		assertElementPresent(locator);
 
-		Condition visibleInViewport = visibleInViewport(locator);
+		Condition visibleInViewportCondition = getVisibleInViewportCondition(locator);
 
-		visibleInViewport.assertTrue();
+		visibleInViewportCondition.assertTrue();
 	}
 
 	@Override
@@ -1501,44 +1501,44 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isConfirmation(String pattern) throws Exception {
-		Condition confirmation = confirmation(pattern);
+		Condition confirmationCondition = getConfirmationCondition(pattern);
 
-		return confirmation.evaluate();
+		return confirmationCondition.evaluate();
 	}
 
 	@Override
 	public boolean isConsoleTextNotPresent(String text) throws Exception {
-		Condition consoleTextNotPresent = consoleTextNotPresent(text);
+		Condition consoleTextNotPresentCondition = getConsoleTextNotPresentCondition(text);
 
-		return consoleTextNotPresent.evaluate();
+		return consoleTextNotPresentCondition.evaluate();
 	}
 
 	@Override
 	public boolean isConsoleTextPresent(String text) throws Exception {
-		Condition consoleTextPresent = consoleTextPresent(text);
+		Condition consoleTextPresentCondition = getConsoleTextPresentCondition(text);
 
-		return consoleTextPresent.evaluate();
+		return consoleTextPresentCondition.evaluate();
 	}
 
 	@Override
 	public boolean isEditable(String locator) throws Exception {
-		Condition editable = editable(locator);
+		Condition editableCondition = getEditableCondition(locator);
 
-		return editable.evaluate();
+		return editableCondition.evaluate();
 	}
 
 	@Override
 	public boolean isElementNotPresent(String locator) throws Exception {
-		Condition elementNotPresent = elementNotPresent(locator);
+		Condition elementNotPresentCondition = getElementNotPresentCondition(locator);
 
-		return elementNotPresent.evaluate();
+		return elementNotPresentCondition.evaluate();
 	}
 
 	@Override
 	public boolean isElementPresent(String locator) throws Exception {
-		Condition elementPresent = elementPresent(locator);
+		Condition elementPresentCondition = getElementPresentCondition(locator);
 
-		return elementPresent.evaluate();
+		return elementPresentCondition.evaluate();
 	}
 
 	@Override
@@ -1597,9 +1597,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public boolean isNotSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
+		Condition notSelectedLabelCondition = getNotSelectedLabelCondition(selectLocator, pattern);
 
-		return notSelectedLabel.evaluate();
+		return notSelectedLabelCondition.evaluate();
 	}
 
 	@Override
@@ -1631,37 +1631,37 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public boolean isPartialText(String locator, String value)
 		throws Exception {
 
-		Condition partialText = partialText(locator, value);
+		Condition partialTextCondition = getPartialTextCondition(locator, value);
 
-		return partialText.evaluate();
+		return partialTextCondition.evaluate();
 	}
 
 	@Override
 	public boolean isPartialTextAceEditor(String locator, String value)
 		throws Exception {
 
-		Condition partialTextAceEditor = partialTextAceEditor(locator, value);
+		Condition partialTextAceEditorCondition = getPartialTextAceEditorCondition(locator, value);
 
-		return partialTextAceEditor.evaluate();
+		return partialTextAceEditorCondition.evaluate();
 	}
 
 	@Override
 	public boolean isPartialTextCaseInsensitive(String locator, String value)
 		throws Exception {
 
-		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+		Condition partialTextCaseInsensitiveCondition = getPartialTextCaseInsensitiveCondition(
 			locator, value);
 
-		return partialTextCaseInsensitive.evaluate();
+		return partialTextCaseInsensitiveCondition.evaluate();
 	}
 
 	@Override
 	public boolean isSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		Condition selectedLabel = selectedLabel(selectLocator, pattern);
+		Condition selectedLabelCondition = getSelectedLabelCondition(selectLocator, pattern);
 
-		return selectedLabel.evaluate();
+		return selectedLabelCondition.evaluate();
 	}
 
 	@Override
@@ -1699,18 +1699,18 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isText(String locator, String value) throws Exception {
-		Condition text = text(locator, value);
+		Condition textCondition = getTextCondition(locator, value);
 
-		return text.evaluate();
+		return textCondition.evaluate();
 	}
 
 	@Override
 	public boolean isTextCaseInsensitive(String locator, String value)
 		throws Exception {
 
-		Condition textCaseInsensitive = textCaseInsensitive(locator, value);
+		Condition textCaseInsensitiveCondition = getTextCaseInsensitiveCondition(locator, value);
 
-		return textCaseInsensitive.evaluate();
+		return textCaseInsensitiveCondition.evaluate();
 	}
 
 	@Override
@@ -1720,16 +1720,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isTextPresent(String pattern) throws Exception {
-		Condition textPresent = textPresent(pattern);
+		Condition textPresentCondition = getTextPresentCondition(pattern);
 
-		return textPresent.evaluate();
+		return textPresentCondition.evaluate();
 	}
 
 	@Override
 	public boolean isValue(String locator, String value) throws Exception {
-		Condition valueCondition = value(locator, value);
+		Condition valueConditionCondition = getValueCondition(locator, value);
 
-		return valueCondition.evaluate();
+		return valueConditionCondition.evaluate();
 	}
 
 	@Override
@@ -1739,16 +1739,16 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public boolean isVisibleInPage(String locator) throws Exception {
-		Condition visibleInPage = visibleInPage(locator);
+		Condition visibleInPageCondition = getVisibleInPageCondition(locator);
 
-		return visibleInPage.evaluate();
+		return visibleInPageCondition.evaluate();
 	}
 
 	@Override
 	public boolean isVisibleInViewport(String locator) throws Exception {
-		Condition visibleInViewport = visibleInViewport(locator);
+		Condition visibleInViewportCondition = getVisibleInViewportCondition(locator);
 
-		return visibleInViewport.evaluate();
+		return visibleInViewportCondition.evaluate();
 	}
 
 	@Override
@@ -3074,122 +3074,122 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void waitForConfirmation(String pattern) throws Exception {
-		Condition confirmation = confirmation(pattern);
+		Condition confirmationCondition = getConfirmationCondition(pattern);
 
-		confirmation.waitFor();
+		confirmationCondition.waitFor();
 	}
 
 	@Override
 	public void waitForConsoleTextNotPresent(String text) throws Exception {
-		Condition consoleTextNotPresent = consoleTextNotPresent(text);
+		Condition consoleTextNotPresentCondition = getConsoleTextNotPresentCondition(text);
 
-		consoleTextNotPresent.waitFor();
+		consoleTextNotPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForConsoleTextPresent(String text) throws Exception {
-		Condition consoleTextPresent = consoleTextPresent(text);
+		Condition consoleTextPresentCondition = getConsoleTextPresentCondition(text);
 
-		consoleTextPresent.waitFor();
+		consoleTextPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForEditable(String locator) throws Exception {
-		Condition editable = editable(locator);
+		Condition editableCondition = getEditableCondition(locator);
 
-		editable.waitFor();
+		editableCondition.waitFor();
 	}
 
 	@Override
 	public void waitForElementNotPresent(String locator) throws Exception {
-		Condition elementNotPresent = elementNotPresent(locator);
+		Condition elementNotPresentCondition = getElementNotPresentCondition(locator);
 
-		elementNotPresent.waitFor();
+		elementNotPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForElementPresent(String locator) throws Exception {
-		Condition elementPresent = elementPresent(locator);
+		Condition elementPresentCondition = getElementPresentCondition(locator);
 
-		elementPresent.waitFor();
+		elementPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotEditable(String locator) throws Exception {
-		Condition notEditable = notEditable(locator);
+		Condition notEditableCondition = getNotEditableCondition(locator);
 
-		notEditable.waitFor();
+		notEditableCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotPartialText(String locator, String value)
 		throws Exception {
 
-		Condition notPartialText = notPartialText(locator, value);
+		Condition notPartialTextCondition = getNotPartialTextCondition(locator, value);
 
-		notPartialText.waitFor();
+		notPartialTextCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		Condition notSelectedLabel = notSelectedLabel(selectLocator, pattern);
+		Condition notSelectedLabelCondition = getNotSelectedLabelCondition(selectLocator, pattern);
 
-		notSelectedLabel.waitFor();
+		notSelectedLabelCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotText(String locator, String value) throws Exception {
-		Condition notText = notText(locator, value);
+		Condition notTextCondition = getNotTextCondition(locator, value);
 
-		notText.waitFor();
+		notTextCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotValue(String locator, String value) throws Exception {
-		Condition notValue = notValue(locator, value);
+		Condition notValueCondition = getNotValueCondition(locator, value);
 
-		notValue.waitFor();
+		notValueCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotVisible(String locator) throws Exception {
-		Condition notVisible = notVisible(locator);
+		Condition notVisibleCondition = getNotVisibleCondition(locator);
 
-		notVisible.waitFor();
+		notVisibleCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotVisibleInPage(String locator) throws Exception {
-		Condition notVisibleInPage = notVisibleInPage(locator);
+		Condition notVisibleInPageCondition = getNotVisibleInPageCondition(locator);
 
-		notVisibleInPage.waitFor();
+		notVisibleInPageCondition.waitFor();
 	}
 
 	@Override
 	public void waitForNotVisibleInViewport(String locator) throws Exception {
-		Condition notVisibleInViewport = notVisibleInViewport(locator);
+		Condition notVisibleInViewportCondition = getNotVisibleInViewportCondition(locator);
 
-		notVisibleInViewport.waitFor();
+		notVisibleInViewportCondition.waitFor();
 	}
 
 	@Override
 	public void waitForPartialText(String locator, String value)
 		throws Exception {
 
-		Condition partialText = partialText(locator, value);
+		Condition partialTextCondition = getPartialTextCondition(locator, value);
 
-		partialText.waitFor();
+		partialTextCondition.waitFor();
 	}
 
 	@Override
 	public void waitForPartialTextAceEditor(String locator, String value)
 		throws Exception {
 
-		Condition partialTextAceEditor = partialTextAceEditor(locator, value);
+		Condition partialTextAceEditorCondition = getPartialTextAceEditorCondition(locator, value);
 
-		partialTextAceEditor.waitFor();
+		partialTextAceEditorCondition.waitFor();
 	}
 
 	@Override
@@ -3197,10 +3197,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			String locator, String pattern)
 		throws Exception {
 
-		Condition partialTextCaseInsensitive = partialTextCaseInsensitive(
+		Condition partialTextCaseInsensitiveCondition = getPartialTextCaseInsensitiveCondition(
 			locator, pattern);
 
-		partialTextCaseInsensitive.waitFor();
+		partialTextCaseInsensitiveCondition.waitFor();
 	}
 
 	@Override
@@ -3264,67 +3264,67 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	public void waitForSelectedLabel(String selectLocator, String pattern)
 		throws Exception {
 
-		Condition selectedLabel = selectedLabel(selectLocator, pattern);
+		Condition selectedLabelCondition = getSelectedLabelCondition(selectLocator, pattern);
 
-		selectedLabel.waitFor();
+		selectedLabelCondition.waitFor();
 	}
 
 	@Override
 	public void waitForText(String locator, String value) throws Exception {
-		Condition text = text(locator, value);
+		Condition textCondition = getTextCondition(locator, value);
 
-		text.waitFor();
+		textCondition.waitFor();
 	}
 
 	@Override
 	public void waitForTextCaseInsensitive(String locator, String pattern)
 		throws Exception {
 
-		Condition textCaseInsensitive = textCaseInsensitive(locator, pattern);
+		Condition textCaseInsensitiveCondition = getTextCaseInsensitiveCondition(locator, pattern);
 
-		textCaseInsensitive.waitFor();
+		textCaseInsensitiveCondition.waitFor();
 	}
 
 	@Override
 	public void waitForTextNotPresent(String value) throws Exception {
-		Condition textNotPresent = textNotPresent(value);
+		Condition textNotPresentCondition = getTextNotPresentCondition(value);
 
-		textNotPresent.waitFor();
+		textNotPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForTextPresent(String value) throws Exception {
-		Condition textPresent = textPresent(value);
+		Condition textPresentCondition = getTextPresentCondition(value);
 
-		textPresent.waitFor();
+		textPresentCondition.waitFor();
 	}
 
 	@Override
 	public void waitForValue(String locator, String value) throws Exception {
-		Condition valueCondition = value(locator, value);
+		Condition valueConditionCondition = getValueCondition(locator, value);
 
-		valueCondition.waitFor();
+		valueConditionCondition.waitFor();
 	}
 
 	@Override
 	public void waitForVisible(String locator) throws Exception {
-		Condition visible = visible(locator);
+		Condition visibleCondition = getVisibleCondition(locator);
 
-		visible.waitFor();
+		visibleCondition.waitFor();
 	}
 
 	@Override
 	public void waitForVisibleInPage(String locator) throws Exception {
-		Condition visibleInPage = visibleInPage(locator);
+		Condition visibleInPageCondition = getVisibleInPageCondition(locator);
 
-		visibleInPage.waitFor();
+		visibleInPageCondition.waitFor();
 	}
 
 	@Override
 	public void waitForVisibleInViewport(String locator) throws Exception {
-		Condition visibleInViewport = visibleInViewport(locator);
+		Condition visibleInViewportCondition = getVisibleInViewportCondition(locator);
 
-		visibleInViewport.waitFor();
+		visibleInViewportCondition.waitFor();
 	}
 
 	protected void acceptConfirmation() {
@@ -3335,7 +3335,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		alert.accept();
 	}
 
-	protected Condition confirmation(String pattern) {
+	protected Condition getConfirmationCondition(String pattern) {
 		return new Condition() {
 
 			@Override
@@ -3358,7 +3358,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition consoleTextNotPresent(String text) {
+	protected Condition getConsoleTextNotPresentCondition(String text) {
 		String message = "\"" + text + "\" is present in console";
 
 		return new Condition(message) {
@@ -3371,7 +3371,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition consoleTextPresent(String text) {
+	protected Condition getConsoleTextPresentCondition(String text) {
 		String message = "\"" + text + "\" is not present in console";
 
 		return new Condition(message) {
@@ -3384,7 +3384,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition editable(String locator) {
+	protected Condition getEditableCondition(String locator) {
 		String message = "Element is not editable at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3399,7 +3399,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition elementNotPresent(String locator) {
+	protected Condition getElementNotPresentCondition(String locator) {
 		String message = "Element is present at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3412,7 +3412,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition elementPresent(String locator) {
+	protected Condition getElementPresentCondition(String locator) {
 		String message = "Element is not present at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3830,7 +3830,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		return false;
 	}
 
-	protected Condition notEditable(String locator) {
+	protected Condition getNotEditableCondition(String locator) {
 		String message = "Element is editable at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3843,7 +3843,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notPartialText(String locator, String value) {
+	protected Condition getNotPartialTextCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -3865,7 +3865,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notSelectedLabel(String selectLocator, String pattern) {
+	protected Condition getNotSelectedLabelCondition(String selectLocator, String pattern) {
 		return new Condition() {
 
 			@Override
@@ -3895,7 +3895,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notText(String locator, String value) {
+	protected Condition getNotTextCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -3917,7 +3917,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notValue(String locator, String value) {
+	protected Condition getNotValueCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -3939,7 +3939,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notVisible(String locator) {
+	protected Condition getNotVisibleCondition(String locator) {
 		String message = "Element is visible at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3952,7 +3952,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notVisibleInPage(String locator) {
+	protected Condition getNotVisibleInPageCondition(String locator) {
 		String message = "Element is visible in page at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -3965,7 +3965,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition notVisibleInViewport(String locator) {
+	protected Condition getNotVisibleInViewportCondition(String locator) {
 		String message =
 			"Element is visible in viewport at \"" + locator + "\"";
 
@@ -3979,7 +3979,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition partialText(String locator, String value) {
+	protected Condition getPartialTextCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -4006,7 +4006,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition partialTextAceEditor(String locator, String value) {
+	protected Condition getPartialTextAceEditorCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -4035,7 +4035,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition partialTextCaseInsensitive(
+	protected Condition getPartialTextCaseInsensitiveCondition(
 		String locator, String value) {
 
 		return new Condition() {
@@ -4141,7 +4141,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		select.selectByIndex(index);
 	}
 
-	protected Condition selectedLabel(String selectLocator, String pattern) {
+	protected Condition getSelectedLabelCondition(String selectLocator, String pattern) {
 		return new Condition() {
 
 			@Override
@@ -4177,7 +4177,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		_navigationBarHeight = navigationBarHeight;
 	}
 
-	protected Condition text(String locator, String value) {
+	protected Condition getTextCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -4200,7 +4200,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition textCaseInsensitive(String locator, String value) {
+	protected Condition getTextCaseInsensitiveCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -4225,7 +4225,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition textNotPresent(String pattern) {
+	protected Condition getTextNotPresentCondition(String pattern) {
 		String message = "\"" + pattern + "\" is present";
 
 		return new Condition(message) {
@@ -4238,7 +4238,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition textPresent(String pattern) {
+	protected Condition getTextPresentCondition(String pattern) {
 		String message = "\"" + pattern + "\" is not present";
 
 		return new Condition(message) {
@@ -4255,7 +4255,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition value(String locator, String value) {
+	protected Condition getValueCondition(String locator, String value) {
 		return new Condition() {
 
 			@Override
@@ -4278,7 +4278,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition visible(String locator) {
+	protected Condition getVisibleCondition(String locator) {
 		String message = "Element is not visible at \"" + locator + "\"";
 
 		return new Condition(message) {
@@ -4291,7 +4291,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition visibleInPage(String locator) {
+	protected Condition getVisibleInPageCondition(String locator) {
 		String message =
 			"Element is not visible in page at \"" + locator + "\"";
 
@@ -4309,7 +4309,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		};
 	}
 
-	protected Condition visibleInViewport(String locator) {
+	protected Condition getVisibleInViewportCondition(String locator) {
 		String message =
 			"Element is not visible in viewport at \"" + locator + "\"";
 
