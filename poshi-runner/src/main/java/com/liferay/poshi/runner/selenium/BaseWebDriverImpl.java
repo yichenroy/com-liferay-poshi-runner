@@ -4385,6 +4385,12 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		public abstract boolean evaluate() throws Exception;
 
+		public void verify() throws Exception {
+			if (!evaluate()) {
+				throw new PoshiRunnerWarningException(_message);
+			}
+		}
+
 		public void waitFor() throws Exception {
 			waitFor(true);
 		}
