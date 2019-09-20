@@ -3093,6 +3093,35 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void verifyElementNotPresent(String locator) throws Exception {
+		Condition elementNotPresentCondition = getElementNotPresentCondition(
+			locator);
+
+		elementNotPresentCondition.verify();
+	}
+
+	@Override
+	public void verifyElementPresent(String locator) throws Exception {
+		Condition elementPresentCondition = getElementPresentCondition(locator);
+
+		elementPresentCondition.verify();
+	}
+
+	@Override
+	public void verifyNotVisible(String locator) throws Exception {
+		Condition notVisibleCondition = getNotVisibleCondition(locator);
+
+		notVisibleCondition.verify();
+	}
+
+	@Override
+	public void verifyVisible(String locator) throws Exception {
+		Condition visibleCondition = getVisibleCondition(locator);
+
+		visibleCondition.verify();
+	}
+
+	@Override
 	public void waitForConfirmation(String pattern) throws Exception {
 		Condition confirmationCondition = getConfirmationCondition(pattern);
 
@@ -3131,10 +3160,30 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
+	public void waitForElementNotPresent(String locator, String throwException)
+		throws Exception {
+
+		Condition elementNotPresentCondition = getElementNotPresentCondition(
+			locator);
+
+		elementNotPresentCondition.waitFor(
+			Boolean.parseBoolean(throwException));
+	}
+
+	@Override
 	public void waitForElementPresent(String locator) throws Exception {
 		Condition elementPresentCondition = getElementPresentCondition(locator);
 
 		elementPresentCondition.waitFor();
+	}
+
+	@Override
+	public void waitForElementPresent(String locator, String throwException)
+		throws Exception {
+
+		Condition elementPresentCondition = getElementPresentCondition(locator);
+
+		elementPresentCondition.waitFor(Boolean.parseBoolean(throwException));
 	}
 
 	@Override
@@ -3183,6 +3232,15 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Condition notVisibleCondition = getNotVisibleCondition(locator);
 
 		notVisibleCondition.waitFor();
+	}
+
+	@Override
+	public void waitForNotVisible(String locator, String throwException)
+		throws Exception {
+
+		Condition notVisibleCondition = getNotVisibleCondition(locator);
+
+		notVisibleCondition.waitFor(Boolean.parseBoolean(throwException));
 	}
 
 	@Override
@@ -3342,6 +3400,15 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Condition visibleCondition = getVisibleCondition(locator);
 
 		visibleCondition.waitFor();
+	}
+
+	@Override
+	public void waitForVisible(String locator, String throwException)
+		throws Exception {
+
+		Condition visibleCondition = getVisibleCondition(locator);
+
+		visibleCondition.waitFor(Boolean.parseBoolean(throwException));
 	}
 
 	@Override

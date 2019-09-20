@@ -472,6 +472,14 @@ public interface LiferaySelenium {
 
 	public void uploadTempFile(String locator, String value);
 
+	public void verifyElementNotPresent(String locator) throws Exception;
+
+	public void verifyElementPresent(String locator) throws Exception;
+
+	public void verifyNotVisible(String locator) throws Exception;
+
+	public void verifyVisible(String locator) throws Exception;
+
 	public void waitForConfirmation(String pattern) throws Exception;
 
 	public void waitForConsoleTextNotPresent(String text) throws Exception;
@@ -482,7 +490,13 @@ public interface LiferaySelenium {
 
 	public void waitForElementNotPresent(String locator) throws Exception;
 
+	public void waitForElementNotPresent(String locator, String throwException)
+		throws Exception;
+
 	public void waitForElementPresent(String locator) throws Exception;
+
+	public void waitForElementPresent(String locator, String throwException)
+		throws Exception;
 
 	public void waitForNotEditable(String locator) throws Exception;
 
@@ -497,6 +511,9 @@ public interface LiferaySelenium {
 	public void waitForNotValue(String locator, String value) throws Exception;
 
 	public void waitForNotVisible(String locator) throws Exception;
+
+	public void waitForNotVisible(String locator, String throwException)
+		throws Exception;
 
 	public void waitForNotVisibleInPage(String locator) throws Exception;
 
@@ -528,6 +545,9 @@ public interface LiferaySelenium {
 	public void waitForValue(String locator, String value) throws Exception;
 
 	public void waitForVisible(String locator) throws Exception;
+
+	public void waitForVisible(String locator, String throwException)
+		throws Exception;
 
 	public void waitForVisibleInPage(String locator) throws Exception;
 
