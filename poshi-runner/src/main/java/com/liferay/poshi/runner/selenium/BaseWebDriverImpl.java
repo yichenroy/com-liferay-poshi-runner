@@ -4386,6 +4386,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		public abstract boolean evaluate() throws Exception;
 
 		public void waitFor() throws Exception {
+			waitFor(true);
+		}
+
+		public void waitFor(boolean throwException) throws Exception {
 			for (int second = 0; second < PropsValues.TIMEOUT_EXPLICIT_WAIT;
 				 second++) {
 
@@ -4400,7 +4404,9 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				Thread.sleep(1000);
 			}
 
-			assertTrue();
+			if (throwException) {
+				assertTrue();
+			}
 		}
 
 		private final String _message;
