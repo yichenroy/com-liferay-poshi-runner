@@ -4454,7 +4454,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		public void verify() throws Exception {
 			if (!evaluate()) {
-				throw new PoshiRunnerWarningException(_message);
+				throw new PoshiRunnerWarningException(
+					"VERIFICATION_WARNING: " + _message);
 			}
 		}
 
