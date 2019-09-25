@@ -21,7 +21,10 @@ import com.liferay.poshi.runner.util.Validator;
 
 import java.io.IOException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -183,6 +186,20 @@ public class VarPoshiElement extends PoshiElement {
 			}
 
 			addAttribute("method", value);
+
+			return;
+		}
+
+		Matcher matcher = _varValueMathExpressionPattern.matcher(value);
+
+		if (matcher.find()) {
+			String mathOperation = _mathOperatorsMap.get(matcher.group(2));
+
+			String mathUtilValue = StringUtil.combine(
+				"MathUtil#", mathOperation, "('", matcher.group(1), "', '",
+				matcher.group(3), "')");
+
+			addAttribute("method", mathUtilValue);
 		}
 	}
 
@@ -424,7 +441,17 @@ public class VarPoshiElement extends PoshiElement {
 
 	private static final String _VAR_VALUE_STRING_REGEX = "\".*?\"";
 
+	private static final Map<String, String> _mathOperatorsMap =
+		new HashMap<String, String>() {
+			{
+				put("*", "product");
+				put("+", "sum");
+				put("-", "difference");
+				put("/", "quotient");
+			}
+		};
 	private static final Pattern _statementPattern;
+	private static final Pattern _varValueMathExpressionPattern;
 
 	static {
 		_VAR_VALUE_MATH_EXPRESSION_REGEX =
@@ -439,6 +466,9 @@ public class VarPoshiElement extends PoshiElement {
 			"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + _VAR_VALUE_REGEX +
 				VAR_STATEMENT_END_REGEX,
 			Pattern.DOTALL);
+
+		_varValueMathExpressionPattern = Pattern.compile(
+			_VAR_VALUE_MATH_EXPRESSION_REGEX);
 	}
 
 }
