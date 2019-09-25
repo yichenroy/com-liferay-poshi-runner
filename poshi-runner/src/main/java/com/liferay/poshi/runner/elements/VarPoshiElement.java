@@ -410,6 +410,11 @@ public class VarPoshiElement extends PoshiElement {
 
 	private static final String _ELEMENT_NAME = "var";
 
+	private static final String _VAR_VALUE_MATH_EXPRESSION_REGEX;
+
+	private static final String _VAR_VALUE_MATH_VALUE_REGEX =
+		"[\\s]*(\\$\\{[\\w]*\\}|[\\d]*)[\\s]*";
+
 	private static final String _VAR_VALUE_MULTILINE_REGEX = "'''.*?'''";
 
 	private static final String _VAR_VALUE_OBJECT_REGEX =
@@ -422,9 +427,13 @@ public class VarPoshiElement extends PoshiElement {
 	private static final Pattern _statementPattern;
 
 	static {
+		_VAR_VALUE_MATH_EXPRESSION_REGEX =
+			_VAR_VALUE_MATH_VALUE_REGEX + "([\\+\\-\\*\\/])" +
+				_VAR_VALUE_MATH_VALUE_REGEX;
+
 		_VAR_VALUE_REGEX = StringUtil.combine(
-			"(", _VAR_VALUE_STRING_REGEX, "|", "|", _VAR_VALUE_MULTILINE_REGEX,
-			"|", _VAR_VALUE_OBJECT_REGEX, ")");
+			"(", _VAR_VALUE_STRING_REGEX, "|", _VAR_VALUE_MATH_EXPRESSION_REGEX,
+			"|", _VAR_VALUE_MULTILINE_REGEX, "|", _VAR_VALUE_OBJECT_REGEX, ")");
 
 		_statementPattern = Pattern.compile(
 			"^" + VAR_NAME_REGEX + ASSIGNMENT_REGEX + _VAR_VALUE_REGEX +
