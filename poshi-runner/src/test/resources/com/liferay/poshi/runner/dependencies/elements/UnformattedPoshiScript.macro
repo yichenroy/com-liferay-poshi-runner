@@ -9,6 +9,8 @@ definition {
 	macro viewPG {
 		var key_breadcrumbName = "${breadcrumbName}";
 		static var breadcrumbNameUppercase = StringUtil.upperCase("${breadcrumbName}");
+		var integer = MathUtil.sum("5", "5");
+		var newInteger = MathUtil.sum("34", "${integer}");
 
 		AssertTextEquals(locator1 = "Breadcrumb#BREADCRUMB_ENTRY", value1 = "${breadcrumbNameUppercase}");
 
