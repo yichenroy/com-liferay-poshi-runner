@@ -657,6 +657,10 @@ public abstract class PoshiElement
 				continue;
 			}
 
+			if (trimmedPoshiScriptSnippet.startsWith("var") && (c != ';')) {
+				continue;
+			}
+
 			if (isBalancedPoshiScript(poshiScriptSnippet)) {
 				if (splitElseBlocks &&
 					(isValidPoshiScriptBlock(
