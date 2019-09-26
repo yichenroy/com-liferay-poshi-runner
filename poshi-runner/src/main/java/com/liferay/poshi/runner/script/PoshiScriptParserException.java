@@ -19,8 +19,8 @@ import com.liferay.poshi.runner.elements.PoshiNode;
 import com.liferay.poshi.runner.util.StringUtil;
 import com.liferay.poshi.runner.util.Validator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Kenji Heigel
@@ -30,8 +30,8 @@ public class PoshiScriptParserException extends Exception {
 	public static final String TRANSLATION_LOSS_MESSAGE =
 		"Poshi Script syntax is not preserved in translation";
 
-	public static List<String> getFailingFilePaths() {
-		return failingFilePaths;
+	public static Set<String> getUniqueErrorPaths() {
+		return _uniqueErrorPaths;
 	}
 
 	public PoshiScriptParserException(String msg) {
@@ -174,18 +174,18 @@ public class PoshiScriptParserException extends Exception {
 	public void setFilePath(String filePath) {
 		_filePath = filePath;
 
-		failingFilePaths.add(filePath);
+		_uniqueErrorPaths.add(filePath + ":" + getErrorLineNumber());
 	}
 
 	public void setPoshiNode(PoshiNode poshiNode) {
 		_poshiNode = poshiNode;
 	}
 
-	protected static List<String> failingFilePaths = new ArrayList<>();
-
 	private static final int _ERROR_SNIPPET_POSTFIX_SIZE = 10;
 
 	private static final int _ERROR_SNIPPET_PREFIX_SIZE = 10;
+
+	private static Set<String> _uniqueErrorPaths = new HashSet<>();
 
 	private int _errorLineNumber;
 	private String _filePath = "Unknown file";
