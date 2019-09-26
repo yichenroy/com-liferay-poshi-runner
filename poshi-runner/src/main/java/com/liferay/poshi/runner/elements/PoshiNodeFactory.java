@@ -44,6 +44,10 @@ import org.dom4j.Node;
  */
 public abstract class PoshiNodeFactory {
 
+	public static boolean getValidatePoshiScript() {
+		return _validatePoshiScript;
+	}
+
 	public static PoshiNode<?, ?> newPoshiNode(Node node) {
 		PoshiNode<?, ?> newPoshiNode = null;
 

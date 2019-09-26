@@ -260,12 +260,16 @@ public abstract class PoshiElement
 		try {
 			parsePoshiScript(poshiScript.trim());
 
-			if (PropsValues.TEST_POSHI_SCRIPT_VALIDATION) {
+			if (PropsValues.TEST_POSHI_SCRIPT_VALIDATION &&
+				PoshiNodeFactory.getValidatePoshiScript()) {
+
 				validatePoshiScript();
 			}
 		}
 		catch (PoshiScriptParserException pspe) {
-			System.out.println(pspe.getMessage());
+			if (PoshiNodeFactory.getValidatePoshiScript()) {
+				System.out.println(pspe.getMessage());
+			}
 		}
 
 		detach();
