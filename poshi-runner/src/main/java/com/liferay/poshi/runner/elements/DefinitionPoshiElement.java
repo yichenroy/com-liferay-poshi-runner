@@ -15,7 +15,12 @@
 package com.liferay.poshi.runner.elements;
 
 import com.liferay.poshi.runner.script.PoshiScriptParserException;
+import com.liferay.poshi.runner.util.Dom4JUtil;
+import com.liferay.poshi.runner.util.FileUtil;
 
+import java.io.File;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.List;
@@ -77,6 +82,37 @@ public class DefinitionPoshiElement extends PoshiElement {
 	@Override
 	public int getPoshiScriptLineNumber() {
 		return getPoshiScriptLineNumber(false);
+	}
+
+	@Override
+	public boolean isValidPoshiXML() {
+		if (_validPoshiXML == null) {
+			try {
+				_validPoshiXML = false;
+
+				PoshiNodeFactory.setValidatePoshiScript(false);
+
+				URL url = FileUtil.getURL(new File(getFilePath()));
+
+				PoshiNode poshiNode = PoshiNodeFactory.newPoshiNodeFromFile(
+					url);
+
+				String poshiScript = poshiNode.toPoshiScript();
+
+				PoshiNode generatedPoshiNode = PoshiNodeFactory.newPoshiNode(
+					poshiScript, url);
+
+				if (Dom4JUtil.elementsEqual(poshiNode, generatedPoshiNode)) {
+					_validPoshiXML = true;
+				}
+
+				PoshiNodeFactory.setValidatePoshiScript(true);
+			}
+			catch (MalformedURLException murle) {
+			}
+		}
+
+		return _validPoshiXML;
 	}
 
 	@Override
@@ -188,5 +224,6 @@ public class DefinitionPoshiElement extends PoshiElement {
 		Pattern.DOTALL);
 
 	private String _filePath;
+	private Boolean _validPoshiXML;
 
 }
