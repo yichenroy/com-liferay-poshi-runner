@@ -112,6 +112,33 @@ public abstract class PoshiElement
 		return matcher.find();
 	}
 
+	public boolean isValidPoshiScript() throws PoshiScriptParserException {
+		for (PoshiElementAttribute poshiElementAttribute :
+				toPoshiElementAttributes(attributeList())) {
+
+			poshiElementAttribute.validatePoshiScript();
+		}
+
+		String originalPoshiScript = getPoshiScript();
+		String generatedPoshiScript = toPoshiScript();
+
+		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
+
+		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
+
+		if ((elements().size() == 0) &&
+			!originalPoshiScript.equals(generatedPoshiScript)) {
+
+			return false;
+		}
+
+		if (originalPoshiScript.length() != generatedPoshiScript.length()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	@Override
 	public boolean remove(Attribute attribute) {
 		if (attribute instanceof PoshiElementAttribute) {
@@ -170,33 +197,9 @@ public abstract class PoshiElement
 	}
 
 	public void validatePoshiScript() throws PoshiScriptParserException {
-		for (PoshiElementAttribute poshiElementAttribute :
-				toPoshiElementAttributes(attributeList())) {
-
-			poshiElementAttribute.validatePoshiScript();
-		}
-
-		String originalPoshiScript = getPoshiScript();
-		String generatedPoshiScript = toPoshiScript();
-
-		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
-
-		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
-
-		if ((elements().size() == 0) &&
-			!originalPoshiScript.equals(generatedPoshiScript)) {
-
-			PoshiScriptParserException pspe = new PoshiScriptParserException(
+		if (!isValidPoshiScript() && !isValidPoshiXML()) {
+			throw new PoshiScriptParserException(
 				PoshiScriptParserException.TRANSLATION_LOSS_MESSAGE, this);
-
-			throw pspe;
-		}
-
-		if (originalPoshiScript.length() != generatedPoshiScript.length()) {
-			PoshiScriptParserException pspe = new PoshiScriptParserException(
-				PoshiScriptParserException.TRANSLATION_LOSS_MESSAGE, this);
-
-			throw pspe;
 		}
 	}
 
