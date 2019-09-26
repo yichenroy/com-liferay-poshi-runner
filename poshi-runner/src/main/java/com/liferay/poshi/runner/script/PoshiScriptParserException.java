@@ -82,11 +82,10 @@ public class PoshiScriptParserException extends Exception {
 	public String getErrorSnippet() {
 		PoshiElement rootPoshiElement = getRootPoshiElement(getPoshiNode());
 
-		int startingLineNumber = 1;
 		int errorLineNumber = getErrorLineNumber();
 
-		startingLineNumber = Math.max(
-			errorLineNumber - _ERROR_SNIPPET_PREFIX_SIZE, 0);
+		int startingLineNumber = Math.max(
+			errorLineNumber - _ERROR_SNIPPET_PREFIX_SIZE, 1);
 
 		String poshiScript = rootPoshiElement.getPoshiScript();
 
@@ -101,7 +100,7 @@ public class PoshiScriptParserException extends Exception {
 
 		int currentLineNumber = startingLineNumber;
 
-		String lineNumberString = String.valueOf(errorLineNumber);
+		String lineNumberString = String.valueOf(endingLineNumber);
 
 		int pad = lineNumberString.length() + 2;
 
