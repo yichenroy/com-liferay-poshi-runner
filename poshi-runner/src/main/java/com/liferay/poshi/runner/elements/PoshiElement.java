@@ -826,18 +826,11 @@ public abstract class PoshiElement
 	}
 
 	protected boolean isNestedCondition(String poshiScript) {
-		if (poshiScript.contains("||")) {
-			List<String> nestedConditions = getNestedConditions(
-				poshiScript, "||");
+		Matcher matcher = _nestedConditionPattern.matcher(poshiScript);
 
-			if (nestedConditions.size() > 1) {
-				return true;
-			}
-		}
-
-		if (poshiScript.contains("&&")) {
+		if (matcher.find()) {
 			List<String> nestedConditions = getNestedConditions(
-				poshiScript, "&&");
+				poshiScript, matcher.group(0));
 
 			if (nestedConditions.size() > 1) {
 				return true;
@@ -1117,6 +1110,8 @@ public abstract class PoshiElement
 				put('[', ']');
 			}
 		};
+	private static final Pattern _nestedConditionPattern = Pattern.compile(
+		"(\\|{2}|\\&{2})");
 	private static final Pattern _poshiScriptCommentPattern = Pattern.compile(
 		"^[\\s]*(\\/\\/.*?(\\n|$)|\\/\\*.*?\\*\\/)", Pattern.DOTALL);
 	private static final Pattern _varInvocationAssignmentStatementPattern;
