@@ -15,6 +15,10 @@ definition {
 			value1 = "${breadcrumbNameUppercase}"
 		);
 
+		if (!((IsElementPresent(locator1 = "ExportPersonalData#EXPORT_PROCESS_IN_PROGRESS")) || (IsElementPresent(locator1 = "ExportPersonalData#EXPORT_PROCESS_APPLICATION_IN_PROGRESS")))) {
+			AssertElementPresent(locator1 = "ExportPersonalData#EXPORT_PROCESS_SUCCESSFUL");
+		}
+
 		if ((IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) && ("${check}" == "true") && (isSet(duplicate))) {
 			Alert.viewSuccessMessage();
 		}

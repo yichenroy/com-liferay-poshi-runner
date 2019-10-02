@@ -15,6 +15,18 @@
 		<execute function="AssertTextEquals" locator1="Breadcrumb#BREADCRUMB_ENTRY" value1="${breadcrumbNameUppercase}" />
 
 		<if>
+			<not>
+				<or>
+					<condition function="IsElementPresent" locator1="ExportPersonalData#EXPORT_PROCESS_IN_PROGRESS"/>
+					<condition function="IsElementPresent" locator1="ExportPersonalData#EXPORT_PROCESS_APPLICATION_IN_PROGRESS"/>
+				</or>
+			</not>
+			<then>
+				<execute function="AssertElementPresent" locator1="ExportPersonalData#EXPORT_PROCESS_SUCCESSFUL"/>
+			</then>
+		</if>
+
+		<if>
 			<and>
 				<condition function="IsElementPresent" locator1="Blogs#ADD_BLOGS_ENTRY" />
 				<equals arg1="${check}" arg2="true" />
