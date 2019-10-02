@@ -825,6 +825,28 @@ public abstract class PoshiElement
 		return false;
 	}
 
+	protected boolean isNestedCondition(String poshiScript) {
+		if (poshiScript.contains("||")) {
+			List<String> nestedConditions = getNestedConditions(
+				poshiScript, "||");
+
+			if (nestedConditions.size() > 1) {
+				return true;
+			}
+		}
+
+		if (poshiScript.contains("&&")) {
+			List<String> nestedConditions = getNestedConditions(
+				poshiScript, "&&");
+
+			if (nestedConditions.size() > 1) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	protected boolean isValidFunctionFileName(String poshiScriptInvocation) {
 		for (String functionFileName :
 				PoshiRunnerContext.getFunctionFileNames()) {
