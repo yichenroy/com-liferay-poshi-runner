@@ -3166,8 +3166,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Condition elementNotPresentCondition = getElementNotPresentCondition(
 			locator);
 
-		elementNotPresentCondition.waitFor(
-			Boolean.parseBoolean(throwException));
+		elementNotPresentCondition.waitFor(throwException);
 	}
 
 	@Override
@@ -3183,7 +3182,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		Condition elementPresentCondition = getElementPresentCondition(locator);
 
-		elementPresentCondition.waitFor(Boolean.parseBoolean(throwException));
+		elementPresentCondition.waitFor(throwException);
 	}
 
 	@Override
@@ -3240,7 +3239,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		Condition notVisibleCondition = getNotVisibleCondition(locator);
 
-		notVisibleCondition.waitFor(Boolean.parseBoolean(throwException));
+		notVisibleCondition.waitFor(throwException);
 	}
 
 	@Override
@@ -3408,7 +3407,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 		Condition visibleCondition = getVisibleCondition(locator);
 
-		visibleCondition.waitFor(Boolean.parseBoolean(throwException));
+		visibleCondition.waitFor(throwException);
 	}
 
 	@Override
@@ -4460,10 +4459,10 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		}
 
 		public void waitFor() throws Exception {
-			waitFor(true);
+			waitFor("true");
 		}
 
-		public void waitFor(boolean throwException) throws Exception {
+		public void waitFor(String throwException) throws Exception {
 			for (int second = 0; second < PropsValues.TIMEOUT_EXPLICIT_WAIT;
 				 second++) {
 
@@ -4478,7 +4477,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				Thread.sleep(1000);
 			}
 
-			if (throwException) {
+			if ((throwException == null) || throwException.equals("true")) {
 				assertTrue();
 			}
 		}
