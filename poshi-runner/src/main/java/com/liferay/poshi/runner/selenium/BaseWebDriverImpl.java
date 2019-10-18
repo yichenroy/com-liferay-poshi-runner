@@ -595,7 +595,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 	@Override
 	public void assertPartialConfirmation(String pattern) throws Exception {
-		String confirmation = getConfirmation();
+		String confirmation = getConfirmation(null);
 
 		if (!confirmation.contains(pattern)) {
 			throw new Exception(
@@ -1043,11 +1043,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		WebElement webElement = getWebElement("//body");
 
 		return webElement.getText();
-	}
-
-	@Override
-	public String getConfirmation() {
-		return getConfirmation(null);
 	}
 
 	@Override
@@ -2209,7 +2204,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		open(url);
 
 		if (isAlertPresent()) {
-			getConfirmation();
+			getConfirmation(null);
 		}
 	}
 
@@ -3479,8 +3474,8 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 				if (!evaluate()) {
 					String message = StringUtil.combine(
 						"Expected text \"", pattern,
-						"\" does not match actual text \"", getConfirmation(),
-						"\"");
+						"\" does not match actual text \"",
+						getConfirmation(null), "\"");
 
 					throw new Exception(message);
 				}
@@ -3488,7 +3483,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 
 			@Override
 			public boolean evaluate() throws Exception {
-				return pattern.equals(getConfirmation());
+				return pattern.equals(getConfirmation(null));
 			}
 
 		};

@@ -180,8 +180,6 @@ public interface LiferaySelenium {
 
 	public String getBodyText();
 
-	public String getConfirmation();
-
 	public String getConfirmation(String value);
 
 	public int getElementHeight(String locator);
