@@ -3152,14 +3152,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 	}
 
 	@Override
-	public void waitForElementNotPresent(String locator) throws Exception {
-		Condition elementNotPresentCondition = getElementNotPresentCondition(
-			locator);
-
-		elementNotPresentCondition.waitFor();
-	}
-
-	@Override
 	public void waitForElementNotPresent(String locator, String throwException)
 		throws Exception {
 
@@ -3167,13 +3159,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			locator);
 
 		elementNotPresentCondition.waitFor(throwException);
-	}
-
-	@Override
-	public void waitForElementPresent(String locator) throws Exception {
-		Condition elementPresentCondition = getElementPresentCondition(locator);
-
-		elementPresentCondition.waitFor();
 	}
 
 	@Override
@@ -3224,13 +3209,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Condition notValueCondition = getNotValueCondition(locator, value);
 
 		notValueCondition.waitFor();
-	}
-
-	@Override
-	public void waitForNotVisible(String locator) throws Exception {
-		Condition notVisibleCondition = getNotVisibleCondition(locator);
-
-		notVisibleCondition.waitFor();
 	}
 
 	@Override
@@ -3392,13 +3370,6 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 		Condition valueConditionCondition = getValueCondition(locator, value);
 
 		valueConditionCondition.waitFor();
-	}
-
-	@Override
-	public void waitForVisible(String locator) throws Exception {
-		Condition visibleCondition = getVisibleCondition(locator);
-
-		visibleCondition.waitFor();
 	}
 
 	@Override
