@@ -724,28 +724,22 @@ public class StringUtil {
 		return sb.toString();
 	}
 
-	public static String substring(String s, String startString, String endString) {
+	public static String substring(
+		String s, String startIndex, String endIndex) {
+
 		if (s == null) {
 			s = StringPool.BLANK;
 		}
 
-		int start = 0;
-
 		try {
-			start = Integer.parseInt(startString);
+			return s.substring(
+				Integer.parseInt(startIndex), Integer.parseInt(endIndex));
 		}
 		catch (NumberFormatException nfe) {
-		}
+			nfe.printStackTrace();
 
-		int end = 0;
-
-		try {
-			end = Integer.parseInt(endString);
+			return s;
 		}
-		catch (NumberFormatException nfe) {
-		}
-
-		return s.substring(start, end);
 	}
 
 	public static String toLowerCase(String s) {
