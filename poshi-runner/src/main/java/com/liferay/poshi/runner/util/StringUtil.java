@@ -728,7 +728,7 @@ public class StringUtil {
 		String s, String startIndex, String endIndex) {
 
 		if (s == null) {
-			s = StringPool.BLANK;
+			return StringPool.BLANK;
 		}
 
 		try {
