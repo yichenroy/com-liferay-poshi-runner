@@ -735,8 +735,8 @@ public class StringUtil {
 			return s.substring(
 				Integer.parseInt(startIndex), Integer.parseInt(endIndex));
 		}
-		catch (NumberFormatException nfe) {
-			nfe.printStackTrace();
+		catch (IndexOutOfBoundsException | NumberFormatException e) {
+			e.printStackTrace();
 
 			return s;
 		}
