@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -1416,46 +1415,6 @@ public class PoshiRunnerContext {
 		throws Exception {
 
 		Map<String, String> filePaths = new HashMap<>();
-
-		Collections.sort(
-			urls,
-			new Comparator<URL>() {
-
-				@Override
-				public int compare(URL url1, URL url2) {
-					String urlPath1 = url1.getPath();
-					String urlPath2 = url2.getPath();
-
-					Matcher urlPathMatcher1 = _urlPathPattern.matcher(urlPath1);
-					Matcher urlPathMatcher2 = _urlPathPattern.matcher(urlPath2);
-
-					if (urlPathMatcher1.find() && urlPathMatcher2.find()) {
-						String fileType1 = urlPathMatcher1.group(1);
-						String fileType2 = urlPathMatcher2.group(1);
-
-						List<String> fileTypeList = Arrays.asList(
-							"action", "path", "function", "macro", "testcase",
-							"prose");
-
-						Integer fileTypeIndex1 = fileTypeList.indexOf(
-							StringUtil.toLowerCase(fileType1));
-						Integer fileTypeIndex2 = fileTypeList.indexOf(
-							StringUtil.toLowerCase(fileType2));
-
-						int indexCompareValue = fileTypeIndex1.compareTo(
-							fileTypeIndex2);
-
-						if (indexCompareValue == 0) {
-							return urlPath1.compareTo(urlPath2);
-						}
-
-						return indexCompareValue;
-					}
-
-					throw new RuntimeException("Unable to sort Poshi files");
-				}
-
-			});
 
 		List<PoshiFileCallable> dependencyPoshiFileCallables =
 			new ArrayList<>();
