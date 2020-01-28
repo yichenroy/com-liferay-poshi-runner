@@ -57,6 +57,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1453,45 +1457,43 @@ public class PoshiRunnerContext {
 
 			});
 
+		List<PoshiFileCallable> dependencyPoshiFileCallables =
+			new ArrayList<>();
+		List<PoshiFileCallable> macroPoshiFileCallables = new ArrayList<>();
+		List<PoshiFileCallable> testPoshiFileCallables = new ArrayList<>();
+
 		for (URL url : urls) {
-			String filePath = url.getFile();
+			String fileName = url.getFile();
 
-			if (OSDetector.isWindows()) {
-				if (filePath.startsWith("/")) {
-					filePath = filePath.substring(1);
-				}
+			if (fileName.contains(".macro")) {
+				macroPoshiFileCallables.add(
+					new PoshiFileCallable(url, filePaths, namespace));
 
-				filePath = filePath.replace("/", "\\");
+				continue;
 			}
 
-			String fileName = PoshiRunnerGetterUtil.getFileNameFromFilePath(
-				filePath);
+			if (fileName.contains(".testcase") || fileName.contains(".prose")) {
+				testPoshiFileCallables.add(
+					new PoshiFileCallable(url, filePaths, namespace));
 
-			if (filePaths.containsKey(fileName)) {
-				System.out.println(
-					"WARNING: Duplicate file name '" + fileName +
-						"' found within the namespace '" + namespace + "':\n" +
-							filePath + "\n" + filePaths.get(fileName) + "\n");
+				continue;
 			}
 
-			filePaths.put(fileName, filePath);
-
-			Element rootElement = PoshiRunnerGetterUtil.getRootElementFromURL(
-				url);
-
-			_storeRootElement(rootElement, filePath, namespace);
-
-			if (rootElement.attributeValue("override") == null) {
-				_filePaths.put(namespace + "." + fileName, filePath);
-
-				if (fileName.endsWith(".function")) {
-					_functionFileNames.add(fileName.replace(".function", ""));
-
-					_functionFileNames.add(
-						namespace + "." + fileName.replace(".function", ""));
-				}
-			}
+			dependencyPoshiFileCallables.add(
+				new PoshiFileCallable(url, filePaths, namespace));
 		}
+
+		ExecutorService executorService = Executors.newFixedThreadPool(16);
+
+		executorService.invokeAll(dependencyPoshiFileCallables);
+
+		executorService.invokeAll(macroPoshiFileCallables);
+
+		executorService.invokeAll(testPoshiFileCallables);
+
+		executorService.shutdown();
+
+		executorService.awaitTermination(60, TimeUnit.SECONDS);
 	}
 
 	private static void _writeTestCaseMethodNamesProperties() throws Exception {
@@ -1697,6 +1699,72 @@ public class PoshiRunnerContext {
 				_testCaseRequiredPropertyNames,
 				StringUtil.split(testCaseRequiredPropertyNames));
 		}
+	}
+
+	private static class PoshiFileCallable implements Callable<URL> {
+
+		public URL call() {
+			String filePath = _url.getFile();
+
+			if (OSDetector.isWindows()) {
+				if (filePath.startsWith("/")) {
+					filePath = filePath.substring(1);
+				}
+
+				filePath = filePath.replace("/", "\\");
+			}
+
+			String fileName = PoshiRunnerGetterUtil.getFileNameFromFilePath(
+				filePath);
+
+			if (_filePaths.containsKey(fileName)) {
+				System.out.println(
+					"WARNING: Duplicate file name '" + fileName +
+						"' found within the namespace '" + _namespace + "':\n" +
+							filePath + "\n" + _filePaths.get(fileName) + "\n");
+			}
+
+			_filePaths.put(fileName, filePath);
+
+			try {
+				Element rootElement =
+					PoshiRunnerGetterUtil.getRootElementFromURL(_url);
+
+				_storeRootElement(rootElement, filePath, _namespace);
+
+				if (rootElement.attributeValue("override") == null) {
+					PoshiRunnerContext._filePaths.put(
+						_namespace + "." + fileName, filePath);
+
+					if (fileName.endsWith(".function")) {
+						_functionFileNames.add(
+							fileName.replace(".function", ""));
+
+						_functionFileNames.add(
+							_namespace + "." +
+								fileName.replace(".function", ""));
+					}
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return _url;
+		}
+
+		private PoshiFileCallable(
+			URL url, Map<String, String> filePaths, String namespace) {
+
+			_filePaths = filePaths;
+			_namespace = namespace;
+			_url = url;
+		}
+
+		private final Map<String, String> _filePaths;
+		private final String _namespace;
+		private final URL _url;
+
 	}
 
 }
