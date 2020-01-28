@@ -1634,45 +1634,52 @@ public class PoshiRunnerContext {
 		PropsValues.TEST_BASE_DIR_NAME);
 
 	private static final Map<String, Element> _commandElements =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Map<String, String> _commandSummaries =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Set<String> _duplicateLocatorMessages =
-		new HashSet<>();
-	private static final Map<String, String> _filePaths = new HashMap<>();
-	private static final Set<String> _functionFileNames = new HashSet<>();
+		Collections.synchronizedSet(new HashSet<>());
+	private static final Map<String, String> _filePaths =
+		Collections.synchronizedMap(new HashMap<>());
+	private static final Set<String> _functionFileNames =
+		Collections.synchronizedSet(new HashSet<>());
 	private static final Map<String, Integer> _functionLocatorCounts =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Pattern _namespaceClassCommandNamePattern =
 		Pattern.compile(
 			"(?<namespace>[^\\.]+)\\.(?<className>[^\\#]+)\\#" +
 				"(?<commandName>.+)");
 	private static final Map<String, Properties>
-		_namespacedClassCommandNamePropertiesMap = new HashMap<>();
-	private static final List<String> _namespaces = new ArrayList<>();
+		_namespacedClassCommandNamePropertiesMap = Collections.synchronizedMap(
+			new HashMap<>());
+	private static final List<String> _namespaces =
+		Collections.synchronizedList(new ArrayList<>());
 	private static final Map<String, String> _overrideClassNames =
-		new HashMap<>();
-	private static final Map<String, String> _pathExtensions = new HashMap<>();
-	private static final Map<String, String> _pathLocators = new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
+	private static final Map<String, String> _pathExtensions =
+		Collections.synchronizedMap(new HashMap<>());
+	private static final Map<String, String> _pathLocators =
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Pattern _poshiResourceJarNamePattern = Pattern.compile(
 		"jar:.*\\/(?<namespace>\\w+)\\-(?<branchName>\\w+" +
 			"([\\-\\.]\\w+)*)\\-.*?\\.jar.*");
-	private static final Map<String, Element> _rootElements = new HashMap<>();
+	private static final Map<String, Element> _rootElements =
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Map<String, List<Element>> _rootVarElements =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static final Map<String, Integer> _seleniumParameterCounts =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static final List<String> _testCaseAvailablePropertyNames =
-		new ArrayList<>();
+		Collections.synchronizedList(new ArrayList<>());
 	private static final Map<String, String> _testCaseDescriptions =
-		new HashMap<>();
+		Collections.synchronizedMap(new HashMap<>());
 	private static String _testCaseNamespacedClassCommandName;
 	private static final List<String> _testCaseNamespacedClassCommandNames =
-		new ArrayList<>();
+		Collections.synchronizedList(new ArrayList<>());
 	private static final List<String> _testCaseNamespacedClassNames =
-		new ArrayList<>();
+		Collections.synchronizedList(new ArrayList<>());
 	private static final List<String> _testCaseRequiredPropertyNames =
-		new ArrayList<>();
+		Collections.synchronizedList(new ArrayList<>());
 	private static final Pattern _urlPathPattern = Pattern.compile(
 		".*\\.(\\w+)");
 
