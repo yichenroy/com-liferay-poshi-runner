@@ -1720,9 +1720,9 @@ public class PoshiRunnerContext {
 		private PoshiFileCallable(
 			URL url, Map<String, String> filePaths, String namespace) {
 
+			_url = url;
 			_filePaths = filePaths;
 			_namespace = namespace;
-			_url = url;
 		}
 
 		private final Map<String, String> _filePaths;
