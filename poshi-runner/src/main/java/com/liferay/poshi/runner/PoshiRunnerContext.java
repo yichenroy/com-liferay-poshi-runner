@@ -1639,8 +1639,6 @@ public class PoshiRunnerContext {
 		Collections.synchronizedList(new ArrayList<>());
 	private static final List<String> _testCaseRequiredPropertyNames =
 		Collections.synchronizedList(new ArrayList<>());
-	private static final Pattern _urlPathPattern = Pattern.compile(
-		".*\\.(\\w+)");
 
 	static {
 		String testCaseAvailablePropertyNames =
