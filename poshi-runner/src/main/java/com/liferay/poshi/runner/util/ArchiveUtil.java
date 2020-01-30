@@ -54,6 +54,8 @@ public class ArchiveUtil {
 
 		tmpDir.mkdir();
 
+		tmpDir.deleteOnExit();
+
 		File tmpFile = new File(tmpDir, targetFileName);
 
 		tmpFile.delete();
